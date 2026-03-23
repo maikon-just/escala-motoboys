@@ -126,6 +126,10 @@ tbody td.td-nome{text-align:left;padding-left:14px;min-width:220px;cursor:defaul
 .obs-inp{width:180px;padding:5px 9px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:.8rem;color:#475569;background:#fafafa;outline:none;resize:vertical;min-height:38px;font-family:inherit;vertical-align:middle}
 .obs-inp:focus{border-color:#2563eb;background:#fff;box-shadow:0 0 0 2px #bfdbfe}
 .obs-inp::placeholder{color:#cbd5e1}
+.ent-cell{padding:2px 6px!important;text-align:center}
+.ent-inp{width:70px;padding:5px 7px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:.85rem;font-weight:600;color:#1e293b;background:#f0fdf4;outline:none;text-align:center;vertical-align:middle}
+.ent-inp:focus{border-color:#16a34a;background:#fff;box-shadow:0 0 0 2px #bbf7d0}
+.ent-inp::placeholder{color:#cbd5e1;font-weight:400}
 
 /* ── FALTAS ── */
 .flt-badge{display:inline-block;min-width:26px;padding:2px 6px;border-radius:10px;font-size:.8rem;font-weight:800;text-align:center}
@@ -169,6 +173,8 @@ tbody td.td-nome{text-align:left;padding-left:14px;min-width:220px;cursor:defaul
   #csvTabBtn,
   /* Esconde o Ordenar da toolbar no mobile */
   #btnOrdenarTab{display:none!important}
+  /* Mostra busca mobile e Ordenar das tabs */
+  #inNomeMob{display:block!important;font-size:.75rem;height:34px;padding:0 8px;border:1.5px solid #cbd5e1;border-radius:7px;background:#fff;max-width:90px}
   /* Mostra o Ordenar das tabs no mobile — alinhado à direita */
   #ordenarTabMob{display:flex!important;margin-left:auto}
   body{font-size:14px}
@@ -209,7 +215,7 @@ tbody td.td-nome{text-align:left;padding-left:14px;min-width:220px;cursor:defaul
   .mb-nome{font-size:.78rem}
   .mb-tel{font-size:.68rem}
   .badge{min-width:72px;font-size:.68rem;padding:3px 6px}
-  .obs-inp{width:120px;font-size:.72rem}
+  .ent-inp{width:55px;font-size:.75rem;padding:4px 5px}
   .modal{padding:18px 14px;min-width:unset;width:95%}
   .op-btn{font-size:.78rem;padding:7px 10px}
   #configPanel{padding:18px 14px;width:95%}
@@ -307,6 +313,9 @@ tbody td.td-nome{text-align:left;padding-left:14px;min-width:220px;cursor:defaul
     <option value="fraca">🟡 Semana Fraca</option>
     <option value="forte">🔴 Semana Forte</option>
   </select>
+
+  <!-- Campo busca exclusivo mobile (desktop usa #inNome) -->
+  <input type="text" id="inNomeMob" placeholder="🔍 Nome..." oninput="document.getElementById('inNome').value=this.value;renderTable()" style="display:none;width:90px">
 
   <button class="btn" id="btnOrdenarTab" style="background:#0369a1;color:#fff;white-space:nowrap;min-width:90px" onclick="toggleOrdem()">⇅ Ordenar</button>
 
@@ -721,8 +730,7 @@ function renderTable(){
   // THEAD
   document.getElementById('thead').innerHTML = `<tr>
     <th class="th-nome">Motoboy <small style="font-weight:400;opacity:.7">(clique no nome para editar)</small></th>
-    <th class="th-loja">Loja</th>
-    ${diasVis.map(d=>`<th class="th-dia">${d}<br><span style="font-weight:400;font-size:.7rem">${sem.datas?.[d]||''}</span></th>${diaAbrev?`<th style="background:#1e3a5f;min-width:200px;font-size:.72rem;font-weight:600;opacity:.85">Observação</th>`:''}`).join('')}
+    ${diasVis.map(d=>`<th class="th-dia">${d}<br><span style="font-weight:400;font-size:.7rem">${sem.datas?.[d]||''}</span></th>${diaAbrev?`<th style="background:#1e3a5f;min-width:80px;font-size:.72rem;font-weight:600;opacity:.85">Entregas</th><th style="background:#1e3a5f;min-width:180px;font-size:.72rem;font-weight:600;opacity:.85">Observação</th>`:''}`).join('')}
     <th class="th-flt">Faltas<br>Mês</th>
     <th class="th-del">⚙️</th>
   </tr>`;
@@ -786,7 +794,7 @@ function renderTable(){
       const lojaCls=lj==='burger'?'loja-b':lj==='gourmet'?'loja-g':'';
       const fltCount=faltasMes[mb.nome]||0;
       const fltCls=fltCount===0?'flt-0':fltCount===1?'flt-1':fltCount===2?'flt-2':'flt-hi';
-      const diasTd=diasVis.map(d=>`<td style="text-align:center">${badgeHTML(si,mi,d,mb.dias?.[d]||'',mb.conf?.[d]||'')}</td>${diaAbrev?`<td class="obs-cell"><textarea class="obs-inp" placeholder="Observação..." onchange="salvarObs(${si},${mi},'${d}',this.value)">${esc_((mb.obs&&mb.obs[d])||'')}</textarea></td>`:''}`).join('');
+      const diasTd=diasVis.map(d=>`<td style="text-align:center">${badgeHTML(si,mi,d,mb.dias?.[d]||'',mb.conf?.[d]||'')}</td>${diaAbrev?`<td class="ent-cell"><input type="number" min="0" class="ent-inp" placeholder="0" value="${(mb.entregas&&mb.entregas[d])||''}" onchange="salvarEntregas(${si},${mi},'${d}',this.value)"></td><td class="obs-cell"><textarea class="obs-inp" placeholder="Observação..." onchange="salvarObs(${si},${mi},'${d}',this.value)">${esc_((mb.obs&&mb.obs[d])||'')}</textarea></td>`:''}`).join('');
       return `<tr>
       <td class="td-nome">
         <span class="mb-nome" contenteditable="true"
@@ -798,7 +806,6 @@ function renderTable(){
           onblur="salvarTel(${si},${mi},this)"
           onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}">${esc_(mb.telefone||'')}</div>
       </td>
-      <td class="td-loja"><span class="loja-badge ${lojaCls}">${lojaAtual.toUpperCase()}</span></td>
       ${diasTd}
       <td style="text-align:center"><span class="flt-badge ${fltCls}">${fltCount}</span></td>
       <td style="text-align:center"><button class="btn-cfg" onclick="openModalCompleto(${si},${mi},'${diasVis[0]||DIAS_ORDEM[0]}')" title="Editar">⚙️</button></td>
@@ -821,7 +828,7 @@ function renderTable(){
     const lojaCls=lj==='burger'?'loja-b':lj==='gourmet'?'loja-g':'';
     const fltCount=faltasMes[mb.nome]||0;
     const fltCls=fltCount===0?'flt-0':fltCount===1?'flt-1':fltCount===2?'flt-2':'flt-hi';
-    const diasTd=diasVis.map(d=>`<td style="text-align:center">${badgeHTML(si,mi,d,mb.dias?.[d]||'',mb.conf?.[d]||'')}</td>${diaAbrev?`<td class="obs-cell"><textarea class="obs-inp" placeholder="Observação..." onchange="salvarObs(${si},${mi},'${d}',this.value)">${esc_((mb.obs&&mb.obs[d])||'')}</textarea></td>`:''}`).join('');
+    const diasTd=diasVis.map(d=>`<td style="text-align:center">${badgeHTML(si,mi,d,mb.dias?.[d]||'',mb.conf?.[d]||'')}</td>${diaAbrev?`<td class="ent-cell"><input type="number" min="0" class="ent-inp" placeholder="0" value="${(mb.entregas&&mb.entregas[d])||''}" onchange="salvarEntregas(${si},${mi},'${d}',this.value)"></td><td class="obs-cell"><textarea class="obs-inp" placeholder="Observação..." onchange="salvarObs(${si},${mi},'${d}',this.value)">${esc_((mb.obs&&mb.obs[d])||'')}</textarea></td>`:''}`).join('');
     return `<tr>
       <td class="td-nome">
         <span class="mb-nome" contenteditable="true"
@@ -835,7 +842,6 @@ function renderTable(){
           onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}"
         >${esc_(mb.telefone||'— sem tel')}</span>
       </td>
-      <td class="td-loja"><span class="loja-badge ${lojaCls}">${lojaAtual.toUpperCase()}</span></td>
       ${diasTd}
       <td><span class="flt-badge ${fltCls}">${fltCount}</span></td>
       <td><button class="btn btn-ghost" style="height:28px;padding:0 8px;font-size:.75rem" onclick="openEdit(${si},${mi})">✏️</button>
@@ -885,6 +891,14 @@ function salvarObs(si, mi, dia, val){
   if(!mb) return;
   if(!mb.obs) mb.obs = {};
   mb.obs[dia] = val.trim();
+  saveWeekToFB(lojaAtual, si);
+}
+
+function salvarEntregas(si, mi, dia, val){
+  const mb = LOJAS[lojaAtual][si]?.motoboys?.[mi];
+  if(!mb) return;
+  if(!mb.entregas) mb.entregas = {};
+  mb.entregas[dia] = val === '' ? '' : parseInt(val)||0;
   saveWeekToFB(lojaAtual, si);
 }
 
@@ -1100,7 +1114,8 @@ function createNextWeek(){
       nome:mb.nome, loja:mb.loja, telefone:mb.telefone||'', ativo:mb.ativo||'SIM',
       dias:{...(mb.dias||{})},
       conf:{SEG:'',TER:'',QUA:'',QUI:'',SEX:'',SAB:'',DOM:''},
-      obs:{SEG:'',TER:'',QUA:'',QUI:'',SEX:'',SAB:'',DOM:''}
+      obs:{SEG:'',TER:'',QUA:'',QUI:'',SEX:'',SAB:'',DOM:''},
+      entregas:{SEG:'',TER:'',QUA:'',QUI:'',SEX:'',SAB:'',DOM:''}
     }));
   }
   const newSem={titulo,inicio:dateVal,datas,motoboys};
