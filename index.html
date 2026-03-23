@@ -162,16 +162,38 @@ tbody td.td-nome{text-align:left;padding-left:14px;min-width:220px;cursor:defaul
 
 /* ── RESPONSIVE MOBILE ── */
 @media(max-width:768px){
+  /* Esconde tudo que não é necessário no mobile */
+  #btnAddMob,#btnNovaSemMob,#btnExcluirMob,#btnCsvMob,
+  #selStatus1,#selStatus2,#inNome,.sep,
+  label.lbl,
+  #csvTabBtn,
+  /* Esconde o Ordenar da toolbar no mobile */
+  #btnOrdenarTab{display:none!important}
+  /* Mostra o Ordenar das tabs no mobile — alinhado à direita */
+  #ordenarTabMob{display:flex!important;margin-left:auto}
   body{font-size:14px}
   .header{padding:12px 14px;gap:10px}
   .header h1{font-size:1.1rem}
   .header .sub{font-size:.75rem}
   .logo{font-size:1.6rem}
-  .loja-tabs{padding:0 8px;overflow-x:auto}
-  .loja-tab{padding:8px 14px;font-size:.8rem;white-space:nowrap}
-  .toolbar{padding:8px 10px;gap:6px;justify-content:flex-start;overflow-x:auto}
-  .toolbar select,.toolbar input[type=text]{height:34px;font-size:.8rem}
-  .btn{height:34px;padding:0 10px;font-size:.78rem}
+  .loja-tabs{padding:0 6px;overflow-x:auto}
+  .loja-tab{padding:8px 12px;font-size:.8rem;white-space:nowrap}
+  /* Toolbar mobile: centralizada, flex-wrap, sem overflow escondido */
+  .toolbar{
+    padding:8px 10px;
+    gap:8px;
+    flex-wrap:wrap;
+    justify-content:center;
+    overflow:visible;
+  }
+  .toolbar select,.toolbar input[type=text]{height:36px;font-size:.82rem}
+  /* Semana: só mostra ex: "16/03 a 22/03" */
+  #selSem{min-width:unset!important;width:auto;max-width:150px;font-size:.75rem}
+  /* Tipo: só mostra "Fraca" / "Forte" */
+  #selTipoSem{width:auto;min-width:unset;max-width:80px;font-size:.75rem}
+  /* Filtrar Dia: botão compacto — só emoji + data */
+  #btnCal{min-width:unset!important;padding:0 8px;max-width:85px;overflow:hidden;text-overflow:ellipsis;font-size:.75rem}
+  .btn{height:36px;padding:0 12px;font-size:.8rem;white-space:nowrap}
   .sep{display:none}
   #cardsRow{padding:10px 10px 0;gap:8px;justify-content:center}
   .card{min-width:90px;padding:8px 10px}
@@ -192,7 +214,17 @@ tbody td.td-nome{text-align:left;padding-left:14px;min-width:220px;cursor:defaul
   .op-btn{font-size:.78rem;padding:7px 10px}
   #configPanel{padding:18px 14px;width:95%}
   .config-field input{font-size:.82rem;padding:8px 10px}
-  .cal-drop{min-width:220px}
+  /* Calendário: fixo na tela no mobile para não ser cortado */
+  .cal-wrap{position:static}
+  .cal-drop{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    min-width:290px;
+    max-width:95vw;
+    z-index:2000;
+  }
 }
 
 /* ── LOADING ── */
@@ -241,19 +273,19 @@ tbody td.td-nome{text-align:left;padding-left:14px;min-width:220px;cursor:defaul
   <div class="loja-tab burger active" id="tabBurger" onclick="setLoja('burger')">🍔 Burger</div>
   <div class="loja-tab gourmet" id="tabGourmet" onclick="setLoja('gourmet')">⭐ Gourmet</div>
   <div class="loja-tab aham" id="tabAham" onclick="setLoja('aham')">🍕 AHAM</div>
+  <div id="csvTabBtn" style="margin-left:auto;display:flex;align-items:center;gap:6px;padding-right:12px">
+    <button class="btn btn-ghost" onclick="exportCSV()" style="height:30px;padding:0 10px;font-size:.75rem">📥 CSV</button>
+  </div>
+  <!-- Botão Ordenar exclusivo para mobile, ao lado das abas -->
+  <div id="ordenarTabMob" style="display:none;align-items:center;padding-right:8px;margin-left:auto">
+    <button class="btn" id="btnOrdenarMob" style="background:#0369a1;color:#fff;white-space:nowrap;height:30px;padding:0 10px;font-size:.75rem" onclick="toggleOrdem()">⇅ Ord</button>
+  </div>
 </div>
 
 <!-- TOOLBAR -->
 <div class="toolbar">
   <label class="lbl">Semana:</label>
   <select id="selSem" onchange="onSemChange()" style="min-width:200px"><option value="">Carregando...</option></select>
-
-  <label class="lbl">Tipo:</label>
-  <select id="selTipoSem" onchange="renderTable()" style="width:130px">
-    <option value="">— Tipo —</option>
-    <option value="fraca">🟡 Semana Fraca</option>
-    <option value="forte">🔴 Semana Forte</option>
-  </select>
 
   <div class="cal-wrap">
     <button class="btn" id="btnCal" onclick="toggleCal()">📅 Filtrar Dia</button>
@@ -269,6 +301,14 @@ tbody td.td-nome{text-align:left;padding-left:14px;min-width:220px;cursor:defaul
       </div>
     </div>
   </div>
+
+  <select id="selTipoSem" onchange="renderTable()" style="width:130px">
+    <option value="">— Tipo —</option>
+    <option value="fraca">🟡 Semana Fraca</option>
+    <option value="forte">🔴 Semana Forte</option>
+  </select>
+
+  <button class="btn" id="btnOrdenarTab" style="background:#0369a1;color:#fff;white-space:nowrap;min-width:90px" onclick="toggleOrdem()">⇅ Ordenar</button>
 
   <span class="sep"></span>
   <label class="lbl">Status:</label>
@@ -293,10 +333,9 @@ tbody td.td-nome{text-align:left;padding-left:14px;min-width:220px;cursor:defaul
   <input type="text" id="inNome" placeholder="Buscar motoboy..." oninput="renderTable()" style="width:170px">
 
   <span class="sep"></span>
-  <button class="btn btn-success" onclick="openAddModal()">➕ Motoboy</button>
-  <button class="btn btn-primary" onclick="openNextWeekModal()">📅 Nova Semana</button>
-  <button class="btn btn-danger" onclick="excluirSemana()">🗑️ Excluir</button>
-  <button class="btn btn-ghost" onclick="exportCSV()">📥 CSV</button>
+  <button class="btn btn-success" onclick="openAddModal()" id="btnAddMob">➕ Motoboy</button>
+  <button class="btn btn-primary" onclick="openNextWeekModal()" id="btnNovaSemMob">📅 Nova Semana</button>
+  <button class="btn btn-danger" onclick="excluirSemana()" id="btnExcluirMob">🗑️ Excluir</button>
 
 </div>
 
@@ -535,10 +574,10 @@ function loadLoja(loja){
       if(loja === lojaAtual){
         buildSemSelect();
         if(primeiraVez){
-          // Primeira carga: mostra mensagem para selecionar
-          showNoSemMsg('Selecione uma semana acima para ver os dados');
+          // Primeira carga: renderiza direto a semana mais recente (índice 0)
           updateCalLabel();
           renderCal();
+          if(getSI() !== null) renderTable();
           primeiraVez = false;
         } else {
           // Atualizações subsequentes (saves): restaura seleção e rerenderiza
@@ -546,9 +585,7 @@ function loadLoja(loja){
             document.getElementById('selSem').value = selAtual;
           }
           const siAtual = getSI();
-          if(siAtual !== null){
-            renderTable();
-          }
+          if(siAtual !== null) renderTable();
         }
         updateHSub();
       }
@@ -597,9 +634,10 @@ function setLoja(loja){
     loadLoja(loja);
   } else {
     buildSemSelect();
-    showNoSemMsg('Selecione uma semana acima para ver os dados');
     updateHSub();
     renderCal();
+    if(getSI() !== null) renderTable();
+    else showNoSemMsg('Selecione uma semana acima para ver os dados');
   }
 }
 
@@ -626,7 +664,12 @@ function buildSemSelect(){
   let opts = '<option value="">— Selecione uma semana —</option>';
   semanas.forEach((s,i)=>{ opts += `<option value="${i}">${s.titulo}</option>`; });
   sel.innerHTML = opts;
-  sel.value = '';
+  // Seleciona sempre a primeira (mais recente, pois lista está em ordem decrescente)
+  if(semanas.length > 0){
+    sel.value = '0';
+  } else {
+    sel.value = '';
+  }
 }
 
 function getSI(){
@@ -728,7 +771,43 @@ function renderTable(){
 
 
 
-  // Tbody
+  // Ordena se botão ativo
+  if(_ordemAtiva){
+    // Cria array com índice original antes de ordenar
+    let mbsComIdx = mbs.map(mb=>({ mb, mi: sem.motoboys.indexOf(mb) }));
+    mbsComIdx.sort((a,b)=>getPrioridade(a.mb, diaAbrev)-getPrioridade(b.mb, diaAbrev));
+    const faltasMes = computeFaltasMes(si);
+    if(mbsComIdx.length===0){
+      document.getElementById('tbody').innerHTML = `<tr><td colspan="${diasVis.length+4}" style="text-align:center;padding:28px;color:#94a3b8">Nenhum motoboy encontrado</td></tr>`;
+      return;
+    }
+    document.getElementById('tbody').innerHTML = mbsComIdx.map(({mb, mi})=>{
+      const lj=(mb.loja||'').toLowerCase();
+      const lojaCls=lj==='burger'?'loja-b':lj==='gourmet'?'loja-g':'';
+      const fltCount=faltasMes[mb.nome]||0;
+      const fltCls=fltCount===0?'flt-0':fltCount===1?'flt-1':fltCount===2?'flt-2':'flt-hi';
+      const diasTd=diasVis.map(d=>`<td style="text-align:center">${badgeHTML(si,mi,d,mb.dias?.[d]||'',mb.conf?.[d]||'')}</td>${diaAbrev?`<td class="obs-cell"><textarea class="obs-inp" placeholder="Observação..." onchange="salvarObs(${si},${mi},'${d}',this.value)">${esc_((mb.obs&&mb.obs[d])||'')}</textarea></td>`:''}`).join('');
+      return `<tr>
+      <td class="td-nome">
+        <span class="mb-nome" contenteditable="true"
+          title="Clique para editar o nome"
+          onblur="salvarNome(${si},${mi},this)"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}">${esc_(mb.nome)}</span>
+        <div class="mb-tel" contenteditable="true"
+          title="Clique para editar o telefone"
+          onblur="salvarTel(${si},${mi},this)"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}">${esc_(mb.telefone||'')}</div>
+      </td>
+      <td class="td-loja"><span class="loja-badge ${lojaCls}">${lojaAtual.toUpperCase()}</span></td>
+      ${diasTd}
+      <td style="text-align:center"><span class="flt-badge ${fltCls}">${fltCount}</span></td>
+      <td style="text-align:center"><button class="btn-cfg" onclick="openModalCompleto(${si},${mi},'${diasVis[0]||DIAS_ORDEM[0]}')" title="Editar">⚙️</button></td>
+    </tr>`;
+    }).join('');
+    return;
+  }
+
+  // Tbody (sem ordenação)
   if(mbs.length===0){
     document.getElementById('tbody').innerHTML = `<tr><td colspan="${diasVis.length+4}" style="text-align:center;padding:28px;color:#94a3b8">Nenhum motoboy encontrado</td></tr>`;
     return;
@@ -1086,6 +1165,49 @@ function updateBtnCal(){
 // ═══════════════════════════════════════════
 // EXPORT CSV
 // ═══════════════════════════════════════════
+// ═══════════════════════════════════════════
+// ORDENAR LISTA
+// ═══════════════════════════════════════════
+let _ordemAtiva = false;
+const ORDEM_STATUS = {'CONFIRMADO':1,'PRESENTE':2,'X':3,'FALTOU':4,'AFASTADO':5,'FOLGA':6,'':7};
+
+function toggleOrdem(){
+  _ordemAtiva = !_ordemAtiva;
+  const cor = _ordemAtiva ? '#15803d' : '#0369a1';
+  const txt = _ordemAtiva ? '⇅ ON' : '⇅ Ordenar';
+  const txtMob = _ordemAtiva ? '⇅ ON' : '⇅';
+  const btn = document.getElementById('btnOrdenarTab');
+  if(btn){ btn.style.background=cor; btn.textContent=txt; btn.style.whiteSpace='nowrap'; }
+  const btnMob = document.getElementById('btnOrdenarMob');
+  if(btnMob){ btnMob.style.background=cor; btnMob.textContent=txtMob; }
+  renderTable();
+}
+
+function getPrioridade(mb, diaFiltrado){
+  // Pega o melhor status do motoboy entre todos os dias visíveis
+  const si = getSI();
+  if(si===null) return 99;
+  const sem = LOJAS[lojaAtual][si];
+  if(!sem) return 99;
+  // Se há um dia filtrado, usa apenas aquele dia
+  const dias = diaFiltrado ? [diaFiltrado] : DIAS_ORDEM;
+  let melhor = 99;
+  dias.forEach(d=>{
+    const di = (mb.dias?.[d]||'').toUpperCase();
+    const cf = (mb.conf?.[d]||'').toUpperCase();
+    let p = 99;
+    if(di==='X'){
+      if(cf==='CONFIRMADO') p=1;
+      else if(cf==='PRESENTE') p=2;
+      else if(cf==='FALTOU') p=4;
+      else if(cf==='AFASTADO') p=5;
+      else p=3; // só escalado
+    } else if(di==='FOLGA') p=6;
+    if(p < melhor) melhor = p;
+  });
+  return melhor;
+}
+
 function exportCSV(){
   const si=getSI(); if(si===null){toast('Selecione uma semana!');return;}
   const sem=LOJAS[lojaAtual][si]; if(!sem) return;
