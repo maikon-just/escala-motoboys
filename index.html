@@ -192,14 +192,16 @@ tbody td.td-nome{text-align:left;padding-left:14px;min-width:220px;cursor:defaul
     justify-content:center;
     overflow:visible;
   }
-  .toolbar select,.toolbar input[type=text]{height:36px;font-size:.82rem}
-  /* Semana: só mostra ex: "16/03 a 22/03" */
-  #selSem{min-width:unset!important;width:auto;max-width:150px;font-size:.75rem}
-  /* Tipo: só mostra "Fraca" / "Forte" */
-  #selTipoSem{width:auto;min-width:unset;max-width:80px;font-size:.75rem}
-  /* Filtrar Dia: botão compacto — só emoji + data */
-  #btnCal{min-width:unset!important;padding:0 8px;max-width:85px;overflow:hidden;text-overflow:ellipsis;font-size:.75rem}
-  .btn{height:36px;padding:0 12px;font-size:.8rem;white-space:nowrap}
+  .toolbar select,.toolbar input[type=text]{height:34px;font-size:.73rem}
+  /* Semana: título curto "16/03 a 22/03" cabe em menos espaço */
+  #selSem{min-width:unset!important;width:auto;max-width:120px;font-size:.73rem}
+  /* Tipo: só mostra "🟡"/"🔴" + texto curto */
+  #selTipoSem{width:auto;min-width:unset;max-width:72px;font-size:.73rem}
+  /* Filtrar Dia: botão compacto */
+  #btnCal{min-width:unset!important;padding:0 7px;max-width:80px;overflow:hidden;text-overflow:ellipsis;font-size:.73rem}
+  /* Busca mobile: pequeno, cabe na linha */
+  #inNomeMob{max-width:80px!important;font-size:.73rem!important;height:34px!important}
+  .btn{height:34px;padding:0 10px;font-size:.78rem;white-space:nowrap}
   .sep{display:none}
   #cardsRow{padding:10px 10px 0;gap:8px;justify-content:center}
   .card{min-width:90px;padding:8px 10px}
@@ -667,11 +669,22 @@ function updateHSub(){
 // ═══════════════════════════════════════════
 // SEMANA SELECT
 // ═══════════════════════════════════════════
+function tituloSemCurto(titulo){
+  // Converte "22/02/2026 a 28/02/2026" → "22/02 a 28/02"
+  // ou "22/02 a 28/02/2026" → "22/02 a 28/02"
+  if(!titulo) return titulo;
+  return titulo.replace(/(\d{2}\/\d{2})\/\d{4}/g,'$1');
+}
+
 function buildSemSelect(){
   const sel = document.getElementById('selSem');
   const semanas = LOJAS[lojaAtual];
-  let opts = '<option value="">— Selecione uma semana —</option>';
-  semanas.forEach((s,i)=>{ opts += `<option value="${i}">${s.titulo}</option>`; });
+  const isMobile = window.innerWidth <= 768;
+  let opts = '<option value="">— Selecione —</option>';
+  semanas.forEach((s,i)=>{
+    const label = isMobile ? tituloSemCurto(s.titulo) : s.titulo;
+    opts += `<option value="${i}">${label}</option>`;
+  });
   sel.innerHTML = opts;
   // Seleciona sempre a primeira (mais recente, pois lista está em ordem decrescente)
   if(semanas.length > 0){
