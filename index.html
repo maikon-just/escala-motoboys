@@ -6,9 +6,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>🏍️ Escala Motoboys — Nuvem</title>
 
-<!-- ══ Firebase SDK v9 (compat) ══ -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<!-- ══ Firebase SDK v9 (compat) via jsDelivr CDN ══ -->
+<script src="https://cdn.jsdelivr.net/npm/firebase@9.23.0/firebase-app-compat.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/firebase@9.23.0/firebase-database-compat.min.js"></script>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -46,7 +46,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#1e293b;mi
 .toolbar select,.toolbar input[type=text]{height:36px;padding:0 10px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:.85rem;background:#fff;color:#1e293b;outline:none}
 .toolbar select:focus,.toolbar input:focus{border-color:#2563eb}
 label.lbl{font-size:.8rem;font-weight:600;color:#64748b;white-space:nowrap}
-.btn{height:36px;padding:0 16px;border:none;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s}
+.btn{height:34px;padding:0 12px;border:none;border-radius:8px;font-size:.78rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .15s;white-space:nowrap}
 .btn-primary{background:#2563eb;color:#fff}.btn-primary:hover{background:#1d4ed8}
 .btn-success{background:#16a34a;color:#fff}.btn-success:hover{background:#15803d}
 .btn-danger{background:#dc2626;color:#fff}.btn-danger:hover{background:#b91c1c}
@@ -295,6 +295,7 @@ tbody td.td-nome{text-align:left;padding-left:14px;min-width:220px;cursor:defaul
   <span class="sep"></span>
   <button class="btn btn-success" onclick="openAddModal()">➕ Motoboy</button>
   <button class="btn btn-primary" onclick="openNextWeekModal()">📅 Nova Semana</button>
+  <button class="btn btn-danger" onclick="excluirSemana()">🗑️ Excluir</button>
   <button class="btn btn-ghost" onclick="exportCSV()">📥 CSV</button>
 </div>
 
@@ -959,6 +960,25 @@ function addMotoboy(){
 // ═══════════════════════════════════════════
 // NOVA SEMANA
 // ═══════════════════════════════════════════
+function excluirSemana(){
+  const si = getSI();
+  if(si === null){ toast('Selecione uma semana para excluir!'); return; }
+  const sem = LOJAS[lojaAtual][si];
+  if(!sem){ toast('Semana não encontrada!'); return; }
+  if(!confirm(`Excluir a semana "${sem.titulo}"?\n\nEssa ação não pode ser desfeita!`)) return;
+  const key = sem.inicio || ('semana_'+si);
+  // Remove do Firebase — incrementa ignorarSnap para não reprocessar
+  _ignorarSnap++;
+  if(db) db.ref('escalas/'+lojaAtual+'/semanas/'+key).remove()
+    .then(()=>{ toast('Semana excluída!'); })
+    .catch(err=>{ toast('Erro ao excluir: '+err.message); });
+  // Remove localmente pelo key correto
+  LOJAS[lojaAtual] = LOJAS[lojaAtual].filter(s=>(s.inicio||'')!==key);
+  buildSemSelect();
+  showNoSemMsg('Selecione uma semana acima para ver os dados');
+  updateHSub();
+}
+
 function openNextWeekModal(){
   const semanas=LOJAS[lojaAtual];
   const lastSem=semanas.length>0?semanas[0]:null;
@@ -1008,6 +1028,10 @@ function createNextWeek(){
   saveWeekToFB(lojaAtual,0);
   buildSemSelect();
   document.getElementById('selSem').value='0';
+  // Reseta calendário para o mês da nova semana
+  const nd=new Date(dateVal+'T12:00:00');
+  _calYear=nd.getFullYear(); _calMonth=nd.getMonth();
+  updateCalLabel(); renderCal();
   renderTable();
   updateHSub();
   closeModal('overlayNext');
@@ -1038,8 +1062,9 @@ function renderCal(){
   const daysInMonth=new Date(_calYear,_calMonth+1,0).getDate();
   const today=new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
   const semDates=new Set(Object.values(sem?.datas||{}));
-  let html=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'].map(d=>`<div class="wd">${d}</div>`).join('');
-  const offset=firstDay.getDay()===0?6:firstDay.getDay()-1;
+  // Calendário começando na Segunda-feira
+  let html=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'].map(d=>`<div class="wd">${d}</div>`).join('');
+  const offset=(firstDay.getDay()===0?6:firstDay.getDay()-1);
   for(let i=0;i<offset;i++) html+='<div class="day other-month"></div>';
   for(let d=1;d<=daysInMonth;d++){
     const dt=new Date(_calYear,_calMonth,d);
