@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -325,7 +326,6 @@ tbody td.td-nome{text-align:left;padding-left:14px;min-width:220px;cursor:defaul
   <label class="lbl">Status:</label>
   <select id="selStatus1" onchange="renderTable()" style="width:140px">
     <option value="">Todos</option>
-    <option value="ESCALADO">✅ Escalados</option>
     <option value="CONFIRMADO">☑️ Confirmados</option>
     <option value="PRESENTE">🟢 Presentes</option>
     <option value="FALTOU">❌ Faltou</option>
@@ -334,7 +334,6 @@ tbody td.td-nome{text-align:left;padding-left:14px;min-width:220px;cursor:defaul
   </select>
   <select id="selStatus2" onchange="renderTable()" style="width:140px">
     <option value="">+ Status</option>
-    <option value="ESCALADO">✅ Escalados</option>
     <option value="CONFIRMADO">☑️ Confirmados</option>
     <option value="PRESENTE">🟢 Presentes</option>
     <option value="FALTOU">❌ Faltou</option>
@@ -764,13 +763,13 @@ function renderTable(){
     if(!lojaMatch(mb)) return false;
     if(nome&&!mb.nome.toLowerCase().includes(nome)) return false;
     const check = diaAbrev ? [diaAbrev] : DIAS_ORDEM;
-    const ok1 = !filt1||check.some(d=>matchFilt(mb,filt1,d));
-    const ok2 = !filt2||check.some(d=>matchFilt(mb,filt2,d));
-    return ok1&&ok2;
+    const filtros = [filt1, filt2].filter(Boolean);
+    if(!filtros.length) return true;
+    return check.some(d => filtros.some(f => matchFilt(mb, f, d)));
   });
 
   // Cards — refletem apenas o dia selecionado ou a semana toda
-  let esc=0,conf=0,pres=0,folga=0,falta=0;
+  let conf=0,pres=0,folga=0,falta=0;
   const diasParaContar = diaAbrev ? [diaAbrev] : DIAS_ORDEM;
   function lojaMatch(mb){
     const lj=(mb.loja||'').toLowerCase();
@@ -783,12 +782,21 @@ function renderTable(){
 
   (sem.motoboys||[]).filter(mb=>lojaMatch(mb))
   .forEach(mb=>{ diasParaContar.forEach(d=>{ const di=mb.dias?.[d]||'',cf=mb.conf?.[d]||'';
-    if(di==='X')esc++; if(cf==='CONFIRMADO')conf++; if(cf==='PRESENTE')pres++;
-    if(di==='FOLGA')folga++; if(cf==='FALTOU')falta++; }); });
+    if(cf==='CONFIRMADO')conf++;
+    if(cf==='PRESENTE')pres++;
+    if(di==='FOLGA')folga++;
+    if(cf==='FALTOU')falta++;
+  }); });
+
+  const disponiveis = conf + pres + folga + falta;
+
   document.getElementById('cardsRow').innerHTML =
-    card('Escalados','✅',esc,'c-esc')+card('Confirmados','☑️',conf,'c-conf')+
-    card('Presentes','🟢',pres,'c-pres')+card('Folgas','🌴',folga,'c-folga')+
-    card('Faltas','❌',falta,'c-falta') + renderCardMeta(diaAbrev);
+    card('Disponíveis','📦',disponiveis,'c-esc') +
+    card('Confirmados','☑️',conf,'c-conf') +
+    card('Presentes','🟢',pres,'c-pres') +
+    card('Folga','🌴',folga,'c-folga') +
+    card('Faltou','❌',falta,'c-falta') +
+    renderCardMeta(diaAbrev);
 
 
 
