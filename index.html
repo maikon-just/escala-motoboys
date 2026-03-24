@@ -347,6 +347,11 @@ tbody td.td-nome{text-align:left;padding-left:14px;min-width:220px;cursor:defaul
   <button class="btn btn-primary" onclick="openNextWeekModal()" id="btnNovaSemMob">📅 Nova Semana</button>
   <button class="btn btn-danger" onclick="excluirSemana()" id="btnExcluirMob">🗑️ Excluir</button>
 
+  <div style="flex-basis:100%;height:0"></div>
+  <div style="display:flex;width:100%;justify-content:flex-end">
+    <button class="btn btn-ghost" onclick="confirmarSalvarPadrao()" id="btnSalvarPadrao">💾 Salvar Escala Padrão</button>
+  </div>
+
 </div>
 
 <!-- CARDS -->
@@ -448,6 +453,18 @@ tbody td.td-nome{text-align:left;padding-left:14px;min-width:220px;cursor:defaul
   </div>
 </div>
 
+<!-- MODAL CONFIRMAR PADRÃO -->
+<div class="overlay" id="overlayPadrao">
+  <div class="modal">
+    <h3>⚠️ Confirmar novo padrão</h3>
+    <p style="font-weight:700;text-align:center;line-height:1.6">TEM CERTEZA QUE VAI SALVAR O NOVO PADRÃO?<br>SE TIVER ALGUM PRESENTE NÃO SALVE.</p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('overlayPadrao')">Cancelar</button>
+      <button class="btn btn-primary" onclick="executarSalvarPadrao()">Salvar padrão</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL CONFIG -->
 <div class="overlay" id="overlayConfig">
   <div id="configPanel">
@@ -508,6 +525,8 @@ function getFirebaseConfig(){
 // ═══════════════════════════════════════════
 let db = null;
 let LOJAS = { burger: [], gourmet: [], aham: [] };
+let PADROES = { burger: null, gourmet: null, aham: null };
+let _padraoListeners = { burger: false, gourmet: false, aham: false };
 let lojaAtual = 'burger';
 let _calYear, _calMonth, _filtDay = null;
 let _editSI = -1, _editMI = -1;
@@ -563,11 +582,62 @@ async function initFirebase(){
 }
 
 // ═══════════════════════════════════════════
+// PADRÃO DE ESCALA
+// ═══════════════════════════════════════════
+function loadPadrao(loja){
+  if(!db || _padraoListeners[loja]) return;
+  _padraoListeners[loja] = true;
+  db.ref('escalas/' + loja + '/padrao').on('value', snap=>{
+    PADROES[loja] = snap.val() || null;
+  });
+}
+
+function confirmarSalvarPadrao(){
+  openOverlay('overlayPadrao');
+}
+
+function executarSalvarPadrao(){
+  closeModal('overlayPadrao');
+  salvarEscalaPadrao();
+}
+
+function salvarEscalaPadrao(){
+  const si = getSI();
+  if(si === null){ toast('Selecione uma semana primeiro!'); return; }
+  const sem = LOJAS[lojaAtual][si];
+  if(!sem?.motoboys?.length){ toast('Esta semana não tem motoboys para salvar como padrão!'); return; }
+
+  const padrao = {
+    salvoEm: new Date().toISOString(),
+    origemInicio: sem.inicio || '',
+    origemTitulo: sem.titulo || '',
+    motoboys: (sem.motoboys||[]).map(mb => ({
+      nome: mb.nome || '',
+      loja: mb.loja || lojaAtual.toUpperCase(),
+      telefone: mb.telefone || '',
+      ativo: mb.ativo || 'SIM',
+      dias: { ...(mb.dias || {}) },
+      conf: { ...(mb.conf || {}) }
+    }))
+  };
+
+  PADROES[lojaAtual] = padrao;
+  if(db){
+    db.ref('escalas/' + lojaAtual + '/padrao').set(padrao)
+      .then(()=>{ toast('Escala padrão salva com sucesso!'); })
+      .catch(err=>{ toast('Erro ao salvar padrão: ' + err.message); });
+  } else {
+    toast('Escala padrão salva localmente!');
+  }
+}
+
+// ═══════════════════════════════════════════
 // LOAD DATA
 // ═══════════════════════════════════════════
 function loadLoja(loja){
   return new Promise((resolve, reject)=>{
     if(!db){ reject('no db'); return; }
+    loadPadrao(loja);
     setStatus('loading','⏳ Carregando ' + loja.toUpperCase() + '...');
     let primeiraVez = true;
     db.ref('escalas/' + loja + '/semanas').on('value', snap=>{
@@ -1129,8 +1199,17 @@ function createNextWeek(){
   const titulo=`${dtFmt} a ${dtEnd.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})}/${d.getFullYear().toString().slice(-2)}`;
   const copiar=document.getElementById('opYes').classList.contains('selected');
   const prevSem=LOJAS[lojaAtual].length>0?LOJAS[lojaAtual][0]:null;
+  const origemPadrao = PADROES[lojaAtual]?.motoboys?.length ? PADROES[lojaAtual] : null;
   let motoboys=[];
-  if(copiar&&prevSem?.motoboys){
+  if(copiar && origemPadrao){
+    motoboys=origemPadrao.motoboys.map(mb=>({
+      nome:mb.nome, loja:mb.loja, telefone:mb.telefone||'', ativo:mb.ativo||'SIM',
+      dias:{...(mb.dias||{})},
+      conf:{...(mb.conf||{SEG:'',TER:'',QUA:'',QUI:'',SEX:'',SAB:'',DOM:''})},
+      obs:{SEG:'',TER:'',QUA:'',QUI:'',SEX:'',SAB:'',DOM:''},
+      entregas:{SEG:'',TER:'',QUA:'',QUI:'',SEX:'',SAB:'',DOM:''}
+    }));
+  } else if(copiar&&prevSem?.motoboys){
     motoboys=prevSem.motoboys.map(mb=>({
       nome:mb.nome, loja:mb.loja, telefone:mb.telefone||'', ativo:mb.ativo||'SIM',
       dias:{...(mb.dias||{})},
@@ -1151,7 +1230,7 @@ function createNextWeek(){
   renderTable();
   updateHSub();
   closeModal('overlayNext');
-  toast(`Semana "${titulo}" criada!`);
+  toast(`Semana "${titulo}" criada!` + (copiar && origemPadrao ? ' Padrão aplicado.' : ''));
 }
 
 // ═══════════════════════════════════════════
