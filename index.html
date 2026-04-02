@@ -1014,26 +1014,29 @@ function createNextWeek(){
     const dt=new Date(inicio); dt.setDate(dt.getDate()+i);
     datas[d]=`${String(dt.getDate()).padStart(2,'0')}/${String(dt.getMonth()+1).padStart(2,'0')}`;
   });
-  // Motoboys: pega da escala padrão ou da semana mais recente
+
   let motoboys=[];
   const padrao=PADROES[lojaAtual];
   const semanasAtual=LOJAS[lojaAtual]||[];
-  if(padrao&&padrao.motoboys&&padrao.motoboys.length){
-    // Usa a escala padrão: regulares com dados, TD sem dados
+
+  if(padrao && padrao.motoboys && padrao.motoboys.length){
+    // Nova semana baseada 100% na Escala Padrão, mantendo dias e status
     motoboys=(padrao.motoboys||[]).map(mb=>{
-      if(isTransDeliveryMb(mb)) return {
-        nome:'TRANSDELIVERY',loja:mb.loja||lojaAtual,telefone:'',
-        ativo:'SIM',transdelivery:true,tdSlot:mb.tdSlot||0,
-        dias:defaultTdDays(),conf:defaultTdConf(),obs:{},entregas:{}
-      };
       const c=JSON.parse(JSON.stringify(mb));
-      // Reset status para nova semana
-      c.conf={}; c.obs={}; c.entregas={};
-      DIAS_ORDEM.forEach(d=>{ c.conf[d]=''; });
+      if(!c.dias) c.dias={};
+      if(!c.conf) c.conf={};
+      if(!c.obs) c.obs={};
+      if(!c.entregas) c.entregas={};
+      DIAS_ORDEM.forEach(d=>{
+        if(typeof c.dias[d]==='undefined') c.dias[d]='';
+        if(typeof c.conf[d]==='undefined') c.conf[d]='';
+        if(typeof c.obs[d]==='undefined') c.obs[d]='';
+        if(typeof c.entregas[d]==='undefined') c.entregas[d]=0;
+      });
       return c;
     });
   } else if(semanasAtual.length){
-    // Copia da semana mais recente (índice 0)
+    // Sem padrão salvo: copia da semana mais recente sem levar status fechados
     const last=semanasAtual[0];
     motoboys=(last.motoboys||[]).map(mb=>{
       if(isTransDeliveryMb(mb)) return {
@@ -1043,20 +1046,22 @@ function createNextWeek(){
       };
       const c=JSON.parse(JSON.stringify(mb));
       c.conf={}; c.obs={}; c.entregas={};
-      DIAS_ORDEM.forEach(d=>{ c.conf[d]=''; });
+      if(!c.dias) c.dias={};
+      DIAS_ORDEM.forEach(d=>{
+        c.conf[d]='';
+        if(typeof c.dias[d]==='undefined') c.dias[d]='';
+      });
       return c;
     });
   }
+
   const newSem={ titulo, inicio:dateVal, datas, tipo:tipo||'', motoboys };
-  // INSERIR NO INÍCIO (mais recente no índice 0)
   LOJAS[lojaAtual].unshift(newSem);
   closeOverlay('overlayNextWeek');
   rebuildSemSelect();
-  // Selecionar a nova semana (índice 0)
   document.getElementById('selSem').value='0';
   renderTable();
   updateCalLabel();
-  // Salvar todo o array reindexado
   saveWeekToFB(0, ()=>toast('✅ Nova semana criada: '+titulo));
 }
 
@@ -1208,16 +1213,22 @@ function setStatus(si, mi, d, tipo, val){
   const sem=getActiveSem();
   if(!sem||!sem.motoboys[mi]) return;
   const mb=sem.motoboys[mi];
+  if(!mb.dias) mb.dias={};
+  if(!mb.conf) mb.conf={};
+
   if(tipo==='dia'){
-    if(!mb.dias) mb.dias={};
     mb.dias[d]=val;
-    if(val==='FOLGA'){ if(!mb.conf) mb.conf={}; mb.conf[d]=''; }
+    if(val==='FOLGA'){
+      mb.conf[d]='';
+    } else if(val==='X'){
+      if(typeof mb.conf[d]==='undefined') mb.conf[d]='';
+    }
   } else {
-    if(!mb.conf) mb.conf={};
+    // Qualquer status confirmado/presente/faltou/afastado força o dia para escalado
     mb.conf[d]=val;
-    if(!mb.dias) mb.dias={};
-    if(!mb.dias[d]||mb.dias[d]==='') mb.dias[d]='X';
+    mb.dias[d]='X';
   }
+
   closeOverlay('overlayEdit');
   if(viewMode==='padrao'){ markPadraoDirty(); renderTable(); }
   else { persistActive(si); renderTable(); }
