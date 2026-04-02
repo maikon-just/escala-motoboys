@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -179,8 +180,10 @@ td.td-nome{text-align:left;padding-left:14px}
 .falt-detail h4{color:#dc2626;font-size:.95rem;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:6px}
 .falt-week-block{margin-bottom:12px}
 .falt-week-label{display:flex;align-items:center;gap:6px;font-size:.78rem;font-weight:800;color:#1e3a5f;margin-bottom:6px}
-.falt-day-chips{display:flex;flex-wrap:wrap;gap:6px}
+.falt-day-chips{display:flex;flex-wrap:wrap;gap:10px 12px}
+.falt-day-item{display:flex;flex-direction:column;align-items:flex-start;gap:3px}
 .falt-day-chip{padding:4px 12px;border-radius:999px;background:#ffe4e6;border:1px solid #fca5a5;color:#9f1239;font-size:.75rem;font-weight:700;display:flex;align-items:center;gap:4px}
+.falt-day-motivo{font-size:.66rem;line-height:1.2;color:#7f1d1d;padding-left:10px;max-width:180px;opacity:.88}
 
 /* TOAST */
 #toast{position:fixed;bottom:24px;right:24px;background:#1e293b;color:#fff;padding:12px 20px;border-radius:999px;font-size:.85rem;font-weight:600;z-index:9000;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none}
@@ -1646,8 +1649,12 @@ function renderDashboard(){
       DIAS_ORDEM.forEach(d=>{
         const cf=(mb.conf?.[d]||'').toUpperCase();
         const di=(mb.dias?.[d]||'').toUpperCase();
+        const motivo=(mb.obs?.[d]||'').trim();
         if(cf==='PRESENTE') ranking[nome].pres++;
-        else if(cf==='FALTOU'){ ranking[nome].falt++; ranking[nome].faltDays.push({sem:sem.titulo, dia:d, data:sem.datas?.[d]||''}); }
+        else if(cf==='FALTOU'){
+          ranking[nome].falt++;
+          ranking[nome].faltDays.push({sem:sem.titulo, dia:d, data:sem.datas?.[d]||'', motivo});
+        }
         else if(cf==='CONFIRMADO') ranking[nome].conf++;
         else if(cf==='AFASTADO') ranking[nome].afas++;
         else if(di==='FOLGA') ranking[nome].folga++;
@@ -1719,7 +1726,7 @@ function showDashFaltas(nome){
   const blocks=Object.entries(bySem).map(([sem,days])=>`
     <div class="falt-week-block">
       <div class="falt-week-label">📅 ${sem}</div>
-      <div class="falt-day-chips">${days.map(f=>`<div class="falt-day-chip">❌ ${f.dia} ${f.data}</div>`).join('')}</div>
+      <div class="falt-day-chips">${days.map(f=>`<div class="falt-day-item"><div class="falt-day-chip">❌ ${f.dia} ${f.data}</div>${f.motivo?`<div class="falt-day-motivo">${esc_(f.motivo)}</div>`:''}</div>`).join('')}</div>
     </div>
   `).join('');
   detail.innerHTML=`<div class="falt-detail"><h4>❌ Faltas de ${esc_(nome)} — ${data.falt} falta(s)</h4>${blocks}</div>`;
@@ -1831,5 +1838,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   initFirebase();
 });
 </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
