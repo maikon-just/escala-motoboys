@@ -1,81 +1,69 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>🏍️ Escala Motoboys — Nuvem</title>
-
-<!-- ══ Firebase SDK v9 (compat) via jsDelivr CDN ══ -->
-<script src="https://cdn.jsdelivr.net/npm/firebase@9.23.0/firebase-app-compat.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/firebase@9.23.0/firebase-database-compat.min.js"></script>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escala de Motoboys</title>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif}
+body{background:#f1f5f9;min-height:100vh}
 
-/* ── STATUS BAR ── */
-#statusBar{position:fixed;top:0;left:0;right:0;z-index:9999;padding:10px 20px;font-size:.85rem;font-weight:600;text-align:center;display:none}
-#statusBar.loading{background:#2563eb;color:#fff;display:block}
-#statusBar.saved{background:#16a34a;color:#fff;display:block}
-#statusBar.error{background:#dc2626;color:#fff;display:block}
-#statusBar.offline{background:#d97706;color:#fff;display:block}
+/* HEADER */
+#appHeader{background:linear-gradient(135deg,#1e3a5f 0%,#2563eb 100%);color:#fff;padding:0}
+.header-top{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;gap:10px}
+.header-title{font-size:1.25rem;font-weight:800;letter-spacing:-.01em;white-space:nowrap}
+.header-actions{display:flex;align-items:center;gap:8px}
+.header-row2{display:flex;align-items:center;padding:0 16px 10px;gap:6px;flex-wrap:wrap}
+.tab-btn{height:32px;padding:0 14px;border-radius:999px;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
+.tab-btn.active{background:#fff;color:#1e3a5f;border-color:#fff}
+.tab-btn:hover:not(.active){background:rgba(255,255,255,.22)}
+.view-btn{height:32px;padding:0 14px;border-radius:999px;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
+.view-btn.active{background:#fff;color:#1e3a5f;border-color:#fff}
+.view-btn:hover:not(.active){background:rgba(255,255,255,.22)}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;margin-right:4px}
+.sync-dot.off{background:#ef4444}
+#syncLabel{font-size:.75rem;color:rgba(255,255,255,.85);font-weight:600}
+.btn-csv-top{height:30px;padding:0 12px;border-radius:999px;border:1.5px solid rgba(255,255,255,.4);background:rgba(255,255,255,.15);color:#fff;font-size:.75rem;font-weight:700;cursor:pointer}
+.btn-csv-top:hover{background:rgba(255,255,255,.28)}
+.btn-cfg-top{height:30px;width:30px;border-radius:50%;border:1.5px solid rgba(255,255,255,.4);background:rgba(255,255,255,.15);color:#fff;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.btn-cfg-top:hover{background:rgba(255,255,255,.28)}
 
-/* ── HEADER ── */
-.header{background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;padding:16px 24px;display:flex;align-items:center;gap:16px;box-shadow:0 4px 12px rgba(0,0,0,.2)}
-.header h1{font-size:1.4rem;font-weight:700;letter-spacing:.5px}
-.header .sub{font-size:.85rem;opacity:.8}
-.logo{font-size:2rem}
-.header-right{margin-left:auto;display:flex;align-items:center;gap:8px}
-.sync-indicator{width:10px;height:10px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e}
-.sync-indicator.offline{background:#f59e0b;box-shadow:0 0 6px #f59e0b}
-.sync-indicator.syncing{animation:pulse .8s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-
-/* ── LOJA TABS ── */
-.loja-tabs{background:#fff;border-bottom:2px solid #e2e8f0;display:flex;padding:0 24px}
-.loja-tab{padding:10px 20px;font-size:.9rem;font-weight:700;cursor:pointer;border-bottom:3px solid transparent;color:#64748b;transition:all .15s}
-.loja-tab:hover{color:#2563eb;background:#f8fafc}
-.loja-tab.active{color:#2563eb;border-bottom-color:#2563eb;background:#eff6ff}
-.loja-tab.burger.active{color:#dc2626;border-bottom-color:#dc2626;background:#fef2f2}
-.loja-tab.gourmet.active{color:#15803d;border-bottom-color:#15803d;background:#f0fdf4}
-.loja-tab.aham.active{color:#7c3aed;border-bottom-color:#7c3aed;background:#f5f3ff}
-
-/* ── TOOLBAR ── */
-.toolbar{background:#fff;border-bottom:2px solid #e2e8f0;padding:12px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
-.toolbar select,.toolbar input[type=text]{height:36px;padding:0 10px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:.85rem;background:#fff;color:#1e293b;outline:none}
-.toolbar select:focus,.toolbar input:focus{border-color:#2563eb}
-label.lbl{font-size:.8rem;font-weight:600;color:#64748b;white-space:nowrap}
-.btn{height:34px;padding:0 12px;border:none;border-radius:8px;font-size:.78rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .15s;white-space:nowrap}
-.btn-primary{background:#2563eb;color:#fff}.btn-primary:hover{background:#1d4ed8}
-.btn-success{background:#16a34a;color:#fff}.btn-success:hover{background:#15803d}
-.btn-danger{background:#dc2626;color:#fff}.btn-danger:hover{background:#b91c1c}
-.btn-ghost{background:#f1f5f9;color:#475569;border:1.5px solid #cbd5e1}.btn-ghost:hover{background:#e2e8f0}
+/* TOOLBAR */
+#toolbar{background:#fff;border-bottom:1.5px solid #e2e8f0;padding:8px 16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#toolbarPadraoControls{display:none;align-items:center;gap:8px;flex-wrap:nowrap}
+.btn{display:inline-flex;align-items:center;gap:5px;height:34px;padding:0 14px;border-radius:999px;border:none;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
+.btn-primary{background:#2563eb;color:#fff}
+.btn-primary:hover{background:#1d4ed8}
+.btn-success{background:#16a34a;color:#fff}
+.btn-success:hover{background:#15803d}
+.btn-danger{background:#dc2626;color:#fff}
+.btn-danger:hover{background:#b91c1c}
+.btn-ghost{background:#f1f5f9;border:1.5px solid #e2e8f0;color:#475569}
+.btn-ghost:hover{background:#e2e8f0}
+.btn-orange{background:#ea580c;color:#fff}
+.btn-orange:hover{background:#c2410c}
+select,input[type=text]{height:34px;padding:0 10px;border:1.5px solid #e2e8f0;border-radius:999px;font-size:.8rem;outline:none;background:#fff;color:#1e293b}
+select:focus,input[type=text]:focus{border-color:#2563eb}
+#selSem{width:180px}
 .sep{width:1px;height:24px;background:#e2e8f0;margin:0 2px}
+.lbl{font-size:.78rem;color:#64748b;font-weight:600;white-space:nowrap}
 
-/* ── CAL PICKER ── */
-.cal-wrap{position:relative}
-#btnCal{min-width:130px;background:#eff6ff;border:1.5px solid #bfdbfe;color:#1e40af;font-weight:600}
-#btnCal:hover{background:#dbeafe}
-.cal-drop{display:none;position:absolute;top:42px;left:0;z-index:999;background:#fff;border:1.5px solid #bfdbfe;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.12);padding:12px;min-width:260px}
-.cal-drop.open{display:block}
-.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.cal-nav button{background:none;border:none;cursor:pointer;font-size:1.1rem;padding:4px 8px;border-radius:6px;color:#2563eb}
-.cal-nav button:hover{background:#eff6ff}
-.cal-nav span{font-weight:700;font-size:.9rem;color:#1e293b}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
-.cal-grid .wd{text-align:center;font-size:.7rem;font-weight:700;color:#94a3b8;padding:4px 0}
-.cal-grid .day{text-align:center;padding:5px 2px;font-size:.8rem;border-radius:6px;cursor:pointer;color:#334155;border:1.5px solid transparent}
-.cal-grid .day:hover{background:#eff6ff;border-color:#bfdbfe}
-.cal-grid .day.today{background:#eff6ff;font-weight:700;color:#2563eb}
-.cal-grid .day.selected{background:#2563eb;color:#fff;font-weight:700}
-.cal-grid .day.other-month{color:#cbd5e1;cursor:default}
-.cal-actions{display:flex;gap:6px;margin-top:8px;justify-content:flex-end}
+/* PADRAO BAR */
+#padraoBar{display:none;background:#fff7ed;border-bottom:2px solid #fed7aa;padding:6px 24px 10px;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+#padraoBar.open{display:flex}
+.padrao-field{display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid #fde68a;border-radius:999px;padding:6px 14px}
+.padrao-field label{font-size:.78rem;font-weight:800;color:#92400e;white-space:nowrap}
+.padrao-field input{width:78px;height:30px;padding:0 10px;border:1.5px solid #e5e7eb;border-radius:999px;font-size:.9rem;font-weight:800;text-align:center}
+.padrao-note{font-size:.78rem;color:#9a3412;font-weight:600;width:100%;text-align:right}
 
-/* ── CARDS ── */
+/* CARDS */
 #cardsRow{display:flex;flex-wrap:wrap;gap:10px;padding:14px 24px 0;justify-content:center}
-.card{background:#fff;border-radius:10px;padding:12px 20px;border:1.5px solid #e2e8f0;min-width:120px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,.04)}
+.card{background:#fff;border-radius:16px;padding:12px 20px;border:1.5px solid #e2e8f0;min-width:120px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:all .18s}
+.card.clickable{cursor:pointer}
+.card.clickable:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(15,23,42,.1)}
+.card.active-filter{border-color:#1d4ed8;box-shadow:0 0 0 2px rgba(29,78,216,.15),0 6px 18px rgba(15,23,42,.1)}
 .card .cv{font-size:1.6rem;font-weight:800}
 .card .cl{font-size:.72rem;font-weight:600;color:#64748b;margin-top:2px}
 .card.c-esc .cv{color:#0369a1}
@@ -83,868 +71,1420 @@ label.lbl{font-size:.8rem;font-weight:600;color:#64748b;white-space:nowrap}
 .card.c-pres .cv{color:#15803d}
 .card.c-folga .cv{color:#b45309}
 .card.c-falta .cv{color:#dc2626}
+.card.c-afas .cv{color:#475569}
 .card.c-meta .cv{color:#7c3aed}
 .card.c-meta{border-color:#c4b5fd;background:#faf5ff}
 
-/* ── TABLE ── */
-.table-wrap{overflow-x:auto;margin:14px 24px 24px;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.06);background:#fff;border:1.5px solid #e2e8f0}
-table{width:100%;border-collapse:collapse;font-size:.82rem}
-thead th{background:#1e3a5f;color:#fff;padding:10px 8px;text-align:center;font-weight:700;white-space:nowrap;position:sticky;top:0;z-index:10}
-thead th.th-nome{text-align:left;padding-left:14px;min-width:220px}
-thead th.th-loja{text-align:left;min-width:90px}
-thead th.th-dia{min-width:100px;font-size:.78rem}
-thead th.th-flt{background:#7c3aed;min-width:55px;font-size:.75rem}
-thead th.th-del{background:#374151;min-width:44px}
-tbody tr:nth-child(even){background:#f8fafc}
-tbody tr:hover{background:#eff6ff}
-tbody td{padding:8px 8px;vertical-align:middle;text-align:center;border-bottom:1px solid #f1f5f9}
-tbody td.td-nome{text-align:left;padding-left:14px;min-width:220px;cursor:default}
-.mb-nome{display:block;font-weight:700;font-size:.84rem;color:#1e3a5f;line-height:1.4;
-  border-bottom:1px dashed transparent;border-radius:3px;padding:1px 3px;cursor:text;outline:none}
-.mb-nome:hover{border-bottom-color:#93c5fd;background:#f0f9ff}
-.mb-nome:focus{border-bottom-color:#2563eb;background:#eff6ff}
-.mb-tel{display:block;font-size:.73rem;color:#64748b;margin-top:2px;font-weight:400;
-  border-bottom:1px dashed transparent;border-radius:3px;padding:1px 3px;cursor:text;outline:none}
-.mb-tel:hover{border-bottom-color:#93c5fd;background:#f0f9ff}
-.mb-tel:focus{border-bottom-color:#2563eb;background:#eff6ff}
-.loja-badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:.7rem;font-weight:700;background:#dbeafe;color:#1e40af}
-.loja-b{background:#fef3c7;color:#92400e}
-.loja-g{background:#dcfce7;color:#166534}
-
-/* ── STATUS BADGES ── */
-.badge{display:inline-flex;align-items:center;justify-content:center;gap:3px;padding:4px 10px;border-radius:8px;font-size:.75rem;font-weight:700;cursor:pointer;transition:all .15s;min-width:95px;user-select:none}
-.badge:hover{filter:brightness(.92);transform:scale(1.04)}
-.b-esc{background:#dbeafe;color:#1e40af;border:1.5px solid #93c5fd}
-.b-folga{background:#fef9c3;color:#92400e;border:1.5px solid #fde68a}
-.b-falta{background:#fee2e2;color:#991b1b;border:1.5px solid #fca5a5}
-.b-afas{background:#ffedd5;color:#c2410c;border:1.5px solid #fdba74}
-.b-conf{background:#ede9fe;color:#6d28d9;border:1.5px solid #c4b5fd}
-.b-pres{background:#dcfce7;color:#15803d;border:1.5px solid #86efac}
-.b-empty{background:#f1f5f9;color:#94a3b8;border:1.5px dashed #e2e8f0}
-
-/* ── OBS FIELD ── */
-.obs-cell{padding:2px 6px!important}
-.obs-inp{width:180px;padding:5px 9px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:.8rem;color:#475569;background:#fafafa;outline:none;resize:vertical;min-height:38px;font-family:inherit;vertical-align:middle}
-.obs-inp:focus{border-color:#2563eb;background:#fff;box-shadow:0 0 0 2px #bfdbfe}
-.obs-inp::placeholder{color:#cbd5e1}
-.ent-cell{padding:2px 6px!important;text-align:center}
-.ent-inp{width:70px;padding:5px 7px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:.85rem;font-weight:600;color:#1e293b;background:#f0fdf4;outline:none;text-align:center;vertical-align:middle}
-.ent-inp:focus{border-color:#16a34a;background:#fff;box-shadow:0 0 0 2px #bbf7d0}
-.ent-inp::placeholder{color:#cbd5e1;font-weight:400}
-
-/* ── FALTAS ── */
-.flt-badge{display:inline-block;min-width:26px;padding:2px 6px;border-radius:10px;font-size:.8rem;font-weight:800;text-align:center}
-.flt-0{background:#dcfce7;color:#15803d}
-.flt-1{background:#fef9c3;color:#92400e}
+/* TABLE */
+#tableWrap{overflow-x:auto;padding:16px}
+table{width:100%;border-collapse:collapse;font-size:.82rem;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+thead th{background:#1e3a5f;color:#fff;padding:10px 8px;text-align:center;font-size:.76rem;font-weight:700;white-space:nowrap}
+th.th-nome{text-align:left;padding-left:14px;min-width:160px}
+th.th-dia{min-width:100px}
+th.th-flt{min-width:70px}
+th.th-del{min-width:90px}
+tbody tr{border-bottom:1px solid #f1f5f9;transition:background .12s}
+tbody tr:hover{background:#f8fafc}
+tbody tr.td-row{background:#f0fff4!important}
+tbody tr.td-row:hover{background:#dcfce7!important}
+td{padding:8px 6px;text-align:center;vertical-align:middle}
+td.td-nome{text-align:left;padding-left:14px}
+.mb-nome{font-weight:700;color:#1e293b;cursor:text;border-bottom:1.5px dashed transparent;transition:border .15s}
+.mb-nome:hover{border-bottom-color:#94a3b8}
+.mb-nome:focus{outline:none;border-bottom-color:#2563eb}
+.mb-tel{font-size:.75rem;color:#64748b;cursor:text;border-bottom:1.5px dashed transparent;transition:border .15s;display:block;margin-top:2px}
+.mb-tel:hover{border-bottom-color:#94a3b8}
+.mb-tel:focus{outline:none;border-bottom-color:#2563eb}
+.td-chip{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:999px;font-size:.64rem;font-weight:800;background:#dcfce7;color:#166534;vertical-align:middle}
+.td-day-chip{display:inline-block;margin-left:4px;padding:1px 7px;border-radius:999px;font-size:.64rem;font-weight:800;background:#eff6ff;color:#1d4ed8;vertical-align:middle}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:999px;font-size:.74rem;font-weight:700;cursor:pointer;transition:opacity .12s;white-space:nowrap}
+.badge:hover{opacity:.82}
+.b-folga{background:#fef3c7;color:#92400e;border:1px solid #fde68a}
+.b-esc{background:#dbeafe;color:#1e40af;border:1px solid #bfdbfe}
+.b-conf{background:#ede9fe;color:#5b21b6;border:1px solid #c4b5fd}
+.b-pres{background:#dcfce7;color:#166534;border:1px solid #86efac}
+.b-falta{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5}
+.b-afas{background:#ffedd5;color:#c2410c;border:1px solid #fdba74}
+.b-empty{background:#f1f5f9;color:#94a3b8;border:1px solid #e2e8f0}
+.flt-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:999px;font-size:.78rem;font-weight:800}
+.flt-0{background:#f1f5f9;color:#94a3b8}
+.flt-1{background:#fef9c3;color:#854d0e}
 .flt-2{background:#fed7aa;color:#9a3412}
 .flt-hi{background:#fee2e2;color:#991b1b}
+.btn-cfg{height:26px;padding:0 8px;border-radius:999px;border:1px solid #e2e8f0;background:#f8fafc;color:#64748b;font-size:.72rem;cursor:pointer;margin:0 1px}
+.btn-cfg:hover{background:#e2e8f0}
+.ent-cell{min-width:70px}
+.ent-inp{width:60px;height:28px;border:1.5px solid #e2e8f0;border-radius:999px;text-align:center;font-size:.8rem;padding:0 6px}
+.obs-cell{min-width:160px}
+.obs-inp{width:150px;min-height:32px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:.75rem;padding:4px 8px;resize:vertical}
 
-/* ── NO WEEK ── */
+/* NO WEEK */
 .no-sem{text-align:center;padding:70px 24px;color:#94a3b8}
 .no-sem .ns-icon{font-size:3.5rem;margin-bottom:14px}
 .no-sem p{font-size:1rem;font-weight:600}
 
-/* ── MODALS ── */
+/* OVERLAYS / MODALS */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;align-items:center;justify-content:center}
 .overlay.open{display:flex}
-.modal{background:#fff;border-radius:16px;padding:24px;min-width:320px;max-width:500px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
-.modal h3{font-size:1.1rem;font-weight:700;color:#1e293b;margin-bottom:16px}
+.modal{background:#fff;border-radius:16px;padding:24px;min-width:320px;max-width:520px;width:92%;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.modal h3{font-size:1.1rem;font-weight:700;color:#1e293b;margin-bottom:14px}
 .modal p{font-size:.9rem;color:#475569;margin-bottom:12px}
 .form-row{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
 .form-row label{font-size:.8rem;font-weight:600;color:#374151}
-.form-row input,.form-row select{padding:8px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:.9rem;outline:none}
+.form-row input,.form-row select{padding:8px 12px;border:1.5px solid #e2e8f0;border-radius:999px;font-size:.9rem;outline:none}
 .form-row input:focus,.form-row select:focus{border-color:#2563eb}
 .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
-.od{font-size:.8rem;color:#64748b;margin-bottom:4px;font-weight:700}
-.op-btn{display:block;width:100%;padding:8px 14px;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;border:1.5px solid #e2e8f0;background:#f8fafc;transition:all .15s;text-align:left;margin-bottom:6px}
+.op-btn{display:block;width:100%;padding:8px 14px;border-radius:12px;font-size:.82rem;font-weight:600;cursor:pointer;border:1.5px solid #e2e8f0;background:#f8fafc;transition:all .15s;text-align:left;margin-bottom:6px}
 .op-btn:hover{background:#eff6ff;border-color:#bfdbfe}
 .op-btn.selected{border-color:#2563eb;background:#eff6ff;color:#1e40af}
-.op-btn:disabled{opacity:.4;cursor:not-allowed}
+.od{font-size:.8rem;color:#64748b;margin-bottom:4px;font-weight:700}
 
-/* ── TOAST ── */
-#toast{position:fixed;bottom:20px;right:20px;background:#1e293b;color:#fff;padding:12px 20px;border-radius:10px;font-size:.85rem;font-weight:600;z-index:9000;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none}
+/* DASHBOARD */
+.dash-overlay-inner{background:#fff;border-radius:16px;padding:28px;width:96%;max-width:1100px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.dash-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.dash-top h2{font-size:1.2rem;font-weight:800;color:#1e293b}
+.dash-filters{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px;background:#f8fafc;border-radius:12px;padding:12px 16px}
+.dash-period-btns{display:flex;gap:6px}
+.dash-period-btn{height:32px;padding:0 14px;border-radius:999px;border:1.5px solid #e2e8f0;background:#fff;color:#475569;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s}
+.dash-period-btn.active{background:#2563eb;color:#fff;border-color:#2563eb}
+.dash-period-btn:hover:not(.active){background:#f1f5f9}
+.dash-date-range{display:flex;align-items:center;gap:6px}
+.dash-date-range label{font-size:.78rem;color:#64748b;font-weight:600;white-space:nowrap}
+.dash-date-range input{height:32px;padding:0 10px;border:1.5px solid #e2e8f0;border-radius:999px;font-size:.8rem;outline:none;background:#fff}
+.dash-date-range input:focus{border-color:#2563eb}
+.dash-search{height:32px;padding:0 12px;border:1.5px solid #e2e8f0;border-radius:999px;font-size:.8rem;outline:none;background:#fff;min-width:180px}
+.dash-search:focus{border-color:#2563eb}
+.dash-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+.dash-card{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:16px;padding:14px 16px;text-align:center}
+.dash-card .k{font-size:.72rem;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.dash-card .v{font-size:1.6rem;font-weight:800;color:#1e293b}
+.dash-card.pres{border-color:#86efac;background:#f0fff4}.dash-card.pres .v{color:#15803d}
+.dash-card.falt{border-color:#fca5a5;background:#fff5f5}.dash-card.falt .v{color:#dc2626}
+.dash-card.conf{border-color:#c4b5fd;background:#f5f3ff}.dash-card.conf .v{color:#7c3aed}
+.dash-card.afas{border-color:#fdba74;background:#fff7ed}.dash-card.afas .v{color:#ea580c}
+.dash-card.total{border-color:#bfdbfe;background:#eff6ff}.dash-card.total .v{color:#2563eb}
+.dash-table-wrap{overflow-x:auto}
+.dash-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.dash-table th{background:#1e3a5f;color:#fff;padding:10px 10px;text-align:center;font-size:.76rem;font-weight:700;cursor:pointer;user-select:none;white-space:nowrap}
+.dash-table th:hover{background:#2563eb}
+.dash-table th.sort-asc::after{content:' ▲';font-size:.65rem}
+.dash-table th.sort-desc::after{content:' ▼';font-size:.65rem}
+.dash-table th:first-child{text-align:left;padding-left:14px}
+.dash-table td{padding:8px 10px;border-bottom:1px solid #f1f5f9;text-align:center}
+.dash-table td:first-child{text-align:left;font-weight:600;color:#1e293b}
+.dash-table tr:hover td{background:#f8fafc}
+.falt-link{color:#dc2626;font-weight:800;cursor:pointer;text-decoration:underline dotted;background:none;border:none;font-size:.82rem;padding:0}
+.falt-link:hover{color:#991b1b}
+.falt-detail{background:#fff5f5;border:1.5px solid #fca5a5;border-radius:16px;padding:16px;margin-top:6px}
+.falt-detail h4{color:#dc2626;font-size:.95rem;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.falt-week-block{margin-bottom:12px}
+.falt-week-label{display:flex;align-items:center;gap:6px;font-size:.78rem;font-weight:800;color:#1e3a5f;margin-bottom:6px}
+.falt-day-chips{display:flex;flex-wrap:wrap;gap:6px}
+.falt-day-chip{padding:4px 12px;border-radius:999px;background:#ffe4e6;border:1px solid #fca5a5;color:#9f1239;font-size:.75rem;font-weight:700;display:flex;align-items:center;gap:4px}
+
+/* TOAST */
+#toast{position:fixed;bottom:24px;right:24px;background:#1e293b;color:#fff;padding:12px 20px;border-radius:999px;font-size:.85rem;font-weight:600;z-index:9000;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none}
 #toast.show{opacity:1;transform:translateY(0)}
 
-/* ── RESPONSIVE MOBILE ── */
+/* CALENDAR */
+#calWrap{position:relative}
+#btnCal{height:34px;padding:0 12px;border-radius:999px;border:1.5px solid #e2e8f0;background:#fff;color:#1e293b;font-size:.8rem;font-weight:600;cursor:pointer}
+#btnCal:hover{background:#eff6ff;border-color:#bfdbfe}
+.cal-drop{display:none;position:absolute;top:42px;left:0;z-index:999;background:#fff;border:1.5px solid #bfdbfe;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.12);padding:12px;min-width:260px}
+.cal-drop.open{display:block}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.cal-nav button{background:none;border:none;cursor:pointer;font-size:1.1rem;padding:4px 8px;border-radius:6px;color:#2563eb}
+.cal-nav span{font-weight:700;font-size:.9rem;color:#1e293b}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-grid .wd{text-align:center;font-size:.7rem;font-weight:700;color:#94a3b8;padding:4px 0}
+.cal-grid .day{text-align:center;padding:5px 2px;font-size:.8rem;border-radius:6px;cursor:pointer;color:#334155;border:1.5px solid transparent}
+.cal-grid .day:hover{background:#eff6ff;border-color:#bfdbfe}
+.cal-grid .day.selected{background:#2563eb;color:#fff;font-weight:700}
+.cal-grid .day.other-month{color:#cbd5e1;cursor:default}
+.cal-actions{display:flex;gap:6px;margin-top:8px;justify-content:flex-end}
+
+/* CONFIG */
+.config-box{background:#f8fafc;border-radius:12px;border:1.5px solid #e2e8f0;padding:14px;margin-bottom:12px}
+.config-box h4{font-size:.85rem;font-weight:700;color:#374151;margin-bottom:10px}
+.config-field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.config-field label{font-size:.75rem;font-weight:600;color:#6b7280}
+.config-field input{padding:6px 10px;border:1.5px solid #e2e8f0;border-radius:999px;font-size:.82rem;outline:none}
+
+/* RESPONSIVE */
 @media(max-width:768px){
-  /* Esconde tudo que não é necessário no mobile */
-  #btnAddMob,#btnNovaSemMob,#btnExcluirMob,#btnCsvMob,
-  #selStatus1,#selStatus2,#inNome,.sep,
-  label.lbl,
-  #csvTabBtn,
-  /* Esconde o Ordenar da toolbar no mobile */
-  #btnOrdenarTab{display:none!important}
-  /* Mostra busca mobile e Ordenar das tabs */
-  #inNomeMob{display:block!important;font-size:.75rem;height:34px;padding:0 8px;border:1.5px solid #cbd5e1;border-radius:7px;background:#fff;max-width:90px}
-  /* Mostra o Ordenar das tabs no mobile — alinhado à direita */
-  #ordenarTabMob{display:flex!important;margin-left:auto}
-  body{font-size:14px}
-  .header{padding:12px 14px;gap:10px}
-  .header h1{font-size:1.1rem}
-  .header .sub{font-size:.75rem}
-  .logo{font-size:1.6rem}
-  .loja-tabs{padding:0 6px;overflow-x:auto}
-  .loja-tab{padding:8px 12px;font-size:.8rem;white-space:nowrap}
-  /* Toolbar mobile: centralizada, flex-wrap, sem overflow escondido */
-  .toolbar{
-    padding:8px 10px;
-    gap:8px;
-    flex-wrap:wrap;
-    justify-content:center;
-    overflow:visible;
-  }
-  .toolbar select,.toolbar input[type=text]{height:34px;font-size:.73rem}
-  /* Semana: título curto "16/03 a 22/03" cabe em menos espaço */
-  #selSem{min-width:unset!important;width:auto;max-width:120px;font-size:.73rem}
-  /* Tipo: só mostra "🟡"/"🔴" + texto curto */
-  #selTipoSem{width:auto;min-width:unset;max-width:72px;font-size:.73rem}
-  /* Filtrar Dia: botão compacto */
-  #btnCal{min-width:unset!important;padding:0 7px;max-width:80px;overflow:hidden;text-overflow:ellipsis;font-size:.73rem}
-  /* Busca mobile: pequeno, cabe na linha */
-  #inNomeMob{max-width:80px!important;font-size:.73rem!important;height:34px!important}
-  .btn{height:34px;padding:0 10px;font-size:.78rem;white-space:nowrap}
-  .sep{display:none}
-  #cardsRow{padding:10px 10px 0;gap:8px;justify-content:center}
+  .header-top{padding:10px 14px}
+  .header-row2{padding:0 10px 8px}
+  #toolbar{padding:6px 10px}
+  #cardsRow{padding:10px 10px 0;gap:8px}
   .card{min-width:90px;padding:8px 10px}
-  .card .cv{font-size:1.3rem}
-  .card .cl{font-size:.65rem}
-  .table-wrap{margin:10px 8px 20px;border-radius:8px}
-  table{font-size:.75rem}
-  thead th{padding:7px 5px;font-size:.72rem}
-  thead th.th-nome{min-width:130px}
-  thead th.th-dia{min-width:80px}
-  tbody td{padding:5px 4px}
-  tbody td.td-nome{min-width:130px;padding-left:8px}
-  .mb-nome{font-size:.78rem}
-  .mb-tel{font-size:.68rem}
-  .badge{min-width:72px;font-size:.68rem;padding:3px 6px}
-  .ent-inp{width:55px;font-size:.75rem;padding:4px 5px}
-  .modal{padding:18px 14px;min-width:unset;width:95%}
-  .op-btn{font-size:.78rem;padding:7px 10px}
-  #configPanel{padding:18px 14px;width:95%}
-  .config-field input{font-size:.82rem;padding:8px 10px}
-  /* Calendário: fixo na tela no mobile para não ser cortado */
-  .cal-wrap{position:static}
-  .cal-drop{
-    position:fixed;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    min-width:290px;
-    max-width:95vw;
-    z-index:2000;
-  }
+  #tableWrap{padding:8px}
+  #selSem{width:140px}
+  .btn{font-size:.74rem;padding:0 10px}
 }
-
-/* ── LOADING ── */
-#loadScreen{position:fixed;inset:0;background:#f0f4f8;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:8000;gap:16px}
-#loadScreen .spinner{width:50px;height:50px;border:5px solid #e2e8f0;border-top-color:#2563eb;border-radius:50%;animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-#loadScreen p{font-size:1rem;font-weight:600;color:#475569}
-
-/* ── CONFIG MODAL ── */
-#configPanel{background:#fff;border-radius:16px;padding:24px;width:90%;max-width:560px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
-#configPanel h2{font-size:1.2rem;font-weight:800;color:#1e293b;margin-bottom:20px}
-.config-field{margin-bottom:14px}
-.config-field label{display:block;font-size:.8rem;font-weight:600;color:#374151;margin-bottom:4px}
-.config-field input{width:100%;padding:10px 14px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:.9rem;font-family:monospace}
-.config-field input:focus{border-color:#2563eb;outline:none}
-.config-note{font-size:.78rem;color:#64748b;margin-top:4px}
-.config-steps{background:#f8fafc;border-radius:8px;padding:12px;margin-bottom:16px}
-.config-steps p{font-size:.82rem;color:#475569;margin-bottom:6px;line-height:1.5}
-.config-steps code{background:#e2e8f0;padding:1px 5px;border-radius:4px;font-size:.8rem}
 </style>
 </head>
 <body>
 
-<div id="statusBar"></div>
-
-<div id="loadScreen">
-  <div class="spinner"></div>
-  <p id="loadMsg">🔥 Conectando ao Firebase...</p>
-</div>
-
 <!-- HEADER -->
-<div class="header">
-  <span class="logo">🏍️</span>
-  <div>
-    <h1>Escala de Motoboys</h1>
-    <div class="sub" id="hSub">Carregando...</div>
+<div id="appHeader">
+  <div class="header-top">
+    <div class="header-title">📋 Escala de Motoboys</div>
+    <div class="header-actions">
+      <span id="syncLabel"><span class="sync-dot" id="syncDot"></span>Conectando...</span>
+      <button class="btn-csv-top" onclick="exportCSV()">📥 Exportar CSV</button>
+      <button class="btn-cfg-top" onclick="openOverlay('overlayConfig')" title="Configurações">⚙️</button>
+    </div>
   </div>
-  <div class="header-right">
-    <div id="syncDot" class="sync-indicator offline" title="Status da conexão"></div>
-    <button class="btn btn-ghost" onclick="openOverlay('overlayConfig')" title="Configurações Firebase">⚙️</button>
-  </div>
-</div>
-
-<!-- TABS -->
-<div class="loja-tabs">
-  <div class="loja-tab burger active" id="tabBurger" onclick="setLoja('burger')">🍔 Burger</div>
-  <div class="loja-tab gourmet" id="tabGourmet" onclick="setLoja('gourmet')">⭐ Gourmet</div>
-  <div class="loja-tab aham" id="tabAham" onclick="setLoja('aham')">🍕 AHAM</div>
-  <div id="csvTabBtn" style="margin-left:auto;display:flex;align-items:center;gap:6px;padding-right:12px">
-    <button class="btn btn-ghost" onclick="exportCSV()" style="height:30px;padding:0 10px;font-size:.75rem">📥 CSV</button>
-  </div>
-  <!-- Botão Ordenar exclusivo para mobile, ao lado das abas -->
-  <div id="ordenarTabMob" style="display:none;align-items:center;padding-right:8px;margin-left:auto">
-    <button class="btn" id="btnOrdenarMob" style="background:#0369a1;color:#fff;white-space:nowrap;height:30px;padding:0 10px;font-size:.75rem" onclick="toggleOrdem()">⇅ Ord</button>
+  <div class="header-row2" id="headerRow2">
+    <button class="tab-btn active" id="tabBurger" onclick="setLoja('burger')">🍔 Burger</button>
+    <button class="tab-btn" id="tabGourmet" onclick="setLoja('gourmet')">🍽️ Gourmet</button>
+    <button class="tab-btn" id="tabAham" onclick="setLoja('aham')">🏠 AHAM</button>
+    <div style="width:1px;height:22px;background:rgba(255,255,255,.25);margin:0 4px"></div>
+    <button class="view-btn active" id="btnViewSemana" onclick="setViewMode('semana')">🏠 Escala Atual</button>
+    <button class="view-btn" id="btnViewPadrao" onclick="setViewMode('padrao')">📋 Escala Padrão</button>
   </div>
 </div>
 
 <!-- TOOLBAR -->
-<div class="toolbar">
-  <label class="lbl">Semana:</label>
-  <select id="selSem" onchange="onSemChange()" style="min-width:200px"><option value="">Carregando...</option></select>
-
-  <div class="cal-wrap">
-    <button class="btn" id="btnCal" onclick="toggleCal()">📅 Filtrar Dia</button>
-    <div class="cal-drop" id="calDrop">
-      <div class="cal-nav">
-        <button onclick="calMove(-1)">‹</button>
-        <span id="calLabel"></span>
-        <button onclick="calMove(1)">›</button>
-      </div>
-      <div class="cal-grid" id="calGrid"></div>
-      <div class="cal-actions">
-        <button class="btn btn-ghost" style="font-size:.75rem;height:28px;padding:0 10px" onclick="clearDayFilter()">Ver semana toda</button>
+<div id="toolbar">
+  <!-- Controles Escala Normal -->
+  <div id="toolbarNormalControls" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;width:100%">
+    <label class="lbl">Semana:</label>
+    <select id="selSem" onchange="onSelSemChange()"></select>
+    <div id="calWrap">
+      <button id="btnCal" onclick="toggleCal()">📅 Filtrar data</button>
+      <div class="cal-drop" id="calDrop">
+        <div class="cal-nav">
+          <button onclick="calMove(-1)">‹</button>
+          <span id="calLabel"></span>
+          <button onclick="calMove(1)">›</button>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="cal-actions">
+          <button class="btn btn-ghost" style="font-size:.75rem;height:28px;padding:0 10px" onclick="clearDayFilter()">Ver semana toda</button>
+        </div>
       </div>
     </div>
+    <select id="selTipoSem" onchange="renderTable()" style="width:130px">
+      <option value="">— Tipo —</option>
+      <option value="fraca">🟡 Semana Fraca</option>
+      <option value="forte">🔴 Semana Forte</option>
+    </select>
+    <button class="btn btn-ghost" id="btnOrdenarTab" onclick="toggleOrdem()">⇅ Ordenar</button>
+    <span class="sep"></span>
+    <label class="lbl">Status:</label>
+    <select id="selStatus1" onchange="renderTable()" style="width:150px">
+      <option value="">Todos</option>
+      <option value="CONFIRMADO">☑️ Confirmados</option>
+      <option value="PRESENTE">🟢 Presentes</option>
+      <option value="FALTOU">❌ Faltou</option>
+      <option value="FOLGA">🌴 Folga</option>
+      <option value="AFASTADO">🚫 Afastados</option>
+    </select>
+    <input type="text" id="inNome" placeholder="🔍 Buscar motoboy..." oninput="renderTable()" style="width:180px">
+    <span class="sep"></span>
+    <button class="btn btn-success" onclick="openAddModal()" id="btnAddMob">➕ Motoboy</button>
+    <button class="btn btn-ghost" onclick="openDashboard()" id="btnDashboard">📊 Dashboard</button>
+    <button class="btn btn-primary" onclick="openNextWeekModal()" id="btnNovaSemMob">📅 Nova Semana</button>
+    <button class="btn btn-danger" onclick="openDelModal()" id="btnExcluirMob">🗑️ Excluir</button>
+    <button class="btn btn-ghost" onclick="openMetasSenha()" id="btnMetas">🎯 Metas</button>
   </div>
-
-  <select id="selTipoSem" onchange="renderTable()" style="width:130px">
-    <option value="">— Tipo —</option>
-    <option value="fraca">🟡 Semana Fraca</option>
-    <option value="forte">🔴 Semana Forte</option>
-  </select>
-
-  <!-- Campo busca exclusivo mobile (desktop usa #inNome) -->
-  <input type="text" id="inNomeMob" placeholder="🔍 Nome..." oninput="document.getElementById('inNome').value=this.value;renderTable()" style="display:none;width:90px">
-
-  <button class="btn" id="btnOrdenarTab" style="background:#0369a1;color:#fff;white-space:nowrap;min-width:90px" onclick="toggleOrdem()">⇅ Ordenar</button>
-
-  <span class="sep"></span>
-  <label class="lbl">Status:</label>
-  <select id="selStatus1" onchange="renderTable()" style="width:140px">
-    <option value="">Todos</option>
-    <option value="CONFIRMADO">☑️ Confirmados</option>
-    <option value="PRESENTE">🟢 Presentes</option>
-    <option value="FALTOU">❌ Faltou</option>
-    <option value="FOLGA">🌴 Folga</option>
-    <option value="AFASTADO">🚫 Afastados</option>
-  </select>
-  <select id="selStatus2" onchange="renderTable()" style="width:140px">
-    <option value="">+ Status</option>
-    <option value="CONFIRMADO">☑️ Confirmados</option>
-    <option value="PRESENTE">🟢 Presentes</option>
-    <option value="FALTOU">❌ Faltou</option>
-    <option value="FOLGA">🌴 Folga</option>
-    <option value="AFASTADO">🚫 Afastados</option>
-  </select>
-  <input type="text" id="inNome" placeholder="Buscar motoboy..." oninput="renderTable()" style="width:170px">
-
-  <span class="sep"></span>
-  <button class="btn btn-success" onclick="openAddModal()" id="btnAddMob">➕ Motoboy</button>
-  <button class="btn btn-primary" onclick="openNextWeekModal()" id="btnNovaSemMob">📅 Nova Semana</button>
-  <button class="btn btn-danger" onclick="excluirSemana()" id="btnExcluirMob">🗑️ Excluir</button>
-
-  <div style="flex-basis:100%;height:0"></div>
-  <div style="display:flex;width:100%;justify-content:flex-end">
-    <button class="btn btn-ghost" onclick="confirmarSalvarPadrao()" id="btnSalvarPadrao">💾 Salvar Escala Padrão</button>
+  <!-- Controles Escala Padrão -->
+  <div id="toolbarPadraoControls">
+    <button class="btn btn-success" onclick="openAddModal()">➕ Motoboy</button>
+    <button class="btn btn-ghost" onclick="clonePadrao()">📌 Clonar semana atual</button>
+    <button class="btn btn-orange" onclick="confirmarSalvarPadrao()">💾 Salvar Escala Padrão</button>
+    <div class="padrao-field">
+      <label>Qtd. máx. TransDelivery:</label>
+      <input type="number" id="inTdMax" min="0" step="1" value="0" onchange="setPadraoTdMax(this.value)">
+    </div>
+    <div id="padraoBar" style="display:none"></div>
   </div>
-
 </div>
 
 <!-- CARDS -->
 <div id="cardsRow"></div>
 
 <!-- TABLE -->
-<div class="table-wrap" id="tableWrap">
+<div id="tableWrap">
   <table>
     <thead id="thead"></thead>
     <tbody id="tbody"></tbody>
   </table>
 </div>
 
+<!-- TOAST -->
 <div id="toast"></div>
 
-<!-- MODAL STATUS -->
-<div class="overlay" id="overlayStatus">
-  <div class="modal">
-    <h3 id="modTitle">Alterar Status</h3>
-    <p class="od">📋 Confirmação de presença:</p>
-    <div id="modOps" style="margin-bottom:4px"></div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal('overlayStatus')">Fechar</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL EDIT -->
-<div class="overlay" id="overlayEdit">
-  <div class="modal">
-    <h3>✏️ Editar Motoboy</h3>
-    <div class="form-row"><label>Nome</label><input type="text" id="editNome"></div>
-    <div class="form-row"><label>Telefone</label><input type="text" id="editTel" placeholder="(11) 99999-9999"></div>
-    <div class="form-row">
-      <label>Situação</label>
-      <select id="editAtivo">
-        <option value="SIM">SIM — Semana inteira</option>
-        <option value="FDS">FDS — Só fim de semana</option>
-        <option value="NAO">NÃO — Inativo</option>
-      </select>
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal('overlayEdit')">Cancelar</button>
-      <button class="btn btn-primary" onclick="salvarEdit()">💾 Salvar</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL DELETE -->
-<div class="overlay" id="overlayDel">
-  <div class="modal">
-    <h3>🗑️ Remover Motoboy</h3>
-    <p id="delMsg"></p>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal('overlayDel')">Cancelar</button>
-      <button class="btn btn-danger" onclick="confirmDelete()">Remover</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL ADD -->
+<!-- OVERLAY: ADD MOTOBOY -->
 <div class="overlay" id="overlayAdd">
   <div class="modal">
     <h3>➕ Adicionar Motoboy</h3>
-    <div class="form-row"><label>Nome *</label><input type="text" id="addNome" placeholder="Nome completo em maiúsculas"></div>
-    <div class="form-row"><label>Telefone</label><input type="text" id="addTel" placeholder="(11) 99999-9999"></div>
-    <div class="form-row">
-      <label>Situação</label>
-      <select id="addAtivo">
-        <option value="SIM">SIM — Semana inteira</option>
-        <option value="FDS">FDS — Só fim de semana</option>
+    <div class="form-row"><label>Nome</label><input type="text" id="addNome" placeholder="Nome completo"></div>
+    <div class="form-row"><label>Telefone</label><input type="text" id="addTel" placeholder="(00) 00000-0000"></div>
+    <div class="form-row"><label>Loja</label>
+      <select id="addLoja">
+        <option value="burger">Burger</option>
+        <option value="gourmet">Gourmet</option>
+        <option value="aham">AHAM</option>
       </select>
     </div>
-    <div class="form-row">
-      <label>Dias de trabalho <small style="color:#64748b">(✔ = Escalado | desmarcado = Folga)</small></label>
-      <div id="addDias" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px"></div>
-    </div>
     <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal('overlayAdd')">Cancelar</button>
-      <button class="btn btn-success" onclick="addMotoboy()">Adicionar</button>
+      <button class="btn btn-ghost" onclick="closeOverlay('overlayAdd')">Cancelar</button>
+      <button class="btn btn-success" onclick="executarAdd()">Adicionar</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL NOVA SEMANA -->
-<div class="overlay" id="overlayNext">
+<!-- OVERLAY: NOVA SEMANA -->
+<div class="overlay" id="overlayNextWeek">
   <div class="modal">
     <h3>📅 Nova Semana</h3>
-    <div class="form-row">
-      <label>Data início (Segunda-feira)</label>
-      <input type="date" id="nextDate">
+    <div class="form-row"><label>Data de início (Segunda-feira)</label><input type="date" id="newWeekDate"></div>
+    <div class="form-row"><label>Tipo de semana</label>
+      <select id="newWeekTipo">
+        <option value="">— Selecione —</option>
+        <option value="fraca">🟡 Semana Fraca</option>
+        <option value="forte">🔴 Semana Forte</option>
+      </select>
     </div>
-    <p class="od" style="margin-bottom:8px">Copiar motoboys e escalas da semana mais recente?</p>
-    <div id="opCopy" style="margin-bottom:4px"></div>
+    <p style="font-size:.82rem;color:#64748b">A escala padrão salva (TransDelivery) será aplicada automaticamente.</p>
     <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal('overlayNext')">Cancelar</button>
+      <button class="btn btn-ghost" onclick="closeOverlay('overlayNextWeek')">Cancelar</button>
       <button class="btn btn-primary" onclick="createNextWeek()">Criar Semana</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL CONFIRMAR PADRÃO -->
-<div class="overlay" id="overlayPadrao">
+<!-- OVERLAY: EXCLUIR SEMANA -->
+<div class="overlay" id="overlayDel">
   <div class="modal">
-    <h3>⚠️ Confirmar novo padrão</h3>
-    <p style="font-weight:700;text-align:center;line-height:1.6">TEM CERTEZA QUE VAI SALVAR O NOVO PADRÃO?<br>SE TIVER ALGUM PRESENTE NÃO SALVE.</p>
+    <h3>🗑️ Excluir Semana</h3>
+    <p>Tem certeza que deseja excluir a semana <strong id="delSemTitle"></strong>? Esta ação não pode ser desfeita.</p>
     <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal('overlayPadrao')">Cancelar</button>
-      <button class="btn btn-primary" onclick="executarSalvarPadrao()">Salvar padrão</button>
+      <button class="btn btn-ghost" onclick="closeOverlay('overlayDel')">Cancelar</button>
+      <button class="btn btn-danger" onclick="executarExcluir()">Excluir</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL CONFIG -->
+<!-- OVERLAY: EDITAR MOTOBOY COMPLETO -->
+<div class="overlay" id="overlayEdit">
+  <div class="modal" style="max-width:600px">
+    <h3 id="editTitle">⚙️ Editar Motoboy</h3>
+    <div id="editBody"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeOverlay('overlayEdit')">Fechar</button>
+      <button class="btn btn-danger" id="btnDelMb" onclick="delMbFromEdit()">🗑️ Remover</button>
+    </div>
+  </div>
+</div>
+
+<!-- OVERLAY: SALVAR ESCALA PADRÃO -->
+<div class="overlay" id="overlaySalvarPadrao">
+  <div class="modal">
+    <h3>💾 Salvar Escala Padrão</h3>
+    <p>Isso irá salvar a configuração atual (incluindo quantidade de TransDelivery) como o padrão para novas semanas. Os motoboys regulares permanecem inalterados.</p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeOverlay('overlaySalvarPadrao')">Cancelar</button>
+      <button class="btn btn-orange" onclick="executarSalvarPadrao()">💾 Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- OVERLAY: CONFIG FIREBASE -->
 <div class="overlay" id="overlayConfig">
-  <div id="configPanel">
-    <h2>⚙️ Configuração Firebase</h2>
-    <div class="config-steps">
-      <p><strong>Como obter as configurações:</strong></p>
-      <p>1. Acesse <code>console.firebase.google.com</code></p>
-      <p>2. Abra seu projeto → <strong>⚙️ Configurações → Geral</strong></p>
-      <p>3. Em "Seus aplicativos", clique em <strong>&lt;/&gt;</strong> (Web)</p>
-      <p>4. Copie os valores do <code>firebaseConfig</code></p>
-    </div>
-    <div class="config-field">
-      <label>API Key</label>
-      <input type="text" id="cfgApiKey" placeholder="AIzaSy...">
-    </div>
-    <div class="config-field">
-      <label>Auth Domain</label>
-      <input type="text" id="cfgAuthDomain" placeholder="meu-projeto.firebaseapp.com">
-    </div>
-    <div class="config-field">
-      <label>Database URL <span style="color:red">*</span></label>
-      <input type="text" id="cfgDbUrl" placeholder="https://meu-projeto-default-rtdb.firebaseio.com">
-      <div class="config-note">⚠️ Campo obrigatório</div>
-    </div>
-    <div class="config-field">
-      <label>Project ID</label>
-      <input type="text" id="cfgProjectId" placeholder="meu-projeto">
+  <div class="modal" style="max-width:480px">
+    <h3>⚙️ Configuração Firebase</h3>
+    <div class="config-box">
+      <h4>🔥 Firebase Realtime Database</h4>
+      <div class="config-field"><label>API Key</label><input type="text" id="cfgApiKey" placeholder="AIzaSy..."></div>
+      <div class="config-field"><label>Database URL</label><input type="text" id="cfgDbUrl" placeholder="https://...firebaseio.com"></div>
+      <div class="config-field"><label>Project ID</label><input type="text" id="cfgProjectId" placeholder="meu-projeto"></div>
     </div>
     <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal('overlayConfig')">Cancelar</button>
-      <button class="btn btn-primary" onclick="salvarConfig()">💾 Salvar e Reconectar</button>
+      <button class="btn btn-ghost" onclick="closeOverlay('overlayConfig')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarConfig()">Salvar e Reconectar</button>
     </div>
+  </div>
+</div>
+
+<!-- OVERLAY: SENHA METAS -->
+<div class="overlay" id="overlaySenhaMetas">
+  <div class="modal" style="max-width:340px">
+    <h3>🔒 Acesso restrito</h3>
+    <p>Digite a senha para editar as metas:</p>
+    <div class="form-row">
+      <input type="password" id="inputSenhaMetas" placeholder="Senha..." onkeydown="if(event.key==='Enter') confirmarSenhaMetas()">
+    </div>
+    <div id="senhaMetasErro" style="color:#dc2626;font-size:.8rem;display:none;margin-bottom:8px">❌ Senha incorreta</div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeOverlay('overlaySenhaMetas')">Cancelar</button>
+      <button class="btn btn-primary" onclick="confirmarSenhaMetas()">Entrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- OVERLAY: EDITAR METAS -->
+<div class="overlay" id="overlayMetas">
+  <div class="modal" style="max-width:540px;max-height:90vh;overflow-y:auto">
+    <h3>🎯 Metas — <span id="metasLojaTitle"></span></h3>
+    <p style="font-size:.82rem;color:#64748b;margin-bottom:14px">Defina a quantidade de motoboys por dia para cada tipo de semana.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div>
+        <div style="background:#fef9c3;border-radius:8px;padding:8px 12px;font-weight:800;color:#854d0e;margin-bottom:10px">🟡 Semana Fraca</div>
+        <div id="metasFracaInputs"></div>
+      </div>
+      <div>
+        <div style="background:#fee2e2;border-radius:8px;padding:8px 12px;font-weight:800;color:#991b1b;margin-bottom:10px">🔴 Semana Forte</div>
+        <div id="metasForteInputs"></div>
+      </div>
+    </div>
+    <div class="modal-actions" style="margin-top:18px">
+      <button class="btn btn-ghost" onclick="closeOverlay('overlayMetas')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarMetas()">💾 Salvar Metas</button>
+    </div>
+  </div>
+</div>
+
+<!-- OVERLAY: DASHBOARD -->
+<div class="overlay" id="overlayDashboard">
+  <div class="dash-overlay-inner">
+    <div class="dash-top">
+      <h2>📊 Dashboard de Presença</h2>
+      <button class="btn btn-ghost" onclick="closeOverlay('overlayDashboard')">✕ Fechar</button>
+    </div>
+    <div class="dash-filters">
+      <div class="dash-period-btns">
+        <button class="dash-period-btn active" id="btnMesAtual" onclick="setDashPeriod('atual')">Mês Atual</button>
+        <button class="dash-period-btn" id="btnMesAnterior" onclick="setDashPeriod('anterior')">Mês Anterior</button>
+      </div>
+      <div class="dash-date-range">
+        <label>De:</label>
+        <input type="date" id="dashDe" onchange="renderDashboard()">
+        <label>Até:</label>
+        <input type="date" id="dashAte" onchange="renderDashboard()">
+      </div>
+      <input type="text" class="dash-search" id="dashSearch" placeholder="🔍 Buscar motoboy...">
+    </div>
+    <div class="dash-cards" id="dashCards"></div>
+    <div class="dash-table-wrap">
+      <table class="dash-table" id="dashTable">
+        <thead id="dashThead"></thead>
+        <tbody id="dashTbody"></tbody>
+      </table>
+    </div>
+    <div id="dashFaltDetail" style="display:none;margin-top:14px"></div>
   </div>
 </div>
 
 <script>
 // ═══════════════════════════════════════════
-// CONFIG FIREBASE
+// FIREBASE CONFIG
 // ═══════════════════════════════════════════
 const FIREBASE_CONFIG_KEY = 'escala_fb_config';
-
 function getFirebaseConfig(){
-  const saved = localStorage.getItem(FIREBASE_CONFIG_KEY);
-  if(saved){ try{ return JSON.parse(saved); } catch(e){} }
+  const defaults = {
+    apiKey:"AIzaSyDwmz1FIXvqog8jTovOeEEwDGdKUCG3_r8",
+    authDomain:"escala-motoboys-fdef4.firebaseapp.com",
+    databaseURL:"https://escala-motoboys-fdef4-default-rtdb.firebaseio.com",
+    projectId:"escala-motoboys-fdef4",
+    storageBucket:"escala-motoboys-fdef4.firebasestorage.app",
+    messagingSenderId:"326093631971",
+    appId:"1:326093631971:web:c521964297868d6246f0d6"
+  };
+  try{
+    const saved = JSON.parse(localStorage.getItem(FIREBASE_CONFIG_KEY)||'{}');
+    if(saved.apiKey && saved.apiKey.length > 10 && !saved.apiKey.includes('Placeholder')){
+      return Object.assign({}, defaults, saved);
+    }
+  } catch(e){}
+  return defaults;
+}
+
+// ═══════════════════════════════════════════
+// GLOBALS
+// ═══════════════════════════════════════════
+let db = null;
+let LOJAS = { burger:[], gourmet:[], aham:[] };
+let PADROES = {};
+let lojaAtual = 'burger';
+let viewMode = 'semana';
+let _filtDay = null;
+let _ordemAtiva = false;
+let _padraoDirty = false;
+let _dashSortCol = 'nome';
+let _dashSortDir = 'asc';
+let _dashPeriod = 'atual';
+
+const DIAS_ORDEM = ['SEG','TER','QUA','QUI','SEX','SAB','DOM'];
+const FIREBASE_CONFIG_KEY_LOADED = true;
+
+// ═══════════════════════════════════════════
+// UTILITIES
+// ═══════════════════════════════════════════
+function esc_(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function toast(msg, dur=2800){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), dur);
+}
+function openOverlay(id){ document.getElementById(id).classList.add('open'); }
+function closeOverlay(id){ document.getElementById(id).classList.remove('open'); }
+
+document.addEventListener('click',e=>{
+  if(!document.getElementById('calWrap').contains(e.target)) closeCal();
+  if(e.target===document.getElementById('overlayDashboard')) closeOverlay('overlayDashboard');
+  if(e.target===document.getElementById('overlayAdd')) closeOverlay('overlayAdd');
+  if(e.target===document.getElementById('overlayNextWeek')) closeOverlay('overlayNextWeek');
+  if(e.target===document.getElementById('overlayDel')) closeOverlay('overlayDel');
+  if(e.target===document.getElementById('overlayEdit')) closeOverlay('overlayEdit');
+  if(e.target===document.getElementById('overlayConfig')) closeOverlay('overlayConfig');
+  if(e.target===document.getElementById('overlaySenhaMetas')) closeOverlay('overlaySenhaMetas');
+  if(e.target===document.getElementById('overlayMetas')) closeOverlay('overlayMetas');
+});
+
+// ═══════════════════════════════════════════
+// TRANSDELIVERY HELPERS
+// ═══════════════════════════════════════════
+function isTransDeliveryMb(mb){
+  return mb.transdelivery===true || (mb.nome||'').toUpperCase().startsWith('TRANSDELIVERY');
+}
+
+function defaultTdConf(){
+  const c={};
+  DIAS_ORDEM.forEach(d=>{
+    c[d] = (d==='SEX'||d==='SAB'||d==='DOM') ? 'CONFIRMADO' : '';
+  });
+  return c;
+}
+
+function defaultTdDays(){
+  const d={};
+  DIAS_ORDEM.forEach(dia=>{
+    d[dia] = (dia==='SEX'||dia==='SAB'||dia==='DOM') ? 'X' : 'FOLGA';
+  });
+  return d;
+}
+
+function createTdPlaceholder(loja, slot){
   return {
-    apiKey: "AIzaSyPlaceholder_escala-motoboys-fdef4",
-    authDomain: "escala-motoboys-fdef4.firebaseapp.com",
-    databaseURL: "https://escala-motoboys-fdef4-default-rtdb.firebaseio.com",
-    projectId: "escala-motoboys-fdef4",
-    storageBucket: "escala-motoboys-fdef4.appspot.com",
-    messagingSenderId: "000000000000",
-    appId: "1:000000000000:web:escala-motoboys-fdef4"
+    nome:'TRANSDELIVERY',
+    loja: loja||lojaAtual,
+    telefone:'',
+    ativo:'SIM',
+    transdelivery:true,
+    tdSlot: slot||0,
+    dias: defaultTdDays(),
+    conf: defaultTdConf(),
+    obs:{},
+    entregas:{}
   };
 }
 
-// ═══════════════════════════════════════════
-// ESTADO GLOBAL
-// ═══════════════════════════════════════════
-let db = null;
-let LOJAS = { burger: [], gourmet: [], aham: [] };
-let PADROES = { burger: null, gourmet: null, aham: null };
-let _padraoListeners = { burger: false, gourmet: false, aham: false };
-let lojaAtual = 'burger';
-let _calYear, _calMonth, _filtDay = null;
-let _editSI = -1, _editMI = -1;
-let _delSI = -1, _delMI = -1;
-let _modSI, _modMI, _modD;
-let _pendingSaves = 0;
-let _ignorarSnap = 0; // contador de snaps a ignorar após save local
-
-const DIAS_ORDEM = ['SEG','TER','QUA','QUI','SEX','SAB','DOM'];
-const DIAS_NOME  = {SEG:'Segunda',TER:'Terça',QUA:'Quarta',QUI:'Quinta',SEX:'Sexta',SAB:'Sábado',DOM:'Domingo'};
-
-// ── Metas AHAM por tipo de semana ──
-const META_FRACA = {SEG:12,TER:17,QUA:18,QUI:18,SEX:33,SAB:33,DOM:30};
-const META_FORTE = {SEG:15,TER:19,QUA:20,QUI:21,SEX:40,SAB:40,DOM:30};
-
-function renderCardMeta(diaAbrev){
-  const tipo = document.getElementById('selTipoSem').value;
-  if(!tipo || !diaAbrev) return ''; // só aparece quando dia filtrado E tipo selecionado
-  const meta = tipo === 'forte' ? META_FORTE : META_FRACA;
-  const needed = meta[diaAbrev] || 0;
-  const tipoLabel = tipo === 'forte' ? '🔴 Forte' : '🟡 Fraca';
-  return card('Meta ' + tipoLabel + ' — ' + diaAbrev, '🎯', needed, 'c-meta');
-}
-
-// ═══════════════════════════════════════════
-// FIREBASE INIT
-// ═══════════════════════════════════════════
-async function initFirebase(){
-  const cfg = getFirebaseConfig();
-  try{
-    if(!firebase.apps.length) firebase.initializeApp(cfg);
-    db = firebase.database();
-    setStatus('loading','🔥 Conectando ao Firebase...');
-
-    db.ref('.info/connected').on('value', snap=>{
-      const online = snap.val();
-      const dot = document.getElementById('syncDot');
-      dot.className = 'sync-indicator' + (online?'':' offline');
-      dot.title = online ? '🟢 Online' : '🟡 Offline';
-      if(!online) setStatus('offline','📴 Offline — alterações sincronizadas ao reconectar');
-      else clearStatus();
-    });
-
-    await loadLoja(lojaAtual);
-    document.getElementById('loadScreen').style.display = 'none';
-    populateConfig();
-  } catch(err){
-    console.error(err);
-    document.getElementById('loadMsg').textContent = '❌ Erro: ' + err.message;
-    setStatus('error','❌ Erro de conexão: ' + err.message);
-    setTimeout(()=>{ document.getElementById('loadScreen').style.display='none'; }, 2500);
-  }
-}
-
-// ═══════════════════════════════════════════
-// PADRÃO DE ESCALA
-// ═══════════════════════════════════════════
-function loadPadrao(loja){
-  if(!db || _padraoListeners[loja]) return;
-  _padraoListeners[loja] = true;
-  db.ref('escalas/' + loja + '/padrao').on('value', snap=>{
-    PADROES[loja] = snap.val() || null;
+function sortMotoboys(arr){
+  return arr.slice().sort((a,b)=>{
+    const aTd=isTransDeliveryMb(a), bTd=isTransDeliveryMb(b);
+    if(aTd&&!bTd) return 1;
+    if(!aTd&&bTd) return -1;
+    if(aTd&&bTd){
+      const nA=(a.nome||'').toUpperCase(), nB=(b.nome||'').toUpperCase();
+      if(nA!==nB) return nA.localeCompare(nB);
+      return (a.tdSlot||0)-(b.tdSlot||0);
+    }
+    return (a.nome||'').localeCompare(b.nome||'');
   });
 }
 
-function confirmarSalvarPadrao(){
-  openOverlay('overlayPadrao');
+function syncTdSlots(arr){
+  let slot=0;
+  arr.forEach(mb=>{ if(isTransDeliveryMb(mb)){ mb.tdSlot=slot++; } });
 }
 
+// ═══════════════════════════════════════════
+// PADRAO MANAGEMENT
+// ═══════════════════════════════════════════
+function ensurePadrao(loja){
+  const l = loja||lojaAtual;
+  if(!PADROES[l]){
+    PADROES[l]={
+      salvoEm:null, origemInicio:null, datas:{},
+      motoboys:[], transdeliveryMax:0
+    };
+  }
+  const p = PADROES[l];
+  if(!p.motoboys) p.motoboys=[];
+  if(!p.transdeliveryMax) p.transdeliveryMax=0;
+  syncTdSlots(p.motoboys);
+  p.motoboys = sortMotoboys(p.motoboys);
+  return p;
+}
+
+function getPadraoViewSem(){
+  const p = ensurePadrao();
+  return { titulo:'Escala Padrão', inicio:null, datas:p.datas||{}, motoboys:p.motoboys||[], tipo:'' };
+}
+
+function getActiveSem(){
+  if(viewMode==='padrao') return getPadraoViewSem();
+  const si=getSI();
+  if(si===null) return null;
+  return (LOJAS[lojaAtual]||[])[si]||null;
+}
+
+function markPadraoDirty(){ _padraoDirty=true; }
+
+function persistActive(si){
+  if(viewMode==='padrao'){ markPadraoDirty(); renderTable(); return; }
+  saveWeekToFB(si);
+}
+
+function sanitizeTdForClone(mb){
+  return {
+    nome:'TRANSDELIVERY',
+    loja: mb.loja||lojaAtual,
+    telefone:'',
+    ativo:'SIM',
+    transdelivery:true,
+    tdSlot: mb.tdSlot||0,
+    dias: defaultTdDays(),
+    conf: defaultTdConf(),
+    obs:{},
+    entregas:{}
+  };
+}
+
+function countTransTotal(arr){
+  return (arr||[]).filter(mb=>isTransDeliveryMb(mb)).length;
+}
+
+// ═══════════════════════════════════════════
+// PADRAO ACTIONS
+// ═══════════════════════════════════════════
+function clonePadrao(){
+  const si=getSI();
+  const semanas=LOJAS[lojaAtual]||[];
+  if(si===null||!semanas[si]){ toast('Nenhuma semana atual para clonar.'); return; }
+  const sem=semanas[si];
+  const padrao=ensurePadrao();
+  const regularMbs=(sem.motoboys||[]).filter(mb=>!isTransDeliveryMb(mb)).map(mb=>JSON.parse(JSON.stringify(mb)));
+  const tdCount=countTransTotal(sem.motoboys);
+  const tdMbs=[];
+  for(let i=0;i<tdCount;i++) tdMbs.push(sanitizeTdForClone({tdSlot:i}));
+  padrao.motoboys=[...regularMbs,...tdMbs];
+  padrao.transdeliveryMax=tdCount;
+  padrao.datas=sem.datas||{};
+  padrao.origemInicio=sem.inicio;
+  syncTdSlots(padrao.motoboys);
+  padrao.motoboys=sortMotoboys(padrao.motoboys);
+  document.getElementById('inTdMax').value=tdCount;
+  markPadraoDirty();
+  renderTable();
+  toast('✅ Semana atual clonada para Escala Padrão!');
+}
+
+function confirmarSalvarPadrao(){ openOverlay('overlaySalvarPadrao'); }
+
 function executarSalvarPadrao(){
-  closeModal('overlayPadrao');
+  closeOverlay('overlaySalvarPadrao');
   salvarEscalaPadrao();
 }
 
 function salvarEscalaPadrao(){
-  const si = getSI();
-  if(si === null){ toast('Selecione uma semana primeiro!'); return; }
-  const sem = LOJAS[lojaAtual][si];
-  if(!sem?.motoboys?.length){ toast('Esta semana não tem motoboys para salvar como padrão!'); return; }
-
-  const padrao = {
-    salvoEm: new Date().toISOString(),
-    origemInicio: sem.inicio || '',
-    origemTitulo: sem.titulo || '',
-    motoboys: (sem.motoboys||[]).map(mb => ({
-      nome: mb.nome || '',
-      loja: mb.loja || lojaAtual.toUpperCase(),
-      telefone: mb.telefone || '',
-      ativo: mb.ativo || 'SIM',
-      dias: { ...(mb.dias || {}) },
-      conf: { ...(mb.conf || {}) }
-    }))
+  const padrao=ensurePadrao();
+  padrao.salvoEm=Date.now();
+  const payload={
+    salvoEm:padrao.salvoEm,
+    origemInicio:padrao.origemInicio||null,
+    datas:padrao.datas||{},
+    transdeliveryMax:padrao.transdeliveryMax||0,
+    motoboys:(padrao.motoboys||[]).map(mb=>{
+      if(isTransDeliveryMb(mb)) return {
+        nome:'TRANSDELIVERY',loja:mb.loja||lojaAtual,telefone:'',
+        ativo:'SIM',transdelivery:true,tdSlot:mb.tdSlot||0,
+        dias:defaultTdDays(),conf:defaultTdConf(),obs:{},entregas:{}
+      };
+      return JSON.parse(JSON.stringify(mb));
+    })
   };
-
-  PADROES[lojaAtual] = padrao;
   if(db){
-    db.ref('escalas/' + lojaAtual + '/padrao').set(padrao)
-      .then(()=>{ toast('Escala padrão salva com sucesso!'); })
-      .catch(err=>{ toast('Erro ao salvar padrão: ' + err.message); });
+    db.ref('escalas/'+lojaAtual+'/padrao').set(payload)
+      .then(()=>{ _padraoDirty=false; toast('✅ Escala Padrão salva no Firebase!'); })
+      .catch(e=>{ toast('❌ Erro ao salvar: '+e.message); });
   } else {
-    toast('Escala padrão salva localmente!');
+    try{
+      localStorage.setItem('escala_padrao_'+lojaAtual, JSON.stringify(payload));
+      _padraoDirty=false;
+      toast('✅ Escala Padrão salva localmente!');
+    } catch(e){ toast('❌ Erro ao salvar localmente'); }
   }
+}
+
+function setPadraoTdMax(qtd){
+  const n=Math.max(0,parseInt(qtd)||0);
+  const padrao=ensurePadrao();
+  padrao.transdeliveryMax=n;
+  const regulares=(padrao.motoboys||[]).filter(mb=>!isTransDeliveryMb(mb));
+  const tdArr=[];
+  for(let i=0;i<n;i++) tdArr.push(createTdPlaceholder(lojaAtual,i));
+  padrao.motoboys=[...regulares,...tdArr];
+  syncTdSlots(padrao.motoboys);
+  padrao.motoboys=sortMotoboys(padrao.motoboys);
+  markPadraoDirty();
+  renderTable();
+}
+
+// ═══════════════════════════════════════════
+// VIEW MODE
+// ═══════════════════════════════════════════
+function setViewMode(mode){
+  viewMode=mode;
+  document.getElementById('btnViewSemana').classList.toggle('active', mode==='semana');
+  document.getElementById('btnViewPadrao').classList.toggle('active', mode==='padrao');
+  document.getElementById('toolbarNormalControls').style.display = mode==='semana'?'flex':'none';
+  document.getElementById('toolbarPadraoControls').style.display = mode==='padrao'?'flex':'none';
+  if(mode==='padrao'){
+    const p=ensurePadrao();
+    document.getElementById('inTdMax').value=p.transdeliveryMax||0;
+  }
+  renderTable();
+}
+
+// ═══════════════════════════════════════════
+// LOJA
+// ═══════════════════════════════════════════
+function setLoja(loja){
+  lojaAtual=loja;
+  ['burger','gourmet','aham'].forEach(l=>{
+    document.getElementById('tab'+l.charAt(0).toUpperCase()+l.slice(1)).classList.toggle('active', l===loja);
+  });
+  if(viewMode==='padrao'){
+    const p=ensurePadrao();
+    document.getElementById('inTdMax').value=p.transdeliveryMax||0;
+  }
+  rebuildSemSelect();
+  renderTable();
+  updateCalLabel();
+}
+
+// ═══════════════════════════════════════════
+// SEMANA SELECT — ORDEM DECRESCENTE (última criada no topo)
+// A regra é: o array LOJAS[loja] é sempre mantido com o mais recente
+// no índice 0. O select reflete isso diretamente (índice 0 = primeira opção).
+// Exclusão NUNCA reordena — apenas remove o elemento no índice correto.
+// ═══════════════════════════════════════════
+function rebuildSemSelect(){
+  const sel=document.getElementById('selSem');
+  const semanas=LOJAS[lojaAtual]||[];
+  const prevVal=sel.value;
+  sel.innerHTML='';
+  if(!semanas.length){
+    const opt=document.createElement('option');
+    opt.value=''; opt.textContent='Nenhuma semana';
+    sel.appendChild(opt);
+    return;
+  }
+  // O array já está em ordem decrescente (índice 0 = mais recente)
+  semanas.forEach((sem,i)=>{
+    const opt=document.createElement('option');
+    opt.value=String(i);
+    opt.textContent=sem.titulo||('Semana '+(i+1));
+    sel.appendChild(opt);
+  });
+  // Tenta manter a seleção anterior, senão seleciona a mais recente (índice 0)
+  if(prevVal!=='' && prevVal!==null && prevVal!==undefined){
+    const pv=parseInt(prevVal);
+    if(!isNaN(pv) && pv < semanas.length){
+      sel.value=String(pv);
+    } else {
+      sel.value='0';
+    }
+  } else {
+    sel.value='0';
+  }
+}
+
+function getSI(){
+  const sel=document.getElementById('selSem');
+  const v=parseInt(sel.value);
+  if(isNaN(v)) return null;
+  const semanas=LOJAS[lojaAtual]||[];
+  if(v<0||v>=semanas.length) return null;
+  return v;
+}
+
+function onSelSemChange(){
+  _filtDay=null;
+  updateCalLabel();
+  renderTable();
+}
+
+// ═══════════════════════════════════════════
+// FIREBASE
+// ═══════════════════════════════════════════
+function initFirebase(){
+  const cfg=getFirebaseConfig();
+  const cfgApiEl=document.getElementById('cfgApiKey');
+  const cfgDbEl=document.getElementById('cfgDbUrl');
+  const cfgPrjEl=document.getElementById('cfgProjectId');
+  if(cfgApiEl) cfgApiEl.value=cfg.apiKey||'';
+  if(cfgDbEl)  cfgDbEl.value=cfg.databaseURL||'';
+  if(cfgPrjEl) cfgPrjEl.value=cfg.projectId||'';
+  try{
+    if(firebase.apps && firebase.apps.length){
+      firebase.apps.forEach(app=>{ try{app.delete();}catch(e){} });
+    }
+    firebase.initializeApp(cfg);
+    db=firebase.database();
+    // Testa conectividade antes de declarar online
+    db.ref('.info/connected').on('value', snap=>{
+      updateSyncStatus(snap.val()===true);
+    });
+    loadAllData();
+  } catch(e){
+    console.error('Firebase init error:',e);
+    updateSyncStatus(false);
+    loadLocalData();
+  }
+}
+
+function updateSyncStatus(online){
+  const dot=document.getElementById('syncDot');
+  const lbl=document.getElementById('syncLabel');
+  if(dot) dot.className='sync-dot'+(online?'':' off');
+  if(lbl) lbl.innerHTML=(online?'<span class="sync-dot"></span>':'<span class="sync-dot off"></span>')+(online?'Online':'Offline');
+}
+
+function salvarConfig(){
+  const cfg=getFirebaseConfig();
+  const newCfg={
+    apiKey:document.getElementById('cfgApiKey').value.trim()||cfg.apiKey,
+    databaseURL:document.getElementById('cfgDbUrl').value.trim()||cfg.databaseURL,
+    projectId:document.getElementById('cfgProjectId').value.trim()||cfg.projectId,
+    authDomain:cfg.authDomain,
+    storageBucket:cfg.storageBucket,
+    messagingSenderId:cfg.messagingSenderId,
+    appId:cfg.appId
+  };
+  if(!newCfg.databaseURL){ toast('❌ Database URL é obrigatória'); return; }
+  localStorage.setItem(FIREBASE_CONFIG_KEY, JSON.stringify(newCfg));
+  closeOverlay('overlayConfig');
+  toast('🔄 Reconectando...');
+  setTimeout(()=>location.reload(), 1200);
 }
 
 // ═══════════════════════════════════════════
 // LOAD DATA
 // ═══════════════════════════════════════════
-function loadLoja(loja){
-  return new Promise((resolve, reject)=>{
-    if(!db){ reject('no db'); return; }
-    loadPadrao(loja);
-    setStatus('loading','⏳ Carregando ' + loja.toUpperCase() + '...');
-    let primeiraVez = true;
-    db.ref('escalas/' + loja + '/semanas').on('value', snap=>{
-      const val = snap.val();
-      // Se for retorno de save local, ignora para não resetar a tela
-      if(_ignorarSnap > 0){ _ignorarSnap--; resolve(); return; }
-      // Guarda seleção atual antes de atualizar
-      const selAtual = document.getElementById('selSem').value;
-      if(val){
-        LOJAS[loja] = Object.keys(val).sort((a,b)=>b.localeCompare(a)).map(k=>val[k]);
+
+// Converte QUALQUER formato de semanas do Firebase em array limpo.
+// Suporta: array nativo, objeto {0:..,1:..}, objeto {chave:..,chave:..}
+function fbValToArray(val){
+  if(!val) return [];
+  // Array nativo (Firebase às vezes retorna arrays direto)
+  if(Array.isArray(val)) return val.filter(v=> v && typeof v==='object' && (v.titulo||v.inicio||v.motoboys));
+  // Objeto genérico — pega todos os valores que parecem semanas
+  if(typeof val === 'object'){
+    return Object.values(val).filter(v=> v && typeof v==='object' && (v.titulo||v.inicio||v.motoboys));
+  }
+  return [];
+}
+
+function loadAllData(){
+  if(!db){ loadLocalData(); return; }
+
+  // Carrega cada loja separadamente para máxima compatibilidade
+  ['burger','gourmet','aham'].forEach(loja=>{
+    db.ref('escalas/'+loja).on('value', snap=>{
+      const lojaData = snap.val() || {};
+
+      // — semanas —
+      // O Firebase pode guardar como array, objeto{0:..,1:..} ou objeto{chave_data:..}
+      let semanas = fbValToArray(lojaData.semanas);
+
+      // Ordena decrescente por data de início (mais recente = índice 0)
+      semanas.sort((a,b)=>{
+        const da = a.inicio || '0000-00-00';
+        const db_ = b.inicio || '0000-00-00';
+        return db_ > da ? 1 : da > db_ ? -1 : 0;
+      });
+
+      LOJAS[loja] = semanas;
+
+      // Persiste no localStorage para carregamento instantâneo na próxima abertura
+      try{ localStorage.setItem('escala_semanas_'+loja, JSON.stringify(semanas)); }catch(e){}
+
+      // — padrão —
+      if(lojaData.padrao){
+        PADROES[loja] = lojaData.padrao;
+        try{ localStorage.setItem('escala_padrao_'+loja, JSON.stringify(lojaData.padrao)); }catch(e){}
+      }
+
+      // — metas customizadas —
+      if(lojaData.metas){
+        if(!METAS_CUSTOM[loja]) METAS_CUSTOM[loja]={};
+        if(lojaData.metas.fraca) METAS_CUSTOM[loja].fraca = lojaData.metas.fraca;
+        if(lojaData.metas.forte) METAS_CUSTOM[loja].forte = lojaData.metas.forte;
+        try{ localStorage.setItem('escala_metas_'+loja, JSON.stringify(METAS_CUSTOM[loja])); }catch(e){}
       } else {
-        LOJAS[loja] = [];
+        // Tenta localStorage como fallback
+        try{
+          const lm = localStorage.getItem('escala_metas_'+loja);
+          if(lm){ const p=JSON.parse(lm); if(!METAS_CUSTOM[loja]) METAS_CUSTOM[loja]={}; Object.assign(METAS_CUSTOM[loja],p); }
+        }catch(e){}
       }
+
+      // Atualiza UI apenas para a loja visível
       if(loja === lojaAtual){
-        buildSemSelect();
-        if(primeiraVez){
-          // Primeira carga: renderiza direto a semana mais recente (índice 0)
-          updateCalLabel();
-          renderCal();
-          if(getSI() !== null) renderTable();
-          primeiraVez = false;
-        } else {
-          // Atualizações subsequentes (saves): restaura seleção e rerenderiza
-          if(selAtual !== '' && selAtual !== null){
-            document.getElementById('selSem').value = selAtual;
-          }
-          const siAtual = getSI();
-          if(siAtual !== null) renderTable();
-        }
-        updateHSub();
+        rebuildSemSelect();
+        renderTable();
+        updateCalLabel();
       }
-      clearStatus();
-      resolve();
-    }, err=>{ setStatus('error','❌ '+err.message); reject(err); });
+    }, err=>{
+      console.error('FB load error ('+loja+'):',err);
+      updateSyncStatus(false);
+    });
   });
 }
 
-// ═══════════════════════════════════════════
-// SAVE TO FIREBASE
-// ═══════════════════════════════════════════
-function saveWeekToFB(loja, si){
-  if(!db) return;
-  const semana = LOJAS[loja][si];
-  if(!semana) return;
-  const key = semana.inicio || ('semana_'+si);
-  _pendingSaves++;
-  _ignorarSnap++; // ignora o snap de retorno do Firebase (já temos os dados locais)
-  document.getElementById('syncDot').classList.add('syncing');
-  db.ref('escalas/'+loja+'/semanas/'+key).set(semana)
-    .then(()=>{
-      _pendingSaves--;
-      if(_pendingSaves<=0){
-        _pendingSaves=0;
-        document.getElementById('syncDot').classList.remove('syncing');
-        setStatus('saved','✅ Salvo na nuvem!');
-        setTimeout(clearStatus, 2000);
-      }
-    })
-    .catch(err=>{ _pendingSaves--; setStatus('error','❌ Erro: '+err.message); toast('Erro: '+err.message); });
-}
-
-// ═══════════════════════════════════════════
-// LOJA TABS
-// ═══════════════════════════════════════════
-function setLoja(loja){
-  lojaAtual = loja;
-  ['burger','gourmet','aham'].forEach(l=>{
-    const tab = document.getElementById('tab'+l.charAt(0).toUpperCase()+l.slice(1));
-    tab.classList.toggle('active', l===loja);
+function loadLocalData(){
+  ['burger','gourmet','aham'].forEach(loja=>{
+    try{
+      const s=localStorage.getItem('escala_semanas_'+loja);
+      if(s) LOJAS[loja]=JSON.parse(s)||[];
+      const p=localStorage.getItem('escala_padrao_'+loja);
+      if(p) PADROES[loja]=JSON.parse(p);
+    } catch(e){}
   });
-  _filtDay = null;
-  updateBtnCal();
-  if(LOJAS[loja].length===0){
-    loadLoja(loja);
-  } else {
-    buildSemSelect();
-    updateHSub();
-    renderCal();
-    if(getSI() !== null) renderTable();
-    else showNoSemMsg('Selecione uma semana acima para ver os dados');
-  }
-}
-
-// ═══════════════════════════════════════════
-// HEADER SUBTITLE
-// ═══════════════════════════════════════════
-function updateHSub(){
-  const semanas = LOJAS[lojaAtual]||[];
-  const names = new Set();
-  semanas.forEach(s=>(s.motoboys||[]).forEach(mb=>names.add(mb.nome)));
-  const mbCount = names.size;
-  const semCount = semanas.length;
-  document.getElementById('hSub').textContent =
-    lojaAtual.toUpperCase()+' — '+mbCount+' motoboy'+(mbCount!==1?'s':'')+
-    ' · '+semCount+' semana'+(semCount!==1?'s':'');
-}
-
-// ═══════════════════════════════════════════
-// SEMANA SELECT
-// ═══════════════════════════════════════════
-function tituloSemCurto(titulo){
-  // Converte "22/02/2026 a 28/02/2026" → "22/02 a 28/02"
-  // ou "22/02 a 28/02/2026" → "22/02 a 28/02"
-  if(!titulo) return titulo;
-  return titulo.replace(/(\d{2}\/\d{2})\/\d{4}/g,'$1');
-}
-
-function buildSemSelect(){
-  const sel = document.getElementById('selSem');
-  const semanas = LOJAS[lojaAtual];
-  const isMobile = window.innerWidth <= 768;
-  let opts = '<option value="">— Selecione —</option>';
-  semanas.forEach((s,i)=>{
-    const label = isMobile ? tituloSemCurto(s.titulo) : s.titulo;
-    opts += `<option value="${i}">${label}</option>`;
-  });
-  sel.innerHTML = opts;
-  // Seleciona sempre a primeira (mais recente, pois lista está em ordem decrescente)
-  if(semanas.length > 0){
-    sel.value = '0';
-  } else {
-    sel.value = '';
-  }
-}
-
-function getSI(){
-  const v = document.getElementById('selSem').value;
-  if(v===''||v===null||v===undefined) return null;
-  return parseInt(v);
-}
-
-function onSemChange(){
-  _filtDay = null;
-  updateBtnCal();
+  rebuildSemSelect();
+  renderTable();
   updateCalLabel();
-  renderCal();
+}
+
+// ═══════════════════════════════════════════
+// SAVE WEEK TO FIREBASE
+// Salva o array LOJAS[loja] como objeto indexado no Firebase.
+// Usa timestamp-based keys para evitar colisão e preservar histórico.
+// ═══════════════════════════════════════════
+function saveWeekToFB(si, callback){
+  const semanas = LOJAS[lojaAtual];
+  if(!db){
+    try{ localStorage.setItem('escala_semanas_'+lojaAtual, JSON.stringify(semanas)); } catch(e){}
+    if(callback) callback();
+    return;
+  }
+  // Salva como objeto com chaves baseadas em inicio (YYYY-MM-DD) para
+  // preservar ordem no Firebase e evitar sobrescrever dados existentes.
+  // Usa índice numérico como fallback se inicio estiver ausente.
+  const obj={};
+  semanas.forEach((s,i)=>{
+    // Chave: data de início no formato YYYYMMDD ou índice reverso
+    const key = s.inicio ? s.inicio.replace(/-/g,'') : ('idx_'+String(9999-i).padStart(4,'0'));
+    obj[key] = s;
+  });
+  db.ref('escalas/'+lojaAtual+'/semanas').set(obj)
+    .then(()=>{ if(callback) callback(); })
+    .catch(e=>{ toast('❌ Erro ao salvar: '+e.message); });
+}
+
+// ═══════════════════════════════════════════
+// CREATE NEXT WEEK
+// Nova semana é inserida no INÍCIO do array (índice 0 = mais recente)
+// ═══════════════════════════════════════════
+function openNextWeekModal(){
+  const today=new Date();
+  const dow=today.getDay();
+  const diff=dow===0?-6:1-dow;
+  const mon=new Date(today); mon.setDate(today.getDate()+diff);
+  document.getElementById('newWeekDate').value=mon.toISOString().slice(0,10);
+  openOverlay('overlayNextWeek');
+}
+
+function createNextWeek(){
+  const dateVal=document.getElementById('newWeekDate').value;
+  const tipo=document.getElementById('newWeekTipo').value;
+  if(!dateVal){ toast('❌ Selecione a data de início'); return; }
+  const inicio=new Date(dateVal+'T12:00:00');
+  const fim=new Date(inicio); fim.setDate(fim.getDate()+6);
+  const fmt=d=>`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
+  const ano=fim.getFullYear().toString().slice(-2);
+  const titulo=`${fmt(inicio)} a ${fmt(fim)}/${ano}`;
+  const datas={};
+  DIAS_ORDEM.forEach((d,i)=>{
+    const dt=new Date(inicio); dt.setDate(dt.getDate()+i);
+    datas[d]=`${String(dt.getDate()).padStart(2,'0')}/${String(dt.getMonth()+1).padStart(2,'0')}`;
+  });
+  // Motoboys: pega da escala padrão ou da semana mais recente
+  let motoboys=[];
+  const padrao=PADROES[lojaAtual];
+  const semanasAtual=LOJAS[lojaAtual]||[];
+  if(padrao&&padrao.motoboys&&padrao.motoboys.length){
+    // Usa a escala padrão: regulares com dados, TD sem dados
+    motoboys=(padrao.motoboys||[]).map(mb=>{
+      if(isTransDeliveryMb(mb)) return {
+        nome:'TRANSDELIVERY',loja:mb.loja||lojaAtual,telefone:'',
+        ativo:'SIM',transdelivery:true,tdSlot:mb.tdSlot||0,
+        dias:defaultTdDays(),conf:defaultTdConf(),obs:{},entregas:{}
+      };
+      const c=JSON.parse(JSON.stringify(mb));
+      // Reset status para nova semana
+      c.conf={}; c.obs={}; c.entregas={};
+      DIAS_ORDEM.forEach(d=>{ c.conf[d]=''; });
+      return c;
+    });
+  } else if(semanasAtual.length){
+    // Copia da semana mais recente (índice 0)
+    const last=semanasAtual[0];
+    motoboys=(last.motoboys||[]).map(mb=>{
+      if(isTransDeliveryMb(mb)) return {
+        nome:'TRANSDELIVERY',loja:mb.loja||lojaAtual,telefone:'',
+        ativo:'SIM',transdelivery:true,tdSlot:mb.tdSlot||0,
+        dias:defaultTdDays(),conf:defaultTdConf(),obs:{},entregas:{}
+      };
+      const c=JSON.parse(JSON.stringify(mb));
+      c.conf={}; c.obs={}; c.entregas={};
+      DIAS_ORDEM.forEach(d=>{ c.conf[d]=''; });
+      return c;
+    });
+  }
+  const newSem={ titulo, inicio:dateVal, datas, tipo:tipo||'', motoboys };
+  // INSERIR NO INÍCIO (mais recente no índice 0)
+  LOJAS[lojaAtual].unshift(newSem);
+  closeOverlay('overlayNextWeek');
+  rebuildSemSelect();
+  // Selecionar a nova semana (índice 0)
+  document.getElementById('selSem').value='0';
+  renderTable();
+  updateCalLabel();
+  // Salvar todo o array reindexado
+  saveWeekToFB(0, ()=>toast('✅ Nova semana criada: '+titulo));
+}
+
+// ═══════════════════════════════════════════
+// EXCLUIR SEMANA — blindado para não reordenar
+// ═══════════════════════════════════════════
+function openDelModal(){
+  const si=getSI();
+  if(si===null){ toast('Selecione uma semana para excluir.'); return; }
+  const sem=LOJAS[lojaAtual][si];
+  document.getElementById('delSemTitle').textContent=sem?.titulo||'selecionada';
+  openOverlay('overlayDel');
+}
+
+function executarExcluir(){
+  const si=getSI();
+  if(si===null){ closeOverlay('overlayDel'); return; }
+  // Remove apenas o elemento no índice si sem reordenar o resto
+  LOJAS[lojaAtual].splice(si, 1);
+  closeOverlay('overlayDel');
+  // Rebuild select: tenta manter seleção similar
+  const semanas=LOJAS[lojaAtual];
+  const novoSi=si>0?si-1:0;
+  rebuildSemSelect();
+  if(semanas.length>0){
+    document.getElementById('selSem').value=String(Math.min(novoSi, semanas.length-1));
+  }
+  renderTable();
+  // Salvar array com splice — reindexado mas sem reordenar
+  saveWeekToFB(null, ()=>toast('✅ Semana excluída'));
+}
+
+// ═══════════════════════════════════════════
+// ADD MOTOBOY
+// ═══════════════════════════════════════════
+function openAddModal(){
+  document.getElementById('addNome').value='';
+  document.getElementById('addTel').value='';
+  document.getElementById('addLoja').value=lojaAtual;
+  openOverlay('overlayAdd');
+}
+
+function executarAdd(){
+  const nome=document.getElementById('addNome').value.trim();
+  const tel=document.getElementById('addTel').value.trim();
+  const loja=document.getElementById('addLoja').value;
+  if(!nome){ toast('❌ Nome obrigatório'); return; }
+  const mb={
+    nome, loja, telefone:tel, ativo:'SIM',
+    transdelivery:false,
+    dias:{}, conf:{}, obs:{}, entregas:{}
+  };
+  DIAS_ORDEM.forEach(d=>{ mb.dias[d]=''; mb.conf[d]=''; });
+  closeOverlay('overlayAdd');
+  if(viewMode==='padrao'){
+    const p=ensurePadrao();
+    p.motoboys.push(mb);
+    p.motoboys=sortMotoboys(p.motoboys);
+    markPadraoDirty();
+    renderTable();
+    toast('✅ Motoboy adicionado à Escala Padrão');
+    return;
+  }
+  const si=getSI();
+  if(si===null){ toast('Selecione uma semana primeiro.'); return; }
+  LOJAS[lojaAtual][si].motoboys=sortMotoboys([...(LOJAS[lojaAtual][si].motoboys||[]),mb]);
+  persistActive(si);
+  renderTable();
+  toast('✅ Motoboy adicionado: '+nome);
+}
+
+// ═══════════════════════════════════════════
+// INLINE EDIT
+// ═══════════════════════════════════════════
+function salvarNome(si, mi, el){
+  const val=el.textContent.trim();
+  if(!val){ el.textContent=getActiveSem()?.motoboys?.[mi]?.nome||''; return; }
+  const sem=getActiveSem();
+  if(!sem||!sem.motoboys[mi]) return;
+  sem.motoboys[mi].nome=val;
+  // Reordenar
+  if(viewMode==='padrao'){
+    const p=ensurePadrao();
+    p.motoboys=sortMotoboys(p.motoboys);
+    markPadraoDirty(); renderTable();
+  } else {
+    LOJAS[lojaAtual][si].motoboys=sortMotoboys(LOJAS[lojaAtual][si].motoboys);
+    persistActive(si); renderTable();
+  }
+}
+
+function salvarTel(si, mi, el){
+  const val=el.textContent.trim();
+  const sem=getActiveSem();
+  if(!sem||!sem.motoboys[mi]) return;
+  if(isTransDeliveryMb(sem.motoboys[mi])){ el.textContent=''; return; }
+  sem.motoboys[mi].telefone=val;
+  if(viewMode==='padrao'){ markPadraoDirty(); }
+  else { persistActive(si); }
+}
+
+function salvarObs(si, mi, d, val){
+  const sem=getActiveSem();
+  if(!sem||!sem.motoboys[mi]) return;
+  if(!sem.motoboys[mi].obs) sem.motoboys[mi].obs={};
+  sem.motoboys[mi].obs[d]=val;
+  if(viewMode==='padrao'){ markPadraoDirty(); }
+  else { persistActive(si); }
+}
+
+function salvarEntregas(si, mi, d, val){
+  const sem=getActiveSem();
+  if(!sem||!sem.motoboys[mi]) return;
+  if(!sem.motoboys[mi].entregas) sem.motoboys[mi].entregas={};
+  sem.motoboys[mi].entregas[d]=parseInt(val)||0;
+  if(viewMode==='padrao'){ markPadraoDirty(); }
+  else { persistActive(si); }
+}
+
+// ═══════════════════════════════════════════
+// STATUS BADGE CLICK
+// ═══════════════════════════════════════════
+function openModalCompleto(si, mi, d){
+  const sem=getActiveSem();
+  if(!sem||!sem.motoboys[mi]) return;
+  const mb=sem.motoboys[mi];
+  const statusList=[
+    {tipo:'dia',  val:'X',         lbl:'✅ Escalado'},
+    {tipo:'dia',  val:'FOLGA',     lbl:'🌴 Folga'},
+    {tipo:'conf', val:'CONFIRMADO',lbl:'☑️ Confirmado'},
+    {tipo:'conf', val:'PRESENTE',  lbl:'🟢 Presente'},
+    {tipo:'conf', val:'FALTOU',    lbl:'❌ Faltou'},
+    {tipo:'conf', val:'AFASTADO',  lbl:'🚫 Afastado'},
+  ];
+  const curDia=mb.dias?.[d]||'';
+  const curConf=mb.conf?.[d]||'';
+  document.getElementById('editTitle').textContent='⚙️ '+mb.nome+' — '+d;
+  document.getElementById('btnDelMb').setAttribute('data-si',si);
+  document.getElementById('btnDelMb').setAttribute('data-mi',mi);
+  const btns=statusList.map(s=>{
+    const isSel=(s.tipo==='dia'&&curDia===s.val)||(s.tipo==='conf'&&curConf===s.val);
+    return `<button class="op-btn${isSel?' selected':''}" onclick="setStatus(${si},${mi},'${d}','${s.tipo}','${s.val}')">${s.lbl}</button>`;
+  }).join('');
+  document.getElementById('editBody').innerHTML=`<div class="od">${d} — escolha o status:</div>${btns}`;
+  openOverlay('overlayEdit');
+}
+
+function setStatus(si, mi, d, tipo, val){
+  const sem=getActiveSem();
+  if(!sem||!sem.motoboys[mi]) return;
+  const mb=sem.motoboys[mi];
+  if(tipo==='dia'){
+    if(!mb.dias) mb.dias={};
+    mb.dias[d]=val;
+    if(val==='FOLGA'){ if(!mb.conf) mb.conf={}; mb.conf[d]=''; }
+  } else {
+    if(!mb.conf) mb.conf={};
+    mb.conf[d]=val;
+    if(!mb.dias) mb.dias={};
+    if(!mb.dias[d]||mb.dias[d]==='') mb.dias[d]='X';
+  }
+  closeOverlay('overlayEdit');
+  if(viewMode==='padrao'){ markPadraoDirty(); renderTable(); }
+  else { persistActive(si); renderTable(); }
+}
+
+function delMbFromEdit(){
+  const btn=document.getElementById('btnDelMb');
+  const si=parseInt(btn.getAttribute('data-si'));
+  const mi=parseInt(btn.getAttribute('data-mi'));
+  closeOverlay('overlayEdit');
+  if(viewMode==='padrao'){
+    const p=ensurePadrao();
+    p.motoboys.splice(mi,1);
+    syncTdSlots(p.motoboys);
+    p.motoboys=sortMotoboys(p.motoboys);
+    markPadraoDirty(); renderTable(); toast('Motoboy removido da Escala Padrão');
+    return;
+  }
+  LOJAS[lojaAtual][si].motoboys.splice(mi,1);
+  persistActive(si); renderTable(); toast('Motoboy removido');
+}
+
+// ═══════════════════════════════════════════
+// FILTROS / CARDS
+// ═══════════════════════════════════════════
+function applyCardFilter(status){
+  const s1=document.getElementById('selStatus1');
+  if(!s1) return;
+  if(!status){ s1.value=''; renderTable(); return; }
+  if(s1.value===status){ s1.value=''; renderTable(); return; }
+  s1.value=status; renderTable();
+}
+
+function lojaMatch(mb){
+  const lj=(mb.loja||'').toLowerCase().trim();
+  if(!lj) return true;
+  if(lojaAtual==='aham')    return lj==='aham'||lj==='outro';
+  if(lojaAtual==='gourmet') return lj==='gourmet'||lj.includes('gourmet');
+  if(lojaAtual==='burger')  return lj==='burger'||lj.includes('burger');
+  return lj===lojaAtual;
+}
+
+function matchFilt(mb, filt, dia){
+  if(!filt) return true;
+  if(filt==='FOLGA') return (mb.dias?.[dia]||'')==='FOLGA';
+  if(filt==='ESCALADO') return (mb.dias?.[dia]||'')==='X';
+  if(filt==='CONFIRMADO') return (mb.conf?.[dia]||'')==='CONFIRMADO';
+  if(filt==='PRESENTE') return (mb.conf?.[dia]||'')==='PRESENTE';
+  if(filt==='FALTOU') return (mb.conf?.[dia]||'')==='FALTOU';
+  if(filt==='AFASTADO') return (mb.conf?.[dia]||'')==='AFASTADO';
+  return true;
+}
+
+function card(lbl,ic,val,cls,status=''){
+  const s1val=document.getElementById('selStatus1')?.value||'';
+  const active=status&&s1val===status?' active-filter':'';
+  const clickable=status?` clickable${active}`:'';
+  const onclk=status?` onclick="applyCardFilter('${status}')" title="Filtrar por ${lbl}"`:'';
+  return `<div class="card ${cls}${clickable}"${onclk}><div class="cv">${ic} ${val}</div><div class="cl">${lbl}</div></div>`;
+}
+
+// ═══════════════════════════════════════════
+// META CARD
+// ═══════════════════════════════════════════
+// Metas padrão por loja (editáveis pelo botão Metas com senha)
+const METAS_DEFAULT = {
+  burger:{
+    fraca:{SEG:12,TER:17,QUA:18,QUI:18,SEX:33,SAB:33,DOM:30},
+    forte:{SEG:15,TER:19,QUA:20,QUI:20,SEX:38,SAB:38,DOM:30}
+  },
+  gourmet:{
+    fraca:{SEG:10,TER:18,QUA:20,QUI:18,SEX:22,SAB:22,DOM:10},
+    forte:{SEG:15,TER:22,QUA:25,QUI:22,SEX:25,SAB:25,DOM:20}
+  },
+  aham:{
+    fraca:{SEG:7,TER:10,QUA:10,QUI:12,SEX:25,SAB:25,DOM:20},
+    forte:{SEG:8,TER:12,QUA:12,QUI:12,SEX:25,SAB:25,DOM:18}
+  }
+};
+let METAS_CUSTOM = {}; // sobrescreve por loja quando salvo
+
+function getMetasLoja(loja, tipo){
+  const custom = METAS_CUSTOM[loja];
+  if(custom && custom[tipo]) return custom[tipo];
+  return METAS_DEFAULT[loja]?.[tipo] || {SEG:0,TER:0,QUA:0,QUI:0,SEX:0,SAB:0,DOM:0};
+}
+// Compat: mantém META_FRACA/META_FORTE apontando para loja atual
+let META_FRACA=METAS_DEFAULT.burger.fraca;
+let META_FORTE=METAS_DEFAULT.burger.forte;
+function renderCardMeta(diaAbrev){
+  // Usa o valor do seletor de tipo da toolbar (funciona independente dos dados do Firebase)
+  const tipo = document.getElementById('selTipoSem')?.value;
+  if(!tipo) return '';
+  const meta = getMetasLoja(lojaAtual, tipo);
+  if(diaAbrev){
+    const v = meta[diaAbrev]||0;
+    if(!v) return '';
+    return card('Meta '+diaAbrev,'🎯',v,'c-meta','');
+  }
+  // Sem dia filtrado: mostra card com tipo da semana
+  const icTipo = tipo==='forte'?'🔴':'🟡';
+  const lblTipo = tipo==='forte'?'Forte':'Fraca';
+  return card('Tipo Semana',icTipo,lblTipo,'c-meta','');
+}
+
+// ═══════════════════════════════════════════
+// FALTAS MÊS
+// ═══════════════════════════════════════════
+function computeFaltasMes(siAtual){
+  const counts={};
+  const semanas=LOJAS[lojaAtual]||[];
+  const mesAtual=semanas[siAtual]?.inicio?.slice(0,7);
+  if(!mesAtual) return counts;
+  semanas.forEach((sem,si)=>{
+    if(!sem.inicio?.startsWith(mesAtual)) return;
+    (sem.motoboys||[]).forEach(mb=>{
+      DIAS_ORDEM.forEach(d=>{
+        if((mb.conf?.[d]||'').toUpperCase()==='FALTOU'){
+          counts[mb.nome]=(counts[mb.nome]||0)+1;
+        }
+      });
+    });
+  });
+  return counts;
+}
+
+// ═══════════════════════════════════════════
+// ORDENAÇÃO
+// ═══════════════════════════════════════════
+function toggleOrdem(){
+  _ordemAtiva=!_ordemAtiva;
+  const btn=document.getElementById('btnOrdenarTab');
+  btn.style.background=_ordemAtiva?'#7c3aed':'';
+  btn.style.color=_ordemAtiva?'#fff':'';
+  btn.style.border=_ordemAtiva?'none':'';
   renderTable();
 }
 
-// ═══════════════════════════════════════════
-// NO WEEK MESSAGE
-// ═══════════════════════════════════════════
-function showNoSemMsg(msg){
-  document.getElementById('thead').innerHTML = '';
-  document.getElementById('tbody').innerHTML = `<tr><td colspan="20"><div class="no-sem"><div class="ns-icon">📅</div><p>${msg}</p></div></td></tr>`;
-  document.getElementById('cardsRow').innerHTML = '';
+function getPrioridade(mb, dia){
+  const ORDEM={PRESENTE:1,CONFIRMADO:2,ESCALADO:3,FALTOU:4,AFASTADO:5,FOLGA:6,'':7};
+  if(!dia) return 7;
+  const cf=(mb.conf?.[dia]||'').toUpperCase();
+  const di=(mb.dias?.[dia]||'').toUpperCase();
+  if(cf==='PRESENTE') return 1;
+  if(cf==='CONFIRMADO') return 2;
+  if(di==='X') return 3;
+  if(cf==='FALTOU') return 4;
+  if(cf==='AFASTADO') return 5;
+  if(di==='FOLGA') return 6;
+  return 7;
 }
 
 // ═══════════════════════════════════════════
 // RENDER TABLE
 // ═══════════════════════════════════════════
+function showNoSemMsg(msg){
+  document.getElementById('thead').innerHTML='';
+  document.getElementById('tbody').innerHTML=`<tr><td colspan="20"><div class="no-sem"><div class="ns-icon">📅</div><p>${msg}</p></div></td></tr>`;
+  document.getElementById('cardsRow').innerHTML='';
+}
+
 function renderTable(){
-  const si = getSI();
-  if(si===null){ showNoSemMsg('Selecione uma semana acima para ver os dados'); return; }
-  const semanas = LOJAS[lojaAtual];
-  if(!semanas||semanas.length===0){ showNoSemMsg('Nenhuma semana disponível'); return; }
-  const sem = semanas[si];
-  if(!sem){ showNoSemMsg('Semana não encontrada'); return; }
+  const si=getSI();
+  const semanas=LOJAS[lojaAtual];
+  let sem=null;
+  if(viewMode==='padrao'){
+    sem=getPadraoViewSem();
+    if(!(sem?.motoboys?.length)){ showNoSemMsg('Abra a Escala Padrão e clique em "Clonar semana atual" para montar o modelo.'); return; }
+  } else {
+    if(si===null){ showNoSemMsg('Selecione uma semana acima para ver os dados'); return; }
+    if(!semanas||!semanas.length){ showNoSemMsg('Nenhuma semana disponível'); return; }
+    sem=semanas[si];
+    if(!sem){ showNoSemMsg('Semana não encontrada'); return; }
+  }
 
-  const filt1 = document.getElementById('selStatus1').value;
-  const filt2 = document.getElementById('selStatus2').value;
-  const nome = document.getElementById('inNome').value.trim().toLowerCase();
-
-  // Dias visíveis
-  let diasVis = DIAS_ORDEM;
-  let diaAbrev = null;
+  const filt1=document.getElementById('selStatus1').value;
+  const nome=document.getElementById('inNome').value.trim().toLowerCase();
+  let diasVis=DIAS_ORDEM;
+  let diaAbrev=null;
   if(_filtDay){
-    const match = DIAS_ORDEM.filter(d=>sem.datas&&sem.datas[d]===_filtDay);
+    const match=DIAS_ORDEM.filter(d=>sem.datas&&sem.datas[d]===_filtDay);
     if(match.length>0){ diasVis=match; diaAbrev=match[0]; }
   }
 
   // THEAD
-  document.getElementById('thead').innerHTML = `<tr>
-    <th class="th-nome">Motoboy <small style="font-weight:400;opacity:.7">(clique no nome para editar)</small></th>
+  document.getElementById('thead').innerHTML=`<tr>
+    <th class="th-nome">Motoboy <small style="font-weight:400;opacity:.7">(clique para editar)</small></th>
     ${diasVis.map(d=>`<th class="th-dia">${d}<br><span style="font-weight:400;font-size:.7rem">${sem.datas?.[d]||''}</span></th>${diaAbrev?`<th style="background:#1e3a5f;min-width:80px;font-size:.72rem;font-weight:600;opacity:.85">Entregas</th><th style="background:#1e3a5f;min-width:180px;font-size:.72rem;font-weight:600;opacity:.85">Observação</th>`:''}`).join('')}
     <th class="th-flt">Faltas<br>Mês</th>
     <th class="th-del">⚙️</th>
   </tr>`;
 
-  // Filtro de motoboys
-  function matchFilt(mb, filt, dia){
-    if(!filt) return true;
-    if(filt==='FOLGA') return (mb.dias?.[dia]||'')==='FOLGA';
-    if(filt==='ESCALADO') return (mb.dias?.[dia]||'')==='X';
-    if(filt==='CONFIRMADO') return (mb.conf?.[dia]||'')==='CONFIRMADO';
-    if(filt==='PRESENTE') return (mb.conf?.[dia]||'')==='PRESENTE';
-    if(filt==='FALTOU') return (mb.conf?.[dia]||'')==='FALTOU';
-    if(filt==='AFASTADO') return (mb.conf?.[dia]||'')==='AFASTADO';
-    return true;
-  }
-
-  let mbs = (sem.motoboys||[]).filter(mb=>{
+  // Filtro
+  let mbs=(sem.motoboys||[]).filter(mb=>{
     if(!lojaMatch(mb)) return false;
     if(nome&&!mb.nome.toLowerCase().includes(nome)) return false;
-    const check = diaAbrev ? [diaAbrev] : DIAS_ORDEM;
-    const filtros = [filt1, filt2].filter(Boolean);
-    if(!filtros.length) return true;
-    return check.some(d => filtros.some(f => matchFilt(mb, f, d)));
+    if(!filt1) return true;
+    const check=diaAbrev?[diaAbrev]:DIAS_ORDEM;
+    return check.some(d=>matchFilt(mb,filt1,d));
   });
 
-  // Cards — refletem apenas o dia selecionado ou a semana toda
-  let conf=0,pres=0,folga=0,falta=0;
-  const diasParaContar = diaAbrev ? [diaAbrev] : DIAS_ORDEM;
-  function lojaMatch(mb){
-    const lj=(mb.loja||'').toLowerCase();
-    if(!lj) return true;
-    if(lojaAtual==='aham')    return lj==='aham'||lj==='outro';
-    if(lojaAtual==='gourmet') return lj==='gourmet'||lj==='outro gourmet'||lj.includes('gourmet');
-    if(lojaAtual==='burger')  return lj==='burger'||lj.includes('burger');
-    return lj===lojaAtual;
-  }
-
-  (sem.motoboys||[]).filter(mb=>lojaMatch(mb))
-  .forEach(mb=>{ diasParaContar.forEach(d=>{ const di=mb.dias?.[d]||'',cf=mb.conf?.[d]||'';
-    if(cf==='CONFIRMADO')conf++;
-    if(cf==='PRESENTE')pres++;
-    if(di==='FOLGA')folga++;
-    if(cf==='FALTOU')falta++;
-  }); });
-
-  const disponiveis = conf + pres + folga + falta;
-
-  document.getElementById('cardsRow').innerHTML =
-    card('Disponíveis','📦',disponiveis,'c-esc') +
-    card('Confirmados','☑️',conf,'c-conf') +
-    card('Presentes','🟢',pres,'c-pres') +
-    card('Folga','🌴',folga,'c-folga') +
-    card('Faltou','❌',falta,'c-falta') +
+  // Cards
+  let conf=0,pres=0,folga=0,falta=0,afastado=0;
+  const diasParaContar=diaAbrev?[diaAbrev]:DIAS_ORDEM;
+  (sem.motoboys||[]).filter(mb=>lojaMatch(mb)).forEach(mb=>{
+    diasParaContar.forEach(d=>{
+      const di=mb.dias?.[d]||'', cf=mb.conf?.[d]||'';
+      if(cf==='CONFIRMADO') conf++;
+      if(cf==='PRESENTE') pres++;
+      if(di==='FOLGA') folga++;
+      if(cf==='FALTOU') falta++;
+      if(cf==='AFASTADO') afastado++;
+    });
+  });
+  const disponiveis=conf+pres+folga+falta+afastado;
+  document.getElementById('cardsRow').innerHTML=
+    card('Disponíveis','📦',disponiveis,'c-esc','')+
+    card('Confirmados','☑️',conf,'c-conf','CONFIRMADO')+
+    card('Presentes','🟢',pres,'c-pres','PRESENTE')+
+    card('Folga','🌴',folga,'c-folga','FOLGA')+
+    card('Faltou','❌',falta,'c-falta','FALTOU')+
+    card('Afastado','🚫',afastado,'c-afas','AFASTADO')+
     renderCardMeta(diaAbrev);
 
+  const faltasMes=computeFaltasMes(si);
 
-
-  // Ordena se botão ativo
   if(_ordemAtiva){
-    // Cria array com índice original antes de ordenar
-    let mbsComIdx = mbs.map(mb=>({ mb, mi: sem.motoboys.indexOf(mb) }));
-    mbsComIdx.sort((a,b)=>getPrioridade(a.mb, diaAbrev)-getPrioridade(b.mb, diaAbrev));
-    const faltasMes = computeFaltasMes(si);
-    if(mbsComIdx.length===0){
-      document.getElementById('tbody').innerHTML = `<tr><td colspan="${diasVis.length+4}" style="text-align:center;padding:28px;color:#94a3b8">Nenhum motoboy encontrado</td></tr>`;
-      return;
-    }
-    document.getElementById('tbody').innerHTML = mbsComIdx.map(({mb, mi})=>{
-      const lj=(mb.loja||'').toLowerCase();
-      const lojaCls=lj==='burger'?'loja-b':lj==='gourmet'?'loja-g':'';
-      const fltCount=faltasMes[mb.nome]||0;
-      const fltCls=fltCount===0?'flt-0':fltCount===1?'flt-1':fltCount===2?'flt-2':'flt-hi';
-      const diasTd=diasVis.map(d=>`<td style="text-align:center">${badgeHTML(si,mi,d,mb.dias?.[d]||'',mb.conf?.[d]||'')}</td>${diaAbrev?`<td class="ent-cell"><input type="number" min="0" class="ent-inp" placeholder="0" value="${(mb.entregas&&mb.entregas[d])||''}" onchange="salvarEntregas(${si},${mi},'${d}',this.value)"></td><td class="obs-cell"><textarea class="obs-inp" placeholder="Observação..." onchange="salvarObs(${si},${mi},'${d}',this.value)">${esc_((mb.obs&&mb.obs[d])||'')}</textarea></td>`:''}`).join('');
-      return `<tr>
-      <td class="td-nome">
-        <span class="mb-nome" contenteditable="true"
-          title="Clique para editar o nome"
-          onblur="salvarNome(${si},${mi},this)"
-          onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}">${esc_(mb.nome)}</span>
-        <div class="mb-tel" contenteditable="true"
-          title="Clique para editar o telefone"
-          onblur="salvarTel(${si},${mi},this)"
-          onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}">${esc_(mb.telefone||'')}</div>
-      </td>
-      ${diasTd}
-      <td style="text-align:center"><span class="flt-badge ${fltCls}">${fltCount}</span></td>
-      <td style="text-align:center"><button class="btn-cfg" onclick="openModalCompleto(${si},${mi},'${diasVis[0]||DIAS_ORDEM[0]}')" title="Editar">⚙️</button></td>
-    </tr>`;
-    }).join('');
+    // Ordena pelo dia filtrado; se não houver dia, usa SEX como referência principal
+    const diaRef = diaAbrev || 'SEX';
+    let mbsIdx=mbs.map(mb=>({mb,mi:sem.motoboys.indexOf(mb)}));
+    mbsIdx.sort((a,b)=>getPrioridade(a.mb,diaRef)-getPrioridade(b.mb,diaRef));
+    document.getElementById('tbody').innerHTML=mbsIdx.map(({mb,mi})=>buildRow(mb,mi,si,sem,diasVis,diaAbrev,faltasMes)).join('');
     return;
   }
-
-  // Tbody (sem ordenação)
-  if(mbs.length===0){
-    document.getElementById('tbody').innerHTML = `<tr><td colspan="${diasVis.length+4}" style="text-align:center;padding:28px;color:#94a3b8">Nenhum motoboy encontrado</td></tr>`;
+  if(!mbs.length){
+    document.getElementById('tbody').innerHTML=`<tr><td colspan="${diasVis.length+4}" style="text-align:center;padding:28px;color:#94a3b8">Nenhum motoboy encontrado</td></tr>`;
     return;
   }
-
-  const faltasMes = computeFaltasMes(si);
-
-  document.getElementById('tbody').innerHTML = mbs.map(mb=>{
-    const mi = sem.motoboys.indexOf(mb);
-    const lj=(mb.loja||'').toLowerCase();
-    const lojaCls=lj==='burger'?'loja-b':lj==='gourmet'?'loja-g':'';
-    const fltCount=faltasMes[mb.nome]||0;
-    const fltCls=fltCount===0?'flt-0':fltCount===1?'flt-1':fltCount===2?'flt-2':'flt-hi';
-    const diasTd=diasVis.map(d=>`<td style="text-align:center">${badgeHTML(si,mi,d,mb.dias?.[d]||'',mb.conf?.[d]||'')}</td>${diaAbrev?`<td class="ent-cell"><input type="number" min="0" class="ent-inp" placeholder="0" value="${(mb.entregas&&mb.entregas[d])||''}" onchange="salvarEntregas(${si},${mi},'${d}',this.value)"></td><td class="obs-cell"><textarea class="obs-inp" placeholder="Observação..." onchange="salvarObs(${si},${mi},'${d}',this.value)">${esc_((mb.obs&&mb.obs[d])||'')}</textarea></td>`:''}`).join('');
-    return `<tr>
-      <td class="td-nome">
-        <span class="mb-nome" contenteditable="true"
-          title="Clique para editar o nome"
-          onblur="salvarNome(${si},${mi},this)"
-          onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}"
-        >${esc_(mb.nome)}</span>
-        <span class="mb-tel" contenteditable="true"
-          title="Clique para editar o telefone"
-          onblur="salvarTel(${si},${mi},this)"
-          onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}"
-        >${esc_(mb.telefone||'— sem tel')}</span>
-      </td>
-      ${diasTd}
-      <td><span class="flt-badge ${fltCls}">${fltCount}</span></td>
-      <td><button class="btn btn-ghost" style="height:28px;padding:0 8px;font-size:.75rem" onclick="openEdit(${si},${mi})">✏️</button>
-          <button class="btn btn-danger" style="height:28px;padding:0 8px;font-size:.75rem;margin-left:2px" onclick="openDelModal(${si},${mi})">🗑️</button></td>
-    </tr>`;
+  document.getElementById('tbody').innerHTML=mbs.map(mb=>{
+    const mi=sem.motoboys.indexOf(mb);
+    return buildRow(mb,mi,si,sem,diasVis,diaAbrev,faltasMes);
   }).join('');
 }
 
-// ═══════════════════════════════════════════
-// BADGE HTML
-// ═══════════════════════════════════════════
-function badgeHTML(si,mi,d,stRaw,cfRaw){
+function buildRow(mb, mi, si, sem, diasVis, diaAbrev, faltasMes){
+  const fltCount=faltasMes?.[mb.nome]||0;
+  const fltCls=fltCount===0?'flt-0':fltCount===1?'flt-1':fltCount===2?'flt-2':'flt-hi';
+  const diasTd=diasVis.map(d=>`<td style="text-align:center">${badgeHTML(si,mi,d,mb.dias?.[d]||'',mb.conf?.[d]||'')}</td>${diaAbrev?`<td class="ent-cell"><input type="number" min="0" class="ent-inp" placeholder="0" value="${mb.entregas?.[d]||''}" onchange="salvarEntregas(${si},${mi},'${d}',this.value)"></td><td class="obs-cell"><textarea class="obs-inp" placeholder="Observação..." onchange="salvarObs(${si},${mi},'${d}',this.value)">${esc_(mb.obs?.[d]||'')}</textarea></td>`:''}`).join('');
+  const tdChips=isTransDeliveryMb(mb)?`<span class="td-chip">TD</span><span class="td-day-chip">${mb.tdDia||'TD'}</span>`:'';
+  return `<tr class="${isTransDeliveryMb(mb)?'td-row':''}">
+    <td class="td-nome">
+      <span class="mb-nome" contenteditable="true"
+        onblur="salvarNome(${si},${mi},this)"
+        onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}"
+      >${esc_(mb.nome)}</span>${tdChips}
+      <span class="mb-tel" contenteditable="true"
+        onblur="salvarTel(${si},${mi},this)"
+        onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}"
+      >${esc_(mb.telefone||'')}</span>
+    </td>
+    ${diasTd}
+    <td style="text-align:center"><span class="flt-badge ${fltCls}">${fltCount}</span></td>
+    <td style="text-align:center"><button class="btn-cfg" onclick="openModalCompleto(${si},${mi},'${diasVis[0]||DIAS_ORDEM[0]}')" title="Editar status">⚙️</button></td>
+  </tr>`;
+}
+
+function badgeHTML(si, mi, d, stRaw, cfRaw){
   const st=stRaw.toUpperCase(), cf=cfRaw.toUpperCase();
   const click=`onclick="openModalCompleto(${si},${mi},'${d}')"`;
   if(st==='FOLGA') return `<span class="badge b-folga" ${click}>🌴 Folga</span>`;
@@ -958,433 +1498,327 @@ function badgeHTML(si,mi,d,stRaw,cfRaw){
   return `<span class="badge b-empty" ${click}>— Sem escala</span>`;
 }
 
-function card(lbl,ic,val,cls){ return `<div class="card ${cls}"><div class="cv">${ic} ${val}</div><div class="cl">${lbl}</div></div>`; }
-function esc_(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-function computeFaltasMes(siAtual){
-  const counts={};
-  const semanas=LOJAS[lojaAtual];
-  const mesAtual=semanas[siAtual]?.inicio?.slice(0,7);
-  semanas.forEach((sem,si)=>{
-    if(si>siAtual||!sem.inicio?.startsWith(mesAtual)) return;
-    (sem.motoboys||[]).forEach(mb=>{ DIAS_ORDEM.forEach(d=>{
-      if((mb.conf?.[d]||'').toUpperCase()==='FALTOU') counts[mb.nome]=(counts[mb.nome]||0)+1;
-    }); });
-  });
-  return counts;
-}
-
-// ═══════════════════════════════════════════
-// INLINE EDIT — nome e telefone
-// ═══════════════════════════════════════════
-function salvarObs(si, mi, dia, val){
-  const mb = LOJAS[lojaAtual][si]?.motoboys?.[mi];
-  if(!mb) return;
-  if(!mb.obs) mb.obs = {};
-  mb.obs[dia] = val.trim();
-  saveWeekToFB(lojaAtual, si);
-}
-
-function salvarEntregas(si, mi, dia, val){
-  const mb = LOJAS[lojaAtual][si]?.motoboys?.[mi];
-  if(!mb) return;
-  if(!mb.entregas) mb.entregas = {};
-  mb.entregas[dia] = val === '' ? '' : parseInt(val)||0;
-  saveWeekToFB(lojaAtual, si);
-}
-
-function salvarNome(si, mi, el){
-  const nome = el.innerText.trim().toUpperCase();
-  if(!nome){ el.innerText = LOJAS[lojaAtual][si]?.motoboys?.[mi]?.nome||''; return; }
-  const mb = LOJAS[lojaAtual][si]?.motoboys?.[mi];
-  if(!mb||mb.nome===nome) return;
-  mb.nome = nome;
-  el.innerText = nome;
-  saveWeekToFB(lojaAtual, si);
-  updateHSub();
-  toast('Nome atualizado!');
-}
-
-function salvarTel(si, mi, el){
-  let tel = el.innerText.trim();
-  if(tel==='— sem tel') tel = '';
-  const mb = LOJAS[lojaAtual][si]?.motoboys?.[mi];
-  if(!mb) return;
-  if(mb.telefone===tel) return;
-  mb.telefone = tel;
-  if(!tel) el.innerText = '— sem tel';
-  saveWeekToFB(lojaAtual, si);
-  toast('Telefone atualizado!');
-}
-
-// ═══════════════════════════════════════════
-// STATUS MODAL
-// ═══════════════════════════════════════════
-function openModalCompleto(si, mi, d){
-  _modSI=si; _modMI=mi; _modD=d;
-  const mb = LOJAS[lojaAtual][si]?.motoboys?.[mi];
-  if(!mb) return;
-  document.getElementById('modTitle').textContent = mb.nome + ' — ' + (DIAS_NOME[d]||d);
-
-  const curDia  = (mb.dias?.[d]||'').toUpperCase();
-  const curConf = (mb.conf?.[d]||'').toUpperCase();
-
-  // Lista única: Folga + opções de confirmação
-  const opcoes = [
-    {tipo:'dia',  val:'FOLGA', lbl:'🌴 Folga'},
-    {tipo:'conf', val:'',           lbl:'✅ Só Escalado (sem confirmação)'},
-    {tipo:'conf', val:'CONFIRMADO', lbl:'☑️ Confirmado'},
-    {tipo:'conf', val:'PRESENTE',   lbl:'🟢 Presente'},
-    {tipo:'conf', val:'FALTOU',     lbl:'❌ Faltou'},
-    {tipo:'conf', val:'AFASTADO',   lbl:'🚫 Afastado'},
-  ];
-
-  document.getElementById('modOps').innerHTML = opcoes.map(o=>{
-    const selected = o.tipo==='dia' ? curDia==='FOLGA' : (curDia==='X' && o.val===curConf);
-    return `<button class="op-btn${selected?' selected':''}" onclick="salvarOpcao('${o.tipo}','${o.val}')">${o.lbl}</button>`;
-  }).join('');
-
-  openOverlay('overlayStatus');
-}
-
-function salvarOpcao(tipo, val){
-  const sem = LOJAS[lojaAtual][_modSI];
-  if(!sem?.motoboys?.[_modMI]) return;
-  const mb = sem.motoboys[_modMI];
-  if(!mb.dias) mb.dias = {};
-  if(!mb.conf) mb.conf = {};
-  if(tipo === 'dia'){
-    // Folga: marca folga e limpa confirmação
-    mb.dias[_modD] = 'FOLGA';
-    mb.conf[_modD] = '';
-  } else {
-    // Confirmação: garante escalado e salva status
-    mb.dias[_modD] = 'X';
-    mb.conf[_modD] = val;
-  }
-  saveWeekToFB(lojaAtual, _modSI);
-  closeModal('overlayStatus');
-  renderTable();
-  toast('Status atualizado!');
-}
-
-
-// ═══════════════════════════════════════════
-// EDIT / DELETE / ADD
-// ═══════════════════════════════════════════
-function openDelModal(si,mi){
-  _delSI=si; _delMI=mi;
-  const mb=LOJAS[lojaAtual][si]?.motoboys?.[mi];
-  document.getElementById('delMsg').textContent=`Remover "${mb?.nome}" desta semana?`;
-  openOverlay('overlayDel');
-}
-function confirmDelete(){
-  LOJAS[lojaAtual][_delSI].motoboys.splice(_delMI,1);
-  saveWeekToFB(lojaAtual,_delSI);
-  closeModal('overlayDel');
-  renderTable();
-  updateHSub();
-  toast('Motoboy removido!');
-}
-
-function openEdit(si,mi){
-  _editSI=si; _editMI=mi;
-  const mb=LOJAS[lojaAtual][si]?.motoboys?.[mi];
-  if(!mb) return;
-  document.getElementById('editNome').value=mb.nome||'';
-  document.getElementById('editTel').value=mb.telefone||'';
-  document.getElementById('editAtivo').value=mb.ativo||'SIM';
-  openOverlay('overlayEdit');
-}
-function salvarEdit(){
-  const mb=LOJAS[lojaAtual][_editSI]?.motoboys?.[_editMI];
-  if(!mb) return;
-  mb.nome=document.getElementById('editNome').value.trim().toUpperCase()||mb.nome;
-  mb.telefone=document.getElementById('editTel').value.trim();
-  mb.ativo=document.getElementById('editAtivo').value;
-  saveWeekToFB(lojaAtual,_editSI);
-  closeModal('overlayEdit');
-  renderTable();
-  updateHSub();
-  toast('Motoboy atualizado!');
-}
-
-function openAddModal(){
-  document.getElementById('addNome').value='';
-  document.getElementById('addTel').value='';
-  document.getElementById('addAtivo').value='SIM';
-  document.getElementById('addDias').innerHTML=DIAS_ORDEM.map(d=>
-    `<label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:.82rem">
-      <input type="checkbox" value="${d}" checked style="cursor:pointer;width:15px;height:15px"> ${d}
-    </label>`).join('');
-  openOverlay('overlayAdd');
-}
-function addMotoboy(){
-  const nome=document.getElementById('addNome').value.trim().toUpperCase();
-  if(!nome){ toast('Nome obrigatório!'); return; }
-  const si=getSI();
-  if(si===null){ toast('Selecione uma semana primeiro!'); return; }
-  const sem=LOJAS[lojaAtual][si];
-  if(!sem) return;
-  const checks=document.querySelectorAll('#addDias input[type=checkbox]');
-  const dias={},conf={},obs={};
-  DIAS_ORDEM.forEach(d=>{ dias[d]='FOLGA'; conf[d]=''; obs[d]=''; });
-  checks.forEach(cb=>{ if(cb.checked) dias[cb.value]='X'; });
-  const newMb={ nome, loja:lojaAtual.toUpperCase(), telefone:document.getElementById('addTel').value.trim(),
-    ativo:document.getElementById('addAtivo').value, dias, conf, obs };
-  if(!sem.motoboys) sem.motoboys=[];
-  sem.motoboys.push(newMb);
-  sem.motoboys.sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));
-  saveWeekToFB(lojaAtual,si);
-  closeModal('overlayAdd');
-  renderTable();
-  updateHSub();
-  toast(`${nome} adicionado!`);
-}
-
-// ═══════════════════════════════════════════
-// NOVA SEMANA
-// ═══════════════════════════════════════════
-function excluirSemana(){
-  const si = getSI();
-  if(si === null){ toast('Selecione uma semana para excluir!'); return; }
-  const sem = LOJAS[lojaAtual][si];
-  if(!sem){ toast('Semana não encontrada!'); return; }
-  if(!confirm(`Excluir a semana "${sem.titulo}"?\n\nEssa ação não pode ser desfeita!`)) return;
-  const key = sem.inicio || ('semana_'+si);
-  // Remove do Firebase — incrementa ignorarSnap para não reprocessar
-  _ignorarSnap++;
-  if(db) db.ref('escalas/'+lojaAtual+'/semanas/'+key).remove()
-    .then(()=>{ toast('Semana excluída!'); })
-    .catch(err=>{ toast('Erro ao excluir: '+err.message); });
-  // Remove localmente pelo key correto
-  LOJAS[lojaAtual] = LOJAS[lojaAtual].filter(s=>(s.inicio||'')!==key);
-  buildSemSelect();
-  showNoSemMsg('Selecione uma semana acima para ver os dados');
-  updateHSub();
-}
-
-function openNextWeekModal(){
-  const semanas=LOJAS[lojaAtual];
-  const lastSem=semanas.length>0?semanas[0]:null;
-  let startDate;
-  if(lastSem?.inicio){
-    const d=new Date(lastSem.inicio+'T12:00:00'); d.setDate(d.getDate()+7);
-    startDate=d.toISOString().slice(0,10);
-  } else {
-    const now=new Date(), dow=now.getDay(), diff=(dow===0?1:8-dow);
-    now.setDate(now.getDate()+diff); startDate=now.toISOString().slice(0,10);
-  }
-  document.getElementById('nextDate').value=startDate;
-  document.getElementById('opCopy').innerHTML=`
-    <button class="op-btn selected" id="opYes" onclick="selOpt('yes')">✅ Sim, copiar escalas</button>
-    <button class="op-btn" id="opNo" onclick="selOpt('no')">❌ Não — semana em branco</button>`;
-  openOverlay('overlayNext');
-}
-function selOpt(o){
-  document.getElementById('opYes').classList.toggle('selected',o==='yes');
-  document.getElementById('opNo').classList.toggle('selected',o==='no');
-}
-function createNextWeek(){
-  const dateVal=document.getElementById('nextDate').value;
-  if(!dateVal){ toast('Selecione a data!'); return; }
-  const d=new Date(dateVal+'T12:00:00');
-  const datas={};
-  DIAS_ORDEM.forEach((dia,idx)=>{
-    const dt=new Date(d); dt.setDate(d.getDate()+idx);
-    datas[dia]=dt.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
-  });
-  const dtFmt=d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
-  const dtEnd=new Date(d); dtEnd.setDate(d.getDate()+6);
-  const titulo=`${dtFmt} a ${dtEnd.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})}/${d.getFullYear().toString().slice(-2)}`;
-  const copiar=document.getElementById('opYes').classList.contains('selected');
-  const prevSem=LOJAS[lojaAtual].length>0?LOJAS[lojaAtual][0]:null;
-  const origemPadrao = PADROES[lojaAtual]?.motoboys?.length ? PADROES[lojaAtual] : null;
-  let motoboys=[];
-  if(copiar && origemPadrao){
-    motoboys=origemPadrao.motoboys.map(mb=>({
-      nome:mb.nome, loja:mb.loja, telefone:mb.telefone||'', ativo:mb.ativo||'SIM',
-      dias:{...(mb.dias||{})},
-      conf:{...(mb.conf||{SEG:'',TER:'',QUA:'',QUI:'',SEX:'',SAB:'',DOM:''})},
-      obs:{SEG:'',TER:'',QUA:'',QUI:'',SEX:'',SAB:'',DOM:''},
-      entregas:{SEG:'',TER:'',QUA:'',QUI:'',SEX:'',SAB:'',DOM:''}
-    }));
-  } else if(copiar&&prevSem?.motoboys){
-    motoboys=prevSem.motoboys.map(mb=>({
-      nome:mb.nome, loja:mb.loja, telefone:mb.telefone||'', ativo:mb.ativo||'SIM',
-      dias:{...(mb.dias||{})},
-      conf:{SEG:'',TER:'',QUA:'',QUI:'',SEX:'',SAB:'',DOM:''},
-      obs:{SEG:'',TER:'',QUA:'',QUI:'',SEX:'',SAB:'',DOM:''},
-      entregas:{SEG:'',TER:'',QUA:'',QUI:'',SEX:'',SAB:'',DOM:''}
-    }));
-  }
-  const newSem={titulo,inicio:dateVal,datas,motoboys};
-  LOJAS[lojaAtual].unshift(newSem);
-  saveWeekToFB(lojaAtual,0);
-  buildSemSelect();
-  document.getElementById('selSem').value='0';
-  // Reseta calendário para o mês da nova semana
-  const nd=new Date(dateVal+'T12:00:00');
-  _calYear=nd.getFullYear(); _calMonth=nd.getMonth();
-  updateCalLabel(); renderCal();
-  renderTable();
-  updateHSub();
-  closeModal('overlayNext');
-  toast(`Semana "${titulo}" criada!` + (copiar && origemPadrao ? ' Padrão aplicado.' : ''));
-}
-
 // ═══════════════════════════════════════════
 // CALENDAR
 // ═══════════════════════════════════════════
-function toggleCal(){ document.getElementById('calDrop').classList.toggle('open'); }
+let _calYear=new Date().getFullYear(), _calMonth=new Date().getMonth();
+function toggleCal(){ document.getElementById('calDrop').classList.toggle('open'); renderCal(); }
 function closeCal(){ document.getElementById('calDrop').classList.remove('open'); }
-function calMove(delta){
-  _calMonth+=delta;
-  if(_calMonth>11){_calMonth=0;_calYear++;}
-  if(_calMonth<0){_calMonth=11;_calYear--;}
-  updateCalLabel(); renderCal();
-}
+function calMove(delta){ _calMonth+=delta; if(_calMonth>11){_calMonth=0;_calYear++;}else if(_calMonth<0){_calMonth=11;_calYear--;} renderCal(); }
 function updateCalLabel(){
-  const si=getSI(), sem=si!==null?LOJAS[lojaAtual][si]:null;
-  if(!_calYear&&sem?.inicio){ const d=new Date(sem.inicio+'T12:00:00'); _calYear=d.getFullYear(); _calMonth=d.getMonth(); }
-  else if(!_calYear){ const n=new Date(); _calYear=n.getFullYear(); _calMonth=n.getMonth(); }
-  document.getElementById('calLabel').textContent=new Date(_calYear,_calMonth,1).toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
-}
-function renderCal(){
-  const si=getSI(), sem=si!==null?LOJAS[lojaAtual][si]:null;
-  if(!_calYear) updateCalLabel();
-  const firstDay=new Date(_calYear,_calMonth,1);
-  const daysInMonth=new Date(_calYear,_calMonth+1,0).getDate();
-  const today=new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
-  const semDates=new Set(Object.values(sem?.datas||{}));
-  // Calendário começando na Segunda-feira
-  let html=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'].map(d=>`<div class="wd">${d}</div>`).join('');
-  const offset=(firstDay.getDay()===0?6:firstDay.getDay()-1);
-  for(let i=0;i<offset;i++) html+='<div class="day other-month"></div>';
-  for(let d=1;d<=daysInMonth;d++){
-    const dt=new Date(_calYear,_calMonth,d);
-    const dtStr=dt.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
-    const cls=['day',dtStr===today?'today':'',dtStr===_filtDay?'selected':'',!semDates.has(dtStr)?'other-month':''].filter(Boolean).join(' ');
-    html+=`<div class="${cls}" onclick="${semDates.has(dtStr)?`selectDay('${dtStr}')`:''}">${d}</div>`;
-  }
-  document.getElementById('calGrid').innerHTML=html;
-}
-function selectDay(dtStr){ _filtDay=dtStr; closeCal(); updateBtnCal(); renderTable(); }
-function clearDayFilter(){ _filtDay=null; closeCal(); updateBtnCal(); renderTable(); }
-function updateBtnCal(){
+  const si=getSI();
+  const sem=si!==null?(LOJAS[lojaAtual]||[])[si]:null;
   const btn=document.getElementById('btnCal');
-  btn.textContent=_filtDay?`📅 ${_filtDay}`:'📅 Filtrar Dia';
-  btn.style.background=_filtDay?'#dbeafe':'';
+  if(_filtDay){
+    btn.textContent='📅 '+_filtDay;
+  } else {
+    btn.textContent='📅 Filtrar data';
+  }
 }
+function clearDayFilter(){ _filtDay=null; updateCalLabel(); closeCal(); renderTable(); }
+function renderCal(){
+  document.getElementById('calLabel').textContent=new Date(_calYear,_calMonth,1).toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+  const grid=document.getElementById('calGrid');
+  const dias=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  let html=dias.map(d=>`<div class="wd">${d}</div>`).join('');
+  const first=new Date(_calYear,_calMonth,1).getDay();
+  for(let i=0;i<first;i++) html+=`<div class="day other-month"></div>`;
+  const days=new Date(_calYear,_calMonth+1,0).getDate();
+  // Coletar datas da semana atual
+  const si=getSI();
+  const sem=si!==null?(LOJAS[lojaAtual]||[])[si]:null;
+  const semDates=new Set();
+  if(sem?.datas) Object.values(sem.datas).forEach(v=>semDates.add(v));
+  for(let d=1;d<=days;d++){
+    const label=`${String(d).padStart(2,'0')}/${String(_calMonth+1).padStart(2,'0')}`;
+    const inSem=semDates.has(label);
+    const isSel=_filtDay===label;
+    const cls=inSem?'day'+(isSel?' selected':''):('day other-month');
+    const clk=inSem?`onclick="selectDay('${label}')"`:' ';
+    html+=`<div class="${cls}" ${clk}>${d}</div>`;
+  }
+  grid.innerHTML=html;
+}
+function selectDay(label){ _filtDay=label; updateCalLabel(); closeCal(); renderTable(); }
 
 // ═══════════════════════════════════════════
 // EXPORT CSV
 // ═══════════════════════════════════════════
-// ═══════════════════════════════════════════
-// ORDENAR LISTA
-// ═══════════════════════════════════════════
-let _ordemAtiva = false;
-const ORDEM_STATUS = {'CONFIRMADO':1,'PRESENTE':2,'X':3,'FALTOU':4,'AFASTADO':5,'FOLGA':6,'':7};
+function exportCSV(){
+  const si=getSI();
+  if(si===null){ toast('Selecione uma semana.'); return; }
+  const sem=LOJAS[lojaAtual][si];
+  if(!sem){ toast('Semana não encontrada.'); return; }
+  let csv='Nome,Telefone,Loja,'+DIAS_ORDEM.map(d=>d+' Status,'+d+' Conf').join(',')+'\n';
+  (sem.motoboys||[]).forEach(mb=>{
+    const row=[mb.nome,mb.telefone||'',mb.loja||lojaAtual,...DIAS_ORDEM.flatMap(d=>[mb.dias?.[d]||'',mb.conf?.[d]||''])];
+    csv+=row.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')+'\n';
+  });
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url;
+  a.download=`escala_${lojaAtual}_${sem.titulo||'semana'}.csv`;
+  a.click(); URL.revokeObjectURL(url);
+}
 
-function toggleOrdem(){
-  _ordemAtiva = !_ordemAtiva;
-  const cor = _ordemAtiva ? '#15803d' : '#0369a1';
-  const txt = _ordemAtiva ? '⇅ ON' : '⇅ Ordenar';
-  const txtMob = _ordemAtiva ? '⇅ ON' : '⇅';
-  const btn = document.getElementById('btnOrdenarTab');
-  if(btn){ btn.style.background=cor; btn.textContent=txt; btn.style.whiteSpace='nowrap'; }
-  const btnMob = document.getElementById('btnOrdenarMob');
-  if(btnMob){ btnMob.style.background=cor; btnMob.textContent=txtMob; }
+// ═══════════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════════
+let _dashSearchVal='';
+function setDashPeriod(period){
+  _dashPeriod=period;
+  document.getElementById('btnMesAtual').classList.toggle('active', period==='atual');
+  document.getElementById('btnMesAnterior').classList.toggle('active', period==='anterior');
+  // Limpa datas manuais ao escolher período
+  document.getElementById('dashDe').value='';
+  document.getElementById('dashAte').value='';
+  renderDashboard();
+}
+
+function openDashboard(){
+  // Só inicializa filtros na primeira abertura; nas demais mantém o estado
+  const wasOpen = document.getElementById('overlayDashboard').classList.contains('open');
+  openOverlay('overlayDashboard');
+  // Setup search sem perder cursor (apenas uma vez)
+  const searchEl=document.getElementById('dashSearch');
+  if(!searchEl._listenerOk){
+    searchEl._listenerOk=true;
+    searchEl.addEventListener('input', function(){ _dashSearchVal=this.value; renderDashboard(); });
+  }
+  if(!wasOpen){
+    // Só reseta filtros quando abre do zero
+    _dashPeriod='atual';
+    _dashSearchVal='';
+    searchEl.value='';
+    document.getElementById('dashDe').value='';
+    document.getElementById('dashAte').value='';
+    document.getElementById('btnMesAtual').classList.add('active');
+    document.getElementById('btnMesAnterior').classList.remove('active');
+  }
+  renderDashboard();
+}
+
+function getDashDateRange(){
+  const de=document.getElementById('dashDe').value;
+  const ate=document.getElementById('dashAte').value;
+  if(de||ate) return {de:de||'0000-01-01', ate:ate||'9999-12-31'};
+  const now=new Date();
+  if(_dashPeriod==='atual'){
+    return {
+      de:new Date(now.getFullYear(),now.getMonth(),1).toISOString().slice(0,10),
+      ate:new Date(now.getFullYear(),now.getMonth()+1,0).toISOString().slice(0,10)
+    };
+  } else {
+    const prev=new Date(now.getFullYear(),now.getMonth()-1,1);
+    return {
+      de:prev.toISOString().slice(0,10),
+      ate:new Date(now.getFullYear(),now.getMonth(),0).toISOString().slice(0,10)
+    };
+  }
+}
+
+function renderDashboard(){
+  const {de,ate}=getDashDateRange();
+  const search=(_dashSearchVal||'').toLowerCase().trim();
+  const semanas=LOJAS[lojaAtual]||[];
+  const filtradas=semanas.filter(sem=>{
+    if(!sem.inicio) return false;
+    return sem.inicio>=de && sem.inicio<=ate;
+  });
+  const ranking={};
+  filtradas.forEach(sem=>{
+    (sem.motoboys||[]).forEach(mb=>{
+      if(isTransDeliveryMb(mb)) return;
+      if(!lojaMatch(mb)) return;
+      const nome=mb.nome||'?';
+      if(!ranking[nome]) ranking[nome]={nome,pres:0,falt:0,conf:0,afas:0,folga:0,faltDays:[]};
+      DIAS_ORDEM.forEach(d=>{
+        const cf=(mb.conf?.[d]||'').toUpperCase();
+        const di=(mb.dias?.[d]||'').toUpperCase();
+        if(cf==='PRESENTE') ranking[nome].pres++;
+        else if(cf==='FALTOU'){ ranking[nome].falt++; ranking[nome].faltDays.push({sem:sem.titulo, dia:d, data:sem.datas?.[d]||''}); }
+        else if(cf==='CONFIRMADO') ranking[nome].conf++;
+        else if(cf==='AFASTADO') ranking[nome].afas++;
+        else if(di==='FOLGA') ranking[nome].folga++;
+      });
+    });
+  });
+  let rows=Object.values(ranking);
+  if(search) rows=rows.filter(r=>r.nome.toLowerCase().includes(search));
+  // Totais
+  let totPres=0,totFalt=0,totConf=0,totAfas=0;
+  rows.forEach(r=>{totPres+=r.pres;totFalt+=r.falt;totConf+=r.conf;totAfas+=r.afas;});
+  // Cards
+  document.getElementById('dashCards').innerHTML=`
+    <div class="dash-card pres"><div class="k">✅ Presentes</div><div class="v">${totPres}</div></div>
+    <div class="dash-card falt"><div class="k">❌ Faltas</div><div class="v">${totFalt}</div></div>
+    <div class="dash-card conf"><div class="k">☑️ Confirmados</div><div class="v">${totConf}</div></div>
+    <div class="dash-card afas"><div class="k">🚫 Afastados</div><div class="v">${totAfas}</div></div>
+    <div class="dash-card total"><div class="k">👤 Motoboys</div><div class="v">${rows.length}</div></div>
+  `;
+  // Sort
+  rows.sort((a,b)=>{
+    const va = a[_dashSortCol] != null ? a[_dashSortCol] : '';
+    const vb = b[_dashSortCol] != null ? b[_dashSortCol] : '';
+    if(typeof va==='string') return _dashSortDir==='asc'?va.localeCompare(vb):vb.localeCompare(va);
+    return _dashSortDir==='asc'?va-vb:vb-va;
+  });
+  const cols=[
+    {key:'nome',lbl:'Motoboy'},
+    {key:'pres',lbl:'Presentes'},
+    {key:'falt',lbl:'Faltas'},
+    {key:'conf',lbl:'Confirmados'},
+    {key:'afas',lbl:'Afastados'},
+    {key:'folga',lbl:'Folgas'}
+  ];
+  const ths=cols.map(c=>{
+    const cls=_dashSortCol===c.key?(' sort-'+_dashSortDir):'';
+    return `<th class="${cls}" onclick="dashSort('${c.key}')">${c.lbl}</th>`;
+  }).join('');
+  document.getElementById('dashThead').innerHTML=`<tr>${ths}</tr>`;
+  document.getElementById('dashTbody').innerHTML=rows.map(r=>`<tr>
+    <td>${esc_(r.nome)}</td>
+    <td>${r.pres}</td>
+    <td><button class="falt-link" onclick="showDashFaltas('${esc_(r.nome)}')">${r.falt}</button></td>
+    <td>${r.conf}</td>
+    <td>${r.afas}</td>
+    <td>${r.folga}</td>
+  </tr>`).join('');
+  document.getElementById('dashFaltDetail').style.display='none';
+  // Guarda dados para detalhe
+  window._dashRankingData=ranking;
+}
+
+function dashSort(col){
+  if(_dashSortCol===col){ _dashSortDir=_dashSortDir==='asc'?'desc':'asc'; }
+  else { _dashSortCol=col; _dashSortDir=col==='nome'?'asc':'desc'; }
+  renderDashboard();
+}
+
+function showDashFaltas(nome){
+  const data=window._dashRankingData?.[nome];
+  const detail=document.getElementById('dashFaltDetail');
+  if(!data||!data.faltDays.length){ detail.style.display='none'; return; }
+  // Agrupar por semana
+  const bySem={};
+  data.faltDays.forEach(f=>{
+    if(!bySem[f.sem]) bySem[f.sem]=[];
+    bySem[f.sem].push(f);
+  });
+  const blocks=Object.entries(bySem).map(([sem,days])=>`
+    <div class="falt-week-block">
+      <div class="falt-week-label">📅 ${sem}</div>
+      <div class="falt-day-chips">${days.map(f=>`<div class="falt-day-chip">❌ ${f.dia} ${f.data}</div>`).join('')}</div>
+    </div>
+  `).join('');
+  detail.innerHTML=`<div class="falt-detail"><h4>❌ Faltas de ${esc_(nome)} — ${data.falt} falta(s)</h4>${blocks}</div>`;
+  detail.style.display='block';
+  detail.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// ═══════════════════════════════════════════
+// METAS — SENHA + EDIÇÃO
+// ═══════════════════════════════════════════
+const SENHA_METAS = 'lider12345*';
+
+function openMetasSenha(){
+  document.getElementById('inputSenhaMetas').value='';
+  document.getElementById('senhaMetasErro').style.display='none';
+  openOverlay('overlaySenhaMetas');
+  setTimeout(()=>document.getElementById('inputSenhaMetas').focus(),150);
+}
+
+function confirmarSenhaMetas(){
+  const val = document.getElementById('inputSenhaMetas').value;
+  if(val !== SENHA_METAS){
+    document.getElementById('senhaMetasErro').style.display='block';
+    return;
+  }
+  closeOverlay('overlaySenhaMetas');
+  abrirEdicaoMetas();
+}
+
+function abrirEdicaoMetas(){
+  document.getElementById('metasLojaTitle').textContent = lojaAtual.charAt(0).toUpperCase()+lojaAtual.slice(1);
+  const fraca = getMetasLoja(lojaAtual,'fraca');
+  const forte = getMetasLoja(lojaAtual,'forte');
+  const diasLabels = {SEG:'Segunda',TER:'Terça',QUA:'Quarta',QUI:'Quinta',SEX:'Sexta',SAB:'Sábado',DOM:'Domingo'};
+  const buildInputs = (tipo, vals) => DIAS_ORDEM.map(d=>`
+    <div class="form-row" style="flex-direction:row;align-items:center;gap:8px;margin-bottom:8px">
+      <label style="min-width:70px;font-size:.8rem;font-weight:700;color:#374151">${diasLabels[d]}</label>
+      <input type="number" min="0" id="meta_${tipo}_${d}" value="${vals[d]||0}"
+        style="width:80px;height:32px;padding:0 8px;border:1.5px solid #e2e8f0;border-radius:999px;font-size:.9rem;text-align:center">
+    </div>`).join('');
+  document.getElementById('metasFracaInputs').innerHTML = buildInputs('fraca', fraca);
+  document.getElementById('metasForteInputs').innerHTML = buildInputs('forte', forte);
+  openOverlay('overlayMetas');
+}
+
+function salvarMetas(){
+  if(!METAS_CUSTOM[lojaAtual]) METAS_CUSTOM[lojaAtual]={};
+  const novaFraca={}, novaForte={};
+  DIAS_ORDEM.forEach(d=>{
+    novaFraca[d] = parseInt(document.getElementById('meta_fraca_'+d)?.value)||0;
+    novaForte[d] = parseInt(document.getElementById('meta_forte_'+d)?.value)||0;
+  });
+  METAS_CUSTOM[lojaAtual].fraca = novaFraca;
+  METAS_CUSTOM[lojaAtual].forte = novaForte;
+  // Persiste no Firebase ou localStorage
+  const payload = { fraca: novaFraca, forte: novaForte };
+  if(db){
+    db.ref('escalas/'+lojaAtual+'/metas').set(payload)
+      .then(()=>toast('✅ Metas salvas no Firebase!'))
+      .catch(e=>toast('❌ Erro ao salvar: '+e.message));
+  } else {
+    try{ localStorage.setItem('escala_metas_'+lojaAtual, JSON.stringify(payload)); }catch(e){}
+    toast('✅ Metas salvas!');
+  }
+  closeOverlay('overlayMetas');
   renderTable();
 }
 
-function getPrioridade(mb, diaFiltrado){
-  // Pega o melhor status do motoboy entre todos os dias visíveis
-  const si = getSI();
-  if(si===null) return 99;
-  const sem = LOJAS[lojaAtual][si];
-  if(!sem) return 99;
-  // Se há um dia filtrado, usa apenas aquele dia
-  const dias = diaFiltrado ? [diaFiltrado] : DIAS_ORDEM;
-  let melhor = 99;
-  dias.forEach(d=>{
-    const di = (mb.dias?.[d]||'').toUpperCase();
-    const cf = (mb.conf?.[d]||'').toUpperCase();
-    let p = 99;
-    if(di==='X'){
-      if(cf==='CONFIRMADO') p=1;
-      else if(cf==='PRESENTE') p=2;
-      else if(cf==='FALTOU') p=4;
-      else if(cf==='AFASTADO') p=5;
-      else p=3; // só escalado
-    } else if(di==='FOLGA') p=6;
-    if(p < melhor) melhor = p;
+// ═══════════════════════════════════════════
+// LOAD PADRAO FROM FIREBASE
+// ═══════════════════════════════════════════
+function loadPadrao(loja){
+  if(!db) return;
+  db.ref('escalas/'+loja+'/padrao').on('value', snap=>{
+    const data=snap.val();
+    if(data){ PADROES[loja]=data; if(loja===lojaAtual&&viewMode==='padrao') renderTable(); }
   });
-  return melhor;
 }
 
-function exportCSV(){
-  const si=getSI(); if(si===null){toast('Selecione uma semana!');return;}
-  const sem=LOJAS[lojaAtual][si]; if(!sem) return;
-  let csv='Nome,Loja,Telefone,'+DIAS_ORDEM.map(d=>`${d} Esc,${d} Conf`).join(',')+'\n';
-  (sem.motoboys||[]).forEach(mb=>{
-    csv+=`"${mb.nome}","${mb.loja}","${mb.telefone||''}",`;
-    csv+=DIAS_ORDEM.map(d=>`"${mb.dias?.[d]||''}","${mb.conf?.[d]||''}"`).join(',')+'\n';
+// ═══════════════════════════════════════════
+// INIT — carrega localStorage IMEDIATAMENTE, Firebase em background
+// ═══════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  // 1) Carrega dados do localStorage imediatamente para a tela não ficar vazia
+  ['burger','gourmet','aham'].forEach(loja=>{
+    try{
+      const s=localStorage.getItem('escala_semanas_'+loja);
+      if(s){
+        let arr=JSON.parse(s)||[];
+        // Garante ordem decrescente mesmo vindo do cache
+        arr.sort((a,b)=>{
+          const da=a.inicio||'0000-00-00', db_=b.inicio||'0000-00-00';
+          return db_>da?1:da>db_?-1:0;
+        });
+        LOJAS[loja]=arr;
+      }
+      const p=localStorage.getItem('escala_padrao_'+loja);
+      if(p) PADROES[loja]=JSON.parse(p);
+      const m=localStorage.getItem('escala_metas_'+loja);
+      if(m){ if(!METAS_CUSTOM[loja]) METAS_CUSTOM[loja]={}; Object.assign(METAS_CUSTOM[loja],JSON.parse(m)); }
+    }catch(e){}
   });
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));
-  a.download=`escala_${lojaAtual}_${sem.inicio||'sem'}.csv`;
-  a.click();
-}
-
-// ═══════════════════════════════════════════
-// CONFIG FIREBASE
-// ═══════════════════════════════════════════
-function populateConfig(){
-  const cfg=getFirebaseConfig();
-  document.getElementById('cfgApiKey').value=cfg.apiKey||'';
-  document.getElementById('cfgAuthDomain').value=cfg.authDomain||'';
-  document.getElementById('cfgDbUrl').value=cfg.databaseURL||'';
-  document.getElementById('cfgProjectId').value=cfg.projectId||'';
-}
-function salvarConfig(){
-  const cfg={
-    apiKey:document.getElementById('cfgApiKey').value.trim(),
-    authDomain:document.getElementById('cfgAuthDomain').value.trim(),
-    databaseURL:document.getElementById('cfgDbUrl').value.trim(),
-    projectId:document.getElementById('cfgProjectId').value.trim(),
-    storageBucket:document.getElementById('cfgProjectId').value.trim()+'.appspot.com',
-    messagingSenderId:'', appId:''
-  };
-  if(!cfg.databaseURL){toast('Database URL obrigatória!');return;}
-  localStorage.setItem(FIREBASE_CONFIG_KEY,JSON.stringify(cfg));
-  closeModal('overlayConfig');
-  toast('Config salva! Recarregando...');
-  setTimeout(()=>location.reload(),1200);
-}
-
-// ═══════════════════════════════════════════
-// UI HELPERS
-// ═══════════════════════════════════════════
-function setStatus(type,msg){ const b=document.getElementById('statusBar'); b.className=type; b.textContent=msg; }
-function clearStatus(){ const b=document.getElementById('statusBar'); b.style.display='none'; b.className=''; setTimeout(()=>{b.style.display='';},100); }
-function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._tid); t._tid=setTimeout(()=>t.classList.remove('show'),2800); }
-function openOverlay(id){ document.getElementById(id).classList.add('open'); }
-function closeModal(id){ document.getElementById(id).classList.remove('open'); }
-
-document.addEventListener('click', e=>{
-  if(e.target.classList.contains('overlay')) closeModal(e.target.id);
-  if(!e.target.closest('.cal-wrap')) closeCal();
-});
-
-// ═══════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════
-window.addEventListener('DOMContentLoaded', ()=>{
+  // 2) Renderiza imediatamente com os dados do cache
+  setViewMode('semana');
+  rebuildSemSelect();
+  renderTable();
   updateCalLabel();
-  initFirebase().then(()=>{ updateHSub(); }).catch(()=>{});
+  // 3) Inicia Firebase em background; quando chegar, atualiza automaticamente
+  initFirebase();
 });
 </script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
