@@ -185,6 +185,33 @@ td.td-nome{text-align:left;padding-left:14px}
 .falt-day-chip{padding:4px 12px;border-radius:999px;background:#ffe4e6;border:1px solid #fca5a5;color:#9f1239;font-size:.75rem;font-weight:700;display:flex;align-items:center;gap:4px}
 .falt-day-motivo{font-size:.66rem;line-height:1.2;color:#7f1d1d;padding-left:10px;max-width:180px;opacity:.88}
 
+/* CHECK-IN QR */
+.checkin-shell{min-height:100vh;background:linear-gradient(180deg,#1d4ed8 0%,#0f172a 100%);padding:24px;display:flex;align-items:center;justify-content:center}
+.checkin-card{width:100%;max-width:520px;background:#fff;border-radius:24px;box-shadow:0 24px 80px rgba(0,0,0,.25);padding:26px 22px}
+.checkin-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:#dbeafe;color:#1d4ed8;font-size:.75rem;font-weight:800;margin-bottom:12px}
+.checkin-title{font-size:1.5rem;font-weight:900;color:#0f172a;margin-bottom:6px}
+.checkin-sub{font-size:.9rem;color:#475569;margin-bottom:16px}
+.checkin-meta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.checkin-meta-box{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:18px;padding:12px 14px}
+.checkin-meta-box .k{font-size:.72rem;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.checkin-meta-box .v{font-size:1rem;color:#0f172a;font-weight:800}
+.checkin-field{margin-bottom:14px}
+.checkin-label{display:block;font-size:.82rem;color:#334155;font-weight:700;margin-bottom:6px}
+.checkin-input{width:100%;height:50px;border:1.5px solid #cbd5e1;border-radius:18px;padding:0 16px;font-size:1.2rem;font-weight:800;letter-spacing:.22em;text-align:center;outline:none}
+.checkin-input:focus{border-color:#2563eb;box-shadow:0 0 0 4px rgba(37,99,235,.12)}
+.checkin-btn{width:100%;height:48px;border:none;border-radius:999px;background:#16a34a;color:#fff;font-size:.95rem;font-weight:800;cursor:pointer;box-shadow:0 10px 24px rgba(22,163,74,.28)}
+.checkin-btn:hover{background:#15803d}
+.checkin-status{margin-top:14px;padding:12px 14px;border-radius:16px;font-size:.84rem;font-weight:700;display:none}
+.checkin-status.ok{display:block;background:#f0fdf4;color:#166534;border:1.5px solid #86efac}
+.checkin-status.err{display:block;background:#fff1f2;color:#be123c;border:1.5px solid #fda4af}
+.checkin-status.info{display:block;background:#eff6ff;color:#1d4ed8;border:1.5px solid #93c5fd}
+.checkin-candidates{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.checkin-cand-btn{width:100%;text-align:left;background:#fff7ed;border:1.5px solid #fdba74;border-radius:18px;padding:12px 14px;cursor:pointer}
+.checkin-cand-btn strong{display:block;color:#9a3412;font-size:.9rem}
+.checkin-cand-btn span{display:block;color:#7c2d12;font-size:.76rem;margin-top:2px}
+.checkin-help{margin-top:14px;font-size:.76rem;color:#64748b;line-height:1.45}
+@media(max-width:640px){.checkin-shell{padding:14px}.checkin-card{padding:20px 16px}.checkin-meta{grid-template-columns:1fr}}
+
 /* TOAST */
 #toast{position:fixed;bottom:24px;right:24px;background:#1e293b;color:#fff;padding:12px 20px;border-radius:999px;font-size:.85rem;font-weight:600;z-index:9000;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none}
 #toast.show{opacity:1;transform:translateY(0)}
@@ -519,6 +546,10 @@ let _padraoDirty = false;
 let _dashSortCol = 'nome';
 let _dashSortDir = 'asc';
 let _dashPeriod = 'atual';
+const URL_QS=new URLSearchParams(location.search);
+const CHECKIN_MODE=URL_QS.get('checkin')==='1';
+const CHECKIN_LOJA=(URL_QS.get('loja')||'').toLowerCase();
+let _checkinMatches=[];
 
 const DIAS_ORDEM = ['SEG','TER','QUA','QUI','SEX','SAB','DOM'];
 const FIREBASE_CONFIG_KEY_LOADED = true;
@@ -937,8 +968,10 @@ function loadAllData(){
         }catch(e){}
       }
 
-      // Atualiza UI apenas para a loja visível
-      if(loja === lojaAtual){
+      // Atualiza UI conforme o modo atual
+      if(CHECKIN_MODE){
+        if(loja===CHECKIN_LOJA) renderCheckinPage();
+      } else if(loja === lojaAtual){
         rebuildSemSelect();
         renderTable();
         updateCalLabel();
@@ -959,6 +992,10 @@ function loadLocalData(){
       if(p) PADROES[loja]=JSON.parse(p);
     } catch(e){}
   });
+  if(CHECKIN_MODE){
+    renderCheckinPage();
+    return;
+  }
   rebuildSemSelect();
   renderTable();
   updateCalLabel();
@@ -1735,6 +1772,152 @@ function showDashFaltas(nome){
 }
 
 // ═══════════════════════════════════════════
+// CHECK-IN VIA QR + ÚLTIMOS 4 DO TELEFONE
+// ═══════════════════════════════════════════
+function checkinLojaOk(loja){ return ['burger','gourmet','aham'].includes(loja); }
+function checkinLojaNome(loja){ return loja==='burger'?'Burger':loja==='gourmet'?'Gourmet':loja==='aham'?'AHAM':'Loja'; }
+function normalizePhone(v){ return String(v||'').replace(/\D/g,''); }
+function getHojeCheckin(){
+  const now=new Date();
+  const ab=['DOM','SEG','TER','QUA','QUI','SEX','SAB'][now.getDay()];
+  const iso=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  const dm=`${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}`;
+  return {abrev:ab, iso, dm};
+}
+function checkinStoreMatch(mb, loja){
+  const lj=(mb.loja||'').toLowerCase().trim();
+  if(!lj) return true;
+  if(loja==='aham') return lj==='aham'||lj==='outro';
+  if(loja==='gourmet') return lj==='gourmet'||lj.includes('gourmet');
+  if(loja==='burger') return lj==='burger'||lj.includes('burger');
+  return lj===loja;
+}
+function getSemanaAtualCheckin(loja){
+  const semanas=LOJAS[loja]||[];
+  const hoje=new Date(getHojeCheckin().iso+'T12:00:00');
+  for(const sem of semanas){
+    if(!sem?.inicio) continue;
+    const ini=new Date(sem.inicio+'T12:00:00');
+    if(isNaN(ini)) continue;
+    const fim=new Date(ini); fim.setDate(fim.getDate()+6);
+    if(hoje>=ini && hoje<=fim) return sem;
+  }
+  return semanas[0]||null;
+}
+function saveWeeksForLoja(loja, callback){
+  const semanas=LOJAS[loja]||[];
+  try{ localStorage.setItem('escala_semanas_'+loja, JSON.stringify(semanas)); }catch(e){}
+  if(!db){ if(callback) callback(); return; }
+  const obj={};
+  semanas.forEach((s,i)=>{
+    const key=s.inicio?s.inicio.replace(/-/g,''):('idx_'+String(9999-i).padStart(4,'0'));
+    obj[key]=s;
+  });
+  db.ref('escalas/'+loja+'/semanas').set(obj)
+    .then(()=>{ if(callback) callback(); })
+    .catch(e=>setCheckinStatus('Erro ao registrar presença: '+e.message,'err'));
+}
+function setCheckinStatus(msg, type='info'){
+  const box=document.getElementById('checkinStatus');
+  if(!box) return;
+  box.className='checkin-status '+type;
+  box.innerHTML=msg;
+}
+function renderCheckinShell(){
+  document.body.innerHTML=`<div class="checkin-shell"><div class="checkin-card">
+    <div class="checkin-badge">📱 Check-in por QR</div>
+    <div class="checkin-title">Confirmar presença</div>
+    <div class="checkin-sub" id="checkinSub">Carregando dados da loja...</div>
+    <div class="checkin-meta">
+      <div class="checkin-meta-box"><div class="k">Loja</div><div class="v" id="checkinLojaNome">—</div></div>
+      <div class="checkin-meta-box"><div class="k">Dia</div><div class="v" id="checkinDiaInfo">—</div></div>
+    </div>
+    <div class="checkin-field">
+      <label class="checkin-label">Digite os 4 últimos números do telefone</label>
+      <input id="checkinLast4" class="checkin-input" inputmode="numeric" maxlength="4" placeholder="0000">
+    </div>
+    <button class="checkin-btn" onclick="submitCheckinByPhone()">✅ Confirmar presença</button>
+    <div id="checkinStatus" class="checkin-status"></div>
+    <div id="checkinCandidates" class="checkin-candidates"></div>
+    <div class="checkin-help">Use o mesmo telefone cadastrado na escala. Se houver mais de um motoboy com os mesmos 4 números finais, o sistema pedirá a confirmação do nome.</div>
+  </div></div><div id="toast"></div>`;
+  const inp=document.getElementById('checkinLast4');
+  inp.addEventListener('input',()=>{
+    inp.value=inp.value.replace(/\D/g,'').slice(0,4);
+    document.getElementById('checkinCandidates').innerHTML='';
+  });
+  inp.addEventListener('keydown',e=>{ if(e.key==='Enter') submitCheckinByPhone(); });
+}
+function renderCheckinPage(){
+  if(!CHECKIN_MODE) return;
+  const lojaNome=checkinLojaNome(CHECKIN_LOJA);
+  const hoje=getHojeCheckin();
+  const sub=document.getElementById('checkinSub');
+  const lojaEl=document.getElementById('checkinLojaNome');
+  const diaEl=document.getElementById('checkinDiaInfo');
+  if(lojaEl) lojaEl.textContent=lojaNome;
+  if(diaEl) diaEl.textContent=`${hoje.abrev} ${hoje.dm}`;
+  if(!checkinLojaOk(CHECKIN_LOJA)){
+    if(sub) sub.textContent='QR inválido: loja não identificada.';
+    setCheckinStatus('Esse QR não tem uma loja válida configurada.','err');
+    return;
+  }
+  const sem=getSemanaAtualCheckin(CHECKIN_LOJA);
+  if(!sem){
+    if(sub) sub.textContent='Nenhuma semana encontrada para esta loja.';
+    setCheckinStatus('Não encontrei semana ativa para '+lojaNome+'.','err');
+    return;
+  }
+  if(sub) sub.textContent=`Semana atual: ${sem.titulo||'semana ativa'} • digite os 4 últimos números do telefone`;
+  setCheckinStatus('Pronto para registrar presença na loja '+lojaNome+'.','info');
+}
+function submitCheckinByPhone(){
+  const inp=document.getElementById('checkinLast4');
+  const last4=(inp?.value||'').replace(/\D/g,'');
+  const box=document.getElementById('checkinCandidates');
+  if(box) box.innerHTML='';
+  if(last4.length!==4){ setCheckinStatus('Digite exatamente os 4 últimos números do telefone.','err'); return; }
+  const sem=getSemanaAtualCheckin(CHECKIN_LOJA);
+  if(!sem){ setCheckinStatus('Semana atual não encontrada para esta loja.','err'); return; }
+  const hoje=getHojeCheckin();
+  const candidatos=(sem.motoboys||[]).filter(mb=>{
+    if(isTransDeliveryMb(mb)) return false;
+    if(!checkinStoreMatch(mb, CHECKIN_LOJA)) return false;
+    const digits=normalizePhone(mb.telefone);
+    return digits && digits.slice(-4)===last4;
+  });
+  if(!candidatos.length){ setCheckinStatus('Nenhum telefone final '+last4+' foi encontrado na escala atual.','err'); return; }
+  if(candidatos.length===1){ confirmCheckinCandidate(0, candidatos); return; }
+  _checkinMatches=candidatos;
+  setCheckinStatus('Encontrei mais de um motoboy com esse final. Toque no seu nome abaixo:','info');
+  if(box){
+    box.innerHTML=candidatos.map((mb,idx)=>`<button class="checkin-cand-btn" onclick="confirmCheckinCandidate(${idx})"><strong>${esc_(mb.nome||'Motoboy')}</strong><span>Final ${last4} • ${hoje.abrev} ${hoje.dm}</span></button>`).join('');
+  }
+}
+function confirmCheckinCandidate(idx, candidatos){
+  const list=candidatos||_checkinMatches||[];
+  const mb=list[idx];
+  const box=document.getElementById('checkinCandidates');
+  if(!mb){ setCheckinStatus('Motoboy não encontrado para confirmar presença.','err'); return; }
+  const hoje=getHojeCheckin();
+  if(!mb.dias) mb.dias={};
+  if(!mb.conf) mb.conf={};
+  if(mb.conf[hoje.abrev]==='PRESENTE'){
+    setCheckinStatus(`Presença de <strong>${esc_(mb.nome)}</strong> já estava registrada hoje.`, 'ok');
+    if(box) box.innerHTML='';
+    return;
+  }
+  mb.dias[hoje.abrev]='X';
+  mb.conf[hoje.abrev]='PRESENTE';
+  saveWeeksForLoja(CHECKIN_LOJA, ()=>{
+    setCheckinStatus(`✅ Presença registrada: <strong>${esc_(mb.nome)}</strong> em ${hoje.abrev} ${hoje.dm}.`, 'ok');
+    if(box) box.innerHTML='';
+    const el=document.getElementById('checkinLast4');
+    if(el){ el.value=''; el.focus(); }
+  });
+}
+
+// ═══════════════════════════════════════════
 // METAS — SENHA + EDIÇÃO
 // ═══════════════════════════════════════════
 const SENHA_METAS = 'lider12345*';
@@ -1810,6 +1993,11 @@ function loadPadrao(loja){
 // INIT — carrega localStorage IMEDIATAMENTE, Firebase em background
 // ═══════════════════════════════════════════
 document.addEventListener('DOMContentLoaded',()=>{
+  if(CHECKIN_MODE){
+    renderCheckinShell();
+    initFirebase();
+    return;
+  }
   // 1) Carrega dados do localStorage imediatamente para a tela não ficar vazia
   ['burger','gourmet','aham'].forEach(loja=>{
     try{
@@ -1838,6 +2026,5 @@ document.addEventListener('DOMContentLoaded',()=>{
   initFirebase();
 });
 </script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
