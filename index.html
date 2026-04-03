@@ -187,20 +187,11 @@ td.td-nome{text-align:left;padding-left:14px}
 
 /* CHECK-IN QR */
 .checkin-shell{min-height:100vh;background:linear-gradient(180deg,#1d4ed8 0%,#0f172a 100%);padding:24px;display:flex;align-items:center;justify-content:center}
-.checkin-card{width:100%;max-width:520px;background:#fff;border-radius:24px;box-shadow:0 24px 80px rgba(0,0,0,.25);padding:26px 22px}
-.checkin-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:#dbeafe;color:#1d4ed8;font-size:.75rem;font-weight:800;margin-bottom:12px}
-.checkin-title{font-size:1.5rem;font-weight:900;color:#0f172a;margin-bottom:6px}
-.checkin-sub{font-size:.9rem;color:#475569;margin-bottom:16px}
-.checkin-meta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-.checkin-meta-box{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:18px;padding:12px 14px}
-.checkin-meta-box .k{font-size:.72rem;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
-.checkin-meta-box .v{font-size:1rem;color:#0f172a;font-weight:800}
-.checkin-field{margin-bottom:14px}
-.checkin-label{display:block;font-size:.82rem;color:#334155;font-weight:700;margin-bottom:6px}
-.checkin-input{width:100%;height:50px;border:1.5px solid #cbd5e1;border-radius:18px;padding:0 16px;font-size:1.2rem;font-weight:800;letter-spacing:.22em;text-align:center;outline:none}
+.checkin-card{width:100%;max-width:420px;background:transparent;border-radius:24px;box-shadow:none;padding:0}
+.checkin-badge,.checkin-title,.checkin-sub,.checkin-meta,.checkin-meta-box,.checkin-label,.checkin-btn,.checkin-help{display:none !important}
+.checkin-field{margin:0}
+.checkin-input{width:100%;height:58px;border:1.5px solid #cbd5e1;border-radius:999px;padding:0 18px;font-size:1rem;font-weight:700;letter-spacing:.04em;text-align:center;outline:none;background:#fff}
 .checkin-input:focus{border-color:#2563eb;box-shadow:0 0 0 4px rgba(37,99,235,.12)}
-.checkin-btn{width:100%;height:48px;border:none;border-radius:999px;background:#16a34a;color:#fff;font-size:.95rem;font-weight:800;cursor:pointer;box-shadow:0 10px 24px rgba(22,163,74,.28)}
-.checkin-btn:hover{background:#15803d}
 .checkin-status{margin-top:14px;padding:12px 14px;border-radius:16px;font-size:.84rem;font-weight:700;display:none}
 .checkin-status.ok{display:block;background:#f0fdf4;color:#166534;border:1.5px solid #86efac}
 .checkin-status.err{display:block;background:#fff1f2;color:#be123c;border:1.5px solid #fda4af}
@@ -210,7 +201,7 @@ td.td-nome{text-align:left;padding-left:14px}
 .checkin-cand-btn strong{display:block;color:#9a3412;font-size:.9rem}
 .checkin-cand-btn span{display:block;color:#7c2d12;font-size:.76rem;margin-top:2px}
 .checkin-help{margin-top:14px;font-size:.76rem;color:#64748b;line-height:1.45}
-@media(max-width:640px){.checkin-shell{padding:14px}.checkin-card{padding:20px 16px}.checkin-meta{grid-template-columns:1fr}}
+@media(max-width:640px){.checkin-shell{padding:14px}.checkin-card{max-width:100%}}
 
 /* TOAST */
 #toast{position:fixed;bottom:24px;right:24px;background:#1e293b;color:#fff;padding:12px 20px;border-radius:999px;font-size:.85rem;font-weight:600;z-index:9000;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none}
@@ -250,6 +241,7 @@ td.td-nome{text-align:left;padding-left:14px}
   #tableWrap{padding:8px}
   #selSem{width:140px}
   .btn{font-size:.74rem;padding:0 10px}
+  .btn-csv-top,#btnViewSemana,#btnViewPadrao,#dividerViews,#btnOrdenarTab,#sepStatus,#lblStatus,#selStatus1,#btnAddMob,#btnNovaSemMob,#btnExcluirMob,#btnMetas{display:none !important}
 }
 </style>
 </head>
@@ -269,7 +261,7 @@ td.td-nome{text-align:left;padding-left:14px}
     <button class="tab-btn active" id="tabBurger" onclick="setLoja('burger')">🍔 Burger</button>
     <button class="tab-btn" id="tabGourmet" onclick="setLoja('gourmet')">🍽️ Gourmet</button>
     <button class="tab-btn" id="tabAham" onclick="setLoja('aham')">🏠 AHAM</button>
-    <div style="width:1px;height:22px;background:rgba(255,255,255,.25);margin:0 4px"></div>
+    <div id="dividerViews" style="width:1px;height:22px;background:rgba(255,255,255,.25);margin:0 4px"></div>
     <button class="view-btn active" id="btnViewSemana" onclick="setViewMode('semana')">🏠 Escala Atual</button>
     <button class="view-btn" id="btnViewPadrao" onclick="setViewMode('padrao')">📋 Escala Padrão</button>
   </div>
@@ -301,8 +293,8 @@ td.td-nome{text-align:left;padding-left:14px}
       <option value="forte">🔴 Semana Forte</option>
     </select>
     <button class="btn btn-ghost" id="btnOrdenarTab" onclick="toggleOrdem()">⇅ Ordenar</button>
-    <span class="sep"></span>
-    <label class="lbl">Status:</label>
+    <span class="sep" id="sepStatus"></span>
+    <label class="lbl" id="lblStatus">Status:</label>
     <select id="selStatus1" onchange="renderTable()" style="width:150px">
       <option value="">Todos</option>
       <option value="CONFIRMADO">☑️ Confirmados</option>
@@ -1825,51 +1817,35 @@ function setCheckinStatus(msg, type='info'){
 }
 function renderCheckinShell(){
   document.body.innerHTML=`<div class="checkin-shell"><div class="checkin-card">
-    <div class="checkin-badge">📱 Check-in por QR</div>
-    <div class="checkin-title">Confirmar presença</div>
-    <div class="checkin-sub" id="checkinSub">Carregando dados da loja...</div>
-    <div class="checkin-meta">
-      <div class="checkin-meta-box"><div class="k">Loja</div><div class="v" id="checkinLojaNome">—</div></div>
-      <div class="checkin-meta-box"><div class="k">Dia</div><div class="v" id="checkinDiaInfo">—</div></div>
-    </div>
     <div class="checkin-field">
-      <label class="checkin-label">Digite os 4 últimos números do telefone</label>
-      <input id="checkinLast4" class="checkin-input" inputmode="numeric" maxlength="4" placeholder="0000">
+      <input id="checkinLast4" class="checkin-input" inputmode="numeric" maxlength="4" placeholder="Digite os 4 últimos números do telefone">
     </div>
-    <button class="checkin-btn" onclick="submitCheckinByPhone()">✅ Confirmar presença</button>
     <div id="checkinStatus" class="checkin-status"></div>
     <div id="checkinCandidates" class="checkin-candidates"></div>
-    <div class="checkin-help">Use o mesmo telefone cadastrado na escala. Se houver mais de um motoboy com os mesmos 4 números finais, o sistema pedirá a confirmação do nome.</div>
   </div></div><div id="toast"></div>`;
   const inp=document.getElementById('checkinLast4');
+  inp.focus();
   inp.addEventListener('input',()=>{
     inp.value=inp.value.replace(/\D/g,'').slice(0,4);
     document.getElementById('checkinCandidates').innerHTML='';
+    document.getElementById('checkinStatus').className='checkin-status';
+    document.getElementById('checkinStatus').innerHTML='';
+    if(inp.value.length===4) submitCheckinByPhone();
   });
   inp.addEventListener('keydown',e=>{ if(e.key==='Enter') submitCheckinByPhone(); });
 }
 function renderCheckinPage(){
   if(!CHECKIN_MODE) return;
   const lojaNome=checkinLojaNome(CHECKIN_LOJA);
-  const hoje=getHojeCheckin();
-  const sub=document.getElementById('checkinSub');
-  const lojaEl=document.getElementById('checkinLojaNome');
-  const diaEl=document.getElementById('checkinDiaInfo');
-  if(lojaEl) lojaEl.textContent=lojaNome;
-  if(diaEl) diaEl.textContent=`${hoje.abrev} ${hoje.dm}`;
   if(!checkinLojaOk(CHECKIN_LOJA)){
-    if(sub) sub.textContent='QR inválido: loja não identificada.';
     setCheckinStatus('Esse QR não tem uma loja válida configurada.','err');
     return;
   }
   const sem=getSemanaAtualCheckin(CHECKIN_LOJA);
   if(!sem){
-    if(sub) sub.textContent='Nenhuma semana encontrada para esta loja.';
     setCheckinStatus('Não encontrei semana ativa para '+lojaNome+'.','err');
     return;
   }
-  if(sub) sub.textContent=`Semana atual: ${sem.titulo||'semana ativa'} • digite os 4 últimos números do telefone`;
-  setCheckinStatus('Pronto para registrar presença na loja '+lojaNome+'.','info');
 }
 function submitCheckinByPhone(){
   const inp=document.getElementById('checkinLast4');
