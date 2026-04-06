@@ -10,8 +10,6 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif}
 body{background:#f1f5f9;min-height:100vh}
-
-/* HEADER */
 #appHeader{background:linear-gradient(135deg,#1e3a5f 0%,#2563eb 100%);color:#fff;padding:0}
 .header-top{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;gap:10px}
 .header-title{font-size:1.25rem;font-weight:800;letter-spacing:-.01em;white-space:nowrap}
@@ -30,36 +28,24 @@ body{background:#f1f5f9;min-height:100vh}
 .btn-csv-top:hover{background:rgba(255,255,255,.28)}
 .btn-cfg-top{height:30px;width:30px;border-radius:50%;border:1.5px solid rgba(255,255,255,.4);background:rgba(255,255,255,.15);color:#fff;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .btn-cfg-top:hover{background:rgba(255,255,255,.28)}
-
-/* TOOLBAR */
 #toolbar{background:#fff;border-bottom:1.5px solid #e2e8f0;padding:8px 16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 #toolbarPadraoControls{display:none;align-items:center;gap:8px;flex-wrap:nowrap}
 .btn{display:inline-flex;align-items:center;gap:5px;height:34px;padding:0 14px;border-radius:999px;border:none;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
-.btn-primary{background:#2563eb;color:#fff}
-.btn-primary:hover{background:#1d4ed8}
-.btn-success{background:#16a34a;color:#fff}
-.btn-success:hover{background:#15803d}
-.btn-danger{background:#dc2626;color:#fff}
-.btn-danger:hover{background:#b91c1c}
-.btn-ghost{background:#f1f5f9;border:1.5px solid #e2e8f0;color:#475569}
-.btn-ghost:hover{background:#e2e8f0}
-.btn-orange{background:#ea580c;color:#fff}
-.btn-orange:hover{background:#c2410c}
+.btn-primary{background:#2563eb;color:#fff}.btn-primary:hover{background:#1d4ed8}
+.btn-success{background:#16a34a;color:#fff}.btn-success:hover{background:#15803d}
+.btn-danger{background:#dc2626;color:#fff}.btn-danger:hover{background:#b91c1c}
+.btn-ghost{background:#f1f5f9;border:1.5px solid #e2e8f0;color:#475569}.btn-ghost:hover{background:#e2e8f0}
+.btn-orange{background:#ea580c;color:#fff}.btn-orange:hover{background:#c2410c}
 select,input[type=text]{height:34px;padding:0 10px;border:1.5px solid #e2e8f0;border-radius:999px;font-size:.8rem;outline:none;background:#fff;color:#1e293b}
 select:focus,input[type=text]:focus{border-color:#2563eb}
 #selSem{width:180px}
 .sep{width:1px;height:24px;background:#e2e8f0;margin:0 2px}
 .lbl{font-size:.78rem;color:#64748b;font-weight:600;white-space:nowrap}
-
-/* PADRAO BAR */
 #padraoBar{display:none;background:#fff7ed;border-bottom:2px solid #fed7aa;padding:6px 24px 10px;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
 #padraoBar.open{display:flex}
 .padrao-field{display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid #fde68a;border-radius:999px;padding:6px 14px}
 .padrao-field label{font-size:.78rem;font-weight:800;color:#92400e;white-space:nowrap}
 .padrao-field input{width:78px;height:30px;padding:0 10px;border:1.5px solid #e5e7eb;border-radius:999px;font-size:.9rem;font-weight:800;text-align:center}
-.padrao-note{font-size:.78rem;color:#9a3412;font-weight:600;width:100%;text-align:right}
-
-/* CARDS */
 #cardsRow{display:flex;flex-wrap:wrap;gap:10px;padding:14px 24px 0;justify-content:center}
 .card{background:#fff;border-radius:16px;padding:12px 20px;border:1.5px solid #e2e8f0;min-width:120px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:all .18s}
 .card.clickable{cursor:pointer}
@@ -67,21 +53,14 @@ select:focus,input[type=text]:focus{border-color:#2563eb}
 .card.active-filter{border-color:#1d4ed8;box-shadow:0 0 0 2px rgba(29,78,216,.15),0 6px 18px rgba(15,23,42,.1)}
 .card .cv{font-size:1.6rem;font-weight:800}
 .card .cl{font-size:.72rem;font-weight:600;color:#64748b;margin-top:2px}
-.card.c-esc .cv{color:#0369a1}
-.card.c-conf .cv{color:#7c3aed}
-.card.c-pres .cv{color:#15803d}
-.card.c-folga .cv{color:#b45309}
-.card.c-falta .cv{color:#dc2626}
-.card.c-afas .cv{color:#475569}
-.card.c-meta .cv{color:#7c3aed}
-.card.c-meta{border-color:#c4b5fd;background:#faf5ff}
-
-/* TABLE */
+.card.c-esc .cv{color:#0369a1}.card.c-conf .cv{color:#7c3aed}.card.c-pres .cv{color:#15803d}
+.card.c-folga .cv{color:#b45309}.card.c-falta .cv{color:#dc2626}.card.c-afas .cv{color:#475569}
+.card.c-meta .cv{color:#7c3aed}.card.c-meta{border-color:#c4b5fd;background:#faf5ff}
 #tableWrap{overflow-x:auto;padding:16px}
 table{width:100%;border-collapse:collapse;font-size:.82rem;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06)}
 thead th{background:#1e3a5f;color:#fff;padding:10px 8px;text-align:center;font-size:.76rem;font-weight:700;white-space:nowrap}
 th.th-nome{text-align:left;padding-left:14px;min-width:160px}
-th.th-dia{min-width:100px}
+th.th-dia{min-width:110px}
 th.th-flt{min-width:70px}
 th.th-del{min-width:90px}
 tbody tr{border-bottom:1px solid #f1f5f9;transition:background .12s}
@@ -91,11 +70,9 @@ tbody tr.td-row:hover{background:#dcfce7!important}
 td{padding:8px 6px;text-align:center;vertical-align:middle}
 td.td-nome{text-align:left;padding-left:14px}
 .mb-nome{font-weight:700;color:#1e293b;cursor:text;border-bottom:1.5px dashed transparent;transition:border .15s}
-.mb-nome:hover{border-bottom-color:#94a3b8}
-.mb-nome:focus{outline:none;border-bottom-color:#2563eb}
+.mb-nome:hover{border-bottom-color:#94a3b8}.mb-nome:focus{outline:none;border-bottom-color:#2563eb}
 .mb-tel{font-size:.75rem;color:#64748b;cursor:text;border-bottom:1.5px dashed transparent;transition:border .15s;display:block;margin-top:2px}
-.mb-tel:hover{border-bottom-color:#94a3b8}
-.mb-tel:focus{outline:none;border-bottom-color:#2563eb}
+.mb-tel:hover{border-bottom-color:#94a3b8}.mb-tel:focus{outline:none;border-bottom-color:#2563eb}
 .td-chip{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:999px;font-size:.64rem;font-weight:800;background:#dcfce7;color:#166534;vertical-align:middle}
 .td-day-chip{display:inline-block;margin-left:4px;padding:1px 7px;border-radius:999px;font-size:.64rem;font-weight:800;background:#eff6ff;color:#1d4ed8;vertical-align:middle}
 .badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:999px;font-size:.74rem;font-weight:700;cursor:pointer;transition:opacity .12s;white-space:nowrap}
@@ -108,10 +85,8 @@ td.td-nome{text-align:left;padding-left:14px}
 .b-afas{background:#ffedd5;color:#c2410c;border:1px solid #fdba74}
 .b-empty{background:#f1f5f9;color:#94a3b8;border:1px solid #e2e8f0}
 .flt-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:999px;font-size:.78rem;font-weight:800}
-.flt-0{background:#f1f5f9;color:#94a3b8}
-.flt-1{background:#fef9c3;color:#854d0e}
-.flt-2{background:#fed7aa;color:#9a3412}
-.flt-hi{background:#fee2e2;color:#991b1b}
+.flt-0{background:#f1f5f9;color:#94a3b8}.flt-1{background:#fef9c3;color:#854d0e}
+.flt-2{background:#fed7aa;color:#9a3412}.flt-hi{background:#fee2e2;color:#991b1b}
 .btn-cfg{height:26px;padding:0 8px;border-radius:999px;border:1px solid #e2e8f0;background:#f8fafc;color:#64748b;font-size:.72rem;cursor:pointer;margin:0 1px}
 .btn-cfg:hover{background:#e2e8f0}
 .ent-cell{min-width:70px}
@@ -119,12 +94,27 @@ td.td-nome{text-align:left;padding-left:14px}
 .obs-cell{min-width:160px}
 .obs-inp{width:150px;min-height:32px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:.75rem;padding:4px 8px;resize:vertical}
 
-/* NO WEEK */
+/* ══ META DIA — indicadores no cabeçalho da tabela ══ */
+.th-dia-inner{display:flex;flex-direction:column;align-items:center;gap:2px;padding:2px 0}
+.th-dia-name{font-size:.8rem;font-weight:800;letter-spacing:.02em;line-height:1}
+/* Barra de indicadores meta/confirmados */
+.th-meta-bar{display:flex;align-items:center;justify-content:center;width:100%;gap:4px;margin-top:3px}
+.th-meta-left{font-size:.64rem;font-weight:800;padding:2px 6px;border-radius:999px;background:rgba(255,255,255,.18);color:rgba(255,255,255,.95);white-space:nowrap;min-width:26px;text-align:center;border:1px solid rgba(255,255,255,.2)}
+.th-meta-right{font-size:.64rem;font-weight:800;padding:2px 6px;border-radius:999px;white-space:nowrap;min-width:26px;text-align:center;border:1px solid transparent}
+/* Cores do nome do dia conforme status da meta */
+.th-dia-name.meta-ok   { color:#4ade80 }   /* verde  — bateu a meta exata */
+.th-dia-name.meta-low  { color:#f87171 }   /* vermelho — falta atingir */
+.th-dia-name.meta-over { color:#fbbf24 }   /* amarelo — passou da meta */
+/* Badge de confirmados à direita com cor correspondente */
+.th-meta-right.meta-ok  { background:rgba(74,222,128,.28); color:#4ade80; border-color:rgba(74,222,128,.4) }
+.th-meta-right.meta-low { background:rgba(248,113,113,.28); color:#f87171; border-color:rgba(248,113,113,.4) }
+.th-meta-right.meta-over{ background:rgba(251,191,36,.28);  color:#fbbf24; border-color:rgba(251,191,36,.4) }
+/* Data do dia */
+.th-dia-date{font-size:.65rem;font-weight:400;opacity:.75;margin-left:4px}
+
 .no-sem{text-align:center;padding:70px 24px;color:#94a3b8}
 .no-sem .ns-icon{font-size:3.5rem;margin-bottom:14px}
 .no-sem p{font-size:1rem;font-weight:600}
-
-/* OVERLAYS / MODALS */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;align-items:center;justify-content:center}
 .overlay.open{display:flex}
 .modal{background:#fff;border-radius:16px;padding:24px;min-width:320px;max-width:520px;width:92%;box-shadow:0 20px 60px rgba(0,0,0,.25)}
@@ -139,8 +129,6 @@ td.td-nome{text-align:left;padding-left:14px}
 .op-btn:hover{background:#eff6ff;border-color:#bfdbfe}
 .op-btn.selected{border-color:#2563eb;background:#eff6ff;color:#1e40af}
 .od{font-size:.8rem;color:#64748b;margin-bottom:4px;font-weight:700}
-
-/* DASHBOARD */
 .dash-overlay-inner{background:#fff;border-radius:16px;padding:28px;width:96%;max-width:1100px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25)}
 .dash-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
 .dash-top h2{font-size:1.2rem;font-weight:800;color:#1e293b}
@@ -166,7 +154,7 @@ td.td-nome{text-align:left;padding-left:14px}
 .dash-card.total{border-color:#bfdbfe;background:#eff6ff}.dash-card.total .v{color:#2563eb}
 .dash-table-wrap{overflow-x:auto}
 .dash-table{width:100%;border-collapse:collapse;font-size:.82rem}
-.dash-table th{background:#1e3a5f;color:#fff;padding:10px 10px;text-align:center;font-size:.76rem;font-weight:700;cursor:pointer;user-select:none;white-space:nowrap}
+.dash-table th{background:#1e3a5f;color:#fff;padding:10px;text-align:center;font-size:.76rem;font-weight:700;cursor:pointer;user-select:none;white-space:nowrap}
 .dash-table th:hover{background:#2563eb}
 .dash-table th.sort-asc::after{content:' ▲';font-size:.65rem}
 .dash-table th.sort-desc::after{content:' ▼';font-size:.65rem}
@@ -184,12 +172,8 @@ td.td-nome{text-align:left;padding-left:14px}
 .falt-day-item{display:flex;flex-direction:column;align-items:flex-start;gap:3px}
 .falt-day-chip{padding:4px 12px;border-radius:999px;background:#ffe4e6;border:1px solid #fca5a5;color:#9f1239;font-size:.75rem;font-weight:700;display:flex;align-items:center;gap:4px}
 .falt-day-motivo{font-size:.66rem;line-height:1.2;color:#7f1d1d;padding-left:10px;max-width:180px;opacity:.88}
-
-/* CHECK-IN QR */
 .checkin-shell{min-height:100vh;background:linear-gradient(180deg,#1d4ed8 0%,#0f172a 100%);padding:24px;display:flex;align-items:center;justify-content:center}
-.checkin-card{width:100%;max-width:420px;background:transparent;border-radius:24px;box-shadow:none;padding:0}
-.checkin-badge,.checkin-title,.checkin-sub,.checkin-meta,.checkin-meta-box,.checkin-label,.checkin-btn,.checkin-help{display:none !important}
-.checkin-field{margin:0}
+.checkin-card{width:100%;max-width:420px}
 .checkin-input{width:100%;height:58px;border:1.5px solid #cbd5e1;border-radius:999px;padding:0 18px;font-size:1rem;font-weight:700;letter-spacing:.04em;text-align:center;outline:none;background:#fff}
 .checkin-input:focus{border-color:#2563eb;box-shadow:0 0 0 4px rgba(37,99,235,.12)}
 .checkin-status{margin-top:14px;padding:12px 14px;border-radius:16px;font-size:.84rem;font-weight:700;display:none}
@@ -200,14 +184,8 @@ td.td-nome{text-align:left;padding-left:14px}
 .checkin-cand-btn{width:100%;text-align:left;background:#fff7ed;border:1.5px solid #fdba74;border-radius:18px;padding:12px 14px;cursor:pointer}
 .checkin-cand-btn strong{display:block;color:#9a3412;font-size:.9rem}
 .checkin-cand-btn span{display:block;color:#7c2d12;font-size:.76rem;margin-top:2px}
-.checkin-help{margin-top:14px;font-size:.76rem;color:#64748b;line-height:1.45}
-@media(max-width:640px){.checkin-shell{padding:14px}.checkin-card{max-width:100%}}
-
-/* TOAST */
 #toast{position:fixed;bottom:24px;right:24px;background:#1e293b;color:#fff;padding:12px 20px;border-radius:999px;font-size:.85rem;font-weight:600;z-index:9000;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none}
 #toast.show{opacity:1;transform:translateY(0)}
-
-/* CALENDAR */
 #calWrap{position:relative}
 #btnCal{height:34px;padding:0 12px;border-radius:999px;border:1.5px solid #e2e8f0;background:#fff;color:#1e293b;font-size:.8rem;font-weight:600;cursor:pointer}
 #btnCal:hover{background:#eff6ff;border-color:#bfdbfe}
@@ -223,31 +201,22 @@ td.td-nome{text-align:left;padding-left:14px}
 .cal-grid .day.selected{background:#2563eb;color:#fff;font-weight:700}
 .cal-grid .day.other-month{color:#cbd5e1;cursor:default}
 .cal-actions{display:flex;gap:6px;margin-top:8px;justify-content:flex-end}
-
-/* CONFIG */
 .config-box{background:#f8fafc;border-radius:12px;border:1.5px solid #e2e8f0;padding:14px;margin-bottom:12px}
 .config-box h4{font-size:.85rem;font-weight:700;color:#374151;margin-bottom:10px}
 .config-field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
 .config-field label{font-size:.75rem;font-weight:600;color:#6b7280}
 .config-field input{padding:6px 10px;border:1.5px solid #e2e8f0;border-radius:999px;font-size:.82rem;outline:none}
-
-/* RESPONSIVE */
 @media(max-width:768px){
-  .header-top{padding:10px 14px}
-  .header-row2{padding:0 10px 8px}
-  #toolbar{padding:6px 10px}
-  #cardsRow{padding:10px 10px 0;gap:8px}
-  .card{min-width:90px;padding:8px 10px}
-  #tableWrap{padding:8px}
-  #selSem{width:140px}
+  .header-top{padding:10px 14px}.header-row2{padding:0 10px 8px}
+  #toolbar{padding:6px 10px}#cardsRow{padding:10px 10px 0;gap:8px}
+  .card{min-width:90px;padding:8px 10px}#tableWrap{padding:8px}#selSem{width:140px}
   .btn{font-size:.74rem;padding:0 10px}
-  .btn-csv-top,#btnViewSemana,#btnViewPadrao,#dividerViews,#btnOrdenarTab,#sepStatus,#lblStatus,#selStatus1,#btnAddMob,#btnNovaSemMob,#btnExcluirMob,#btnMetas{display:none !important}
+  .btn-csv-top,#btnViewSemana,#btnViewPadrao,#dividerViews,#btnOrdenarTab,#sepStatus,#lblStatus,#selStatus1,#btnAddMob,#btnNovaSemMob,#btnExcluirMob,#btnMetas{display:none!important}
 }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <div id="appHeader">
   <div class="header-top">
     <div class="header-title">📋 Escala de Motoboys</div>
@@ -267,9 +236,7 @@ td.td-nome{text-align:left;padding-left:14px}
   </div>
 </div>
 
-<!-- TOOLBAR -->
 <div id="toolbar">
-  <!-- Controles Escala Normal -->
   <div id="toolbarNormalControls" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;width:100%">
     <label class="lbl">Semana:</label>
     <select id="selSem" onchange="onSelSemChange()"></select>
@@ -311,7 +278,6 @@ td.td-nome{text-align:left;padding-left:14px}
     <button class="btn btn-danger" onclick="openDelModal()" id="btnExcluirMob">🗑️ Excluir</button>
     <button class="btn btn-ghost" onclick="openMetasSenha()" id="btnMetas">🎯 Metas</button>
   </div>
-  <!-- Controles Escala Padrão -->
   <div id="toolbarPadraoControls">
     <button class="btn btn-success" onclick="openAddModal()">➕ Motoboy</button>
     <button class="btn btn-ghost" onclick="clonePadrao()">📌 Clonar semana atual</button>
@@ -320,36 +286,26 @@ td.td-nome{text-align:left;padding-left:14px}
       <label>Qtd. máx. TransDelivery:</label>
       <input type="number" id="inTdMax" min="0" step="1" value="0" onchange="setPadraoTdMax(this.value)">
     </div>
-    <div id="padraoBar" style="display:none"></div>
   </div>
 </div>
 
-<!-- CARDS -->
 <div id="cardsRow"></div>
-
-<!-- TABLE -->
 <div id="tableWrap">
   <table>
     <thead id="thead"></thead>
     <tbody id="tbody"></tbody>
   </table>
 </div>
-
-<!-- TOAST -->
 <div id="toast"></div>
 
-<!-- OVERLAY: ADD MOTOBOY -->
+<!-- OVERLAYS -->
 <div class="overlay" id="overlayAdd">
   <div class="modal">
     <h3>➕ Adicionar Motoboy</h3>
     <div class="form-row"><label>Nome</label><input type="text" id="addNome" placeholder="Nome completo"></div>
     <div class="form-row"><label>Telefone</label><input type="text" id="addTel" placeholder="(00) 00000-0000"></div>
     <div class="form-row"><label>Loja</label>
-      <select id="addLoja">
-        <option value="burger">Burger</option>
-        <option value="gourmet">Gourmet</option>
-        <option value="aham">AHAM</option>
-      </select>
+      <select id="addLoja"><option value="burger">Burger</option><option value="gourmet">Gourmet</option><option value="aham">AHAM</option></select>
     </div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeOverlay('overlayAdd')">Cancelar</button>
@@ -358,7 +314,6 @@ td.td-nome{text-align:left;padding-left:14px}
   </div>
 </div>
 
-<!-- OVERLAY: NOVA SEMANA -->
 <div class="overlay" id="overlayNextWeek">
   <div class="modal">
     <h3>📅 Nova Semana</h3>
@@ -370,7 +325,7 @@ td.td-nome{text-align:left;padding-left:14px}
         <option value="forte">🔴 Semana Forte</option>
       </select>
     </div>
-    <p style="font-size:.82rem;color:#64748b">A escala padrão salva (TransDelivery) será aplicada automaticamente.</p>
+    <p style="font-size:.82rem;color:#64748b">A escala padrão salva será aplicada automaticamente.</p>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeOverlay('overlayNextWeek')">Cancelar</button>
       <button class="btn btn-primary" onclick="createNextWeek()">Criar Semana</button>
@@ -378,11 +333,10 @@ td.td-nome{text-align:left;padding-left:14px}
   </div>
 </div>
 
-<!-- OVERLAY: EXCLUIR SEMANA -->
 <div class="overlay" id="overlayDel">
   <div class="modal">
     <h3>🗑️ Excluir Semana</h3>
-    <p>Tem certeza que deseja excluir a semana <strong id="delSemTitle"></strong>? Esta ação não pode ser desfeita.</p>
+    <p>Tem certeza que deseja excluir a semana <strong id="delSemTitle"></strong>?</p>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeOverlay('overlayDel')">Cancelar</button>
       <button class="btn btn-danger" onclick="executarExcluir()">Excluir</button>
@@ -390,7 +344,6 @@ td.td-nome{text-align:left;padding-left:14px}
   </div>
 </div>
 
-<!-- OVERLAY: EDITAR MOTOBOY COMPLETO -->
 <div class="overlay" id="overlayEdit">
   <div class="modal" style="max-width:600px">
     <h3 id="editTitle">⚙️ Editar Motoboy</h3>
@@ -402,11 +355,10 @@ td.td-nome{text-align:left;padding-left:14px}
   </div>
 </div>
 
-<!-- OVERLAY: SALVAR ESCALA PADRÃO -->
 <div class="overlay" id="overlaySalvarPadrao">
   <div class="modal">
     <h3>💾 Salvar Escala Padrão</h3>
-    <p>Isso irá salvar a configuração atual (incluindo quantidade de TransDelivery) como o padrão para novas semanas. Os motoboys regulares permanecem inalterados.</p>
+    <p>Isso irá salvar a configuração atual como o padrão para novas semanas.</p>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeOverlay('overlaySalvarPadrao')">Cancelar</button>
       <button class="btn btn-orange" onclick="executarSalvarPadrao()">💾 Confirmar</button>
@@ -414,7 +366,6 @@ td.td-nome{text-align:left;padding-left:14px}
   </div>
 </div>
 
-<!-- OVERLAY: CONFIG FIREBASE -->
 <div class="overlay" id="overlayConfig">
   <div class="modal" style="max-width:480px">
     <h3>⚙️ Configuração Firebase</h3>
@@ -431,7 +382,6 @@ td.td-nome{text-align:left;padding-left:14px}
   </div>
 </div>
 
-<!-- OVERLAY: SENHA METAS -->
 <div class="overlay" id="overlaySenhaMetas">
   <div class="modal" style="max-width:340px">
     <h3>🔒 Acesso restrito</h3>
@@ -447,7 +397,6 @@ td.td-nome{text-align:left;padding-left:14px}
   </div>
 </div>
 
-<!-- OVERLAY: EDITAR METAS -->
 <div class="overlay" id="overlayMetas">
   <div class="modal" style="max-width:540px;max-height:90vh;overflow-y:auto">
     <h3>🎯 Metas — <span id="metasLojaTitle"></span></h3>
@@ -469,7 +418,6 @@ td.td-nome{text-align:left;padding-left:14px}
   </div>
 </div>
 
-<!-- OVERLAY: DASHBOARD -->
 <div class="overlay" id="overlayDashboard">
   <div class="dash-overlay-inner">
     <div class="dash-top">
@@ -482,10 +430,8 @@ td.td-nome{text-align:left;padding-left:14px}
         <button class="dash-period-btn" id="btnMesAnterior" onclick="setDashPeriod('anterior')">Mês Anterior</button>
       </div>
       <div class="dash-date-range">
-        <label>De:</label>
-        <input type="date" id="dashDe" onchange="renderDashboard()">
-        <label>Até:</label>
-        <input type="date" id="dashAte" onchange="renderDashboard()">
+        <label>De:</label><input type="date" id="dashDe" onchange="renderDashboard()">
+        <label>Até:</label><input type="date" id="dashAte" onchange="renderDashboard()">
       </div>
       <input type="text" class="dash-search" id="dashSearch" placeholder="🔍 Buscar motoboy...">
     </div>
@@ -501,1025 +447,447 @@ td.td-nome{text-align:left;padding-left:14px}
 </div>
 
 <script>
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 // FIREBASE CONFIG
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 const FIREBASE_CONFIG_KEY = 'escala_fb_config';
 function getFirebaseConfig(){
-  const defaults = {
-    apiKey:"AIzaSyDwmz1FIXvqog8jTovOeEEwDGdKUCG3_r8",
-    authDomain:"escala-motoboys-fdef4.firebaseapp.com",
-    databaseURL:"https://escala-motoboys-fdef4-default-rtdb.firebaseio.com",
-    projectId:"escala-motoboys-fdef4",
-    storageBucket:"escala-motoboys-fdef4.firebasestorage.app",
-    messagingSenderId:"326093631971",
-    appId:"1:326093631971:web:c521964297868d6246f0d6"
-  };
-  try{
-    const saved = JSON.parse(localStorage.getItem(FIREBASE_CONFIG_KEY)||'{}');
-    if(saved.apiKey && saved.apiKey.length > 10 && !saved.apiKey.includes('Placeholder')){
-      return Object.assign({}, defaults, saved);
-    }
-  } catch(e){}
+  const defaults={apiKey:"AIzaSyDwmz1FIXvqog8jTovOeEEwDGdKUCG3_r8",authDomain:"escala-motoboys-fdef4.firebaseapp.com",databaseURL:"https://escala-motoboys-fdef4-default-rtdb.firebaseio.com",projectId:"escala-motoboys-fdef4",storageBucket:"escala-motoboys-fdef4.firebasestorage.app",messagingSenderId:"326093631971",appId:"1:326093631971:web:c521964297868d6246f0d6"};
+  try{const s=JSON.parse(localStorage.getItem(FIREBASE_CONFIG_KEY)||'{}');if(s.apiKey&&s.apiKey.length>10&&!s.apiKey.includes('Placeholder'))return Object.assign({},defaults,s);}catch(e){}
   return defaults;
 }
 
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 // GLOBALS
-// ═══════════════════════════════════════════
-let db = null;
-let LOJAS = { burger:[], gourmet:[], aham:[] };
-let PADROES = {};
-let lojaAtual = 'burger';
-let viewMode = 'semana';
-let _filtDay = null;
-let _ordemAtiva = false;
-let _padraoDirty = false;
-let _dashSortCol = 'nome';
-let _dashSortDir = 'asc';
-let _dashPeriod = 'atual';
+// ═══════════════════════════════════════════════════════════════
+let db=null;
+let LOJAS={burger:[],gourmet:[],aham:[]};
+let PADROES={};
+let lojaAtual='burger';
+let viewMode='semana';
+let _filtDay=null;
+let _ordemAtiva=false;
+let _padraoDirty=false;
+let _dashSortCol='nome';
+let _dashSortDir='asc';
+let _dashPeriod='atual';
 const URL_QS=new URLSearchParams(location.search);
 const CHECKIN_MODE=URL_QS.get('checkin')==='1';
 const CHECKIN_LOJA=(URL_QS.get('loja')||'').toLowerCase();
 let _checkinMatches=[];
+const DIAS_ORDEM=['SEG','TER','QUA','QUI','SEX','SAB','DOM'];
 
-const DIAS_ORDEM = ['SEG','TER','QUA','QUI','SEX','SAB','DOM'];
-const FIREBASE_CONFIG_KEY_LOADED = true;
-
-// ═══════════════════════════════════════════
-// UTILITIES
-// ═══════════════════════════════════════════
-function esc_(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function toast(msg, dur=2800){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), dur);
+// ═══════════════════════════════════════════════════════════════
+// METAS POR LOJA (editáveis via botão 🎯 Metas com senha)
+// ═══════════════════════════════════════════════════════════════
+const METAS_DEFAULT={
+  burger:{fraca:{SEG:12,TER:17,QUA:18,QUI:18,SEX:33,SAB:33,DOM:30},forte:{SEG:15,TER:19,QUA:20,QUI:20,SEX:38,SAB:38,DOM:30}},
+  gourmet:{fraca:{SEG:10,TER:18,QUA:20,QUI:18,SEX:22,SAB:22,DOM:10},forte:{SEG:15,TER:22,QUA:25,QUI:22,SEX:25,SAB:25,DOM:20}},
+  aham:{fraca:{SEG:7,TER:10,QUA:10,QUI:12,SEX:25,SAB:25,DOM:20},forte:{SEG:8,TER:12,QUA:12,QUI:12,SEX:25,SAB:25,DOM:18}}
+};
+let METAS_CUSTOM={};
+function getMetasLoja(loja,tipo){
+  const c=METAS_CUSTOM[loja];
+  if(c&&c[tipo])return c[tipo];
+  return METAS_DEFAULT[loja]?.[tipo]||{SEG:0,TER:0,QUA:0,QUI:0,SEX:0,SAB:0,DOM:0};
 }
-function openOverlay(id){ document.getElementById(id).classList.add('open'); }
-function closeOverlay(id){ document.getElementById(id).classList.remove('open'); }
+
+// ═══════════════════════════════════════════════════════════════
+// UTILITIES
+// ═══════════════════════════════════════════════════════════════
+function esc_(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function toast(msg,dur=2800){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
+function openOverlay(id){document.getElementById(id).classList.add('open');}
+function closeOverlay(id){document.getElementById(id).classList.remove('open');}
 
 document.addEventListener('click',e=>{
-  if(!document.getElementById('calWrap').contains(e.target)) closeCal();
-  if(e.target===document.getElementById('overlayDashboard')) closeOverlay('overlayDashboard');
-  if(e.target===document.getElementById('overlayAdd')) closeOverlay('overlayAdd');
-  if(e.target===document.getElementById('overlayNextWeek')) closeOverlay('overlayNextWeek');
-  if(e.target===document.getElementById('overlayDel')) closeOverlay('overlayDel');
-  if(e.target===document.getElementById('overlayEdit')) closeOverlay('overlayEdit');
-  if(e.target===document.getElementById('overlayConfig')) closeOverlay('overlayConfig');
-  if(e.target===document.getElementById('overlaySenhaMetas')) closeOverlay('overlaySenhaMetas');
-  if(e.target===document.getElementById('overlayMetas')) closeOverlay('overlayMetas');
+  if(!document.getElementById('calWrap').contains(e.target))closeCal();
+  ['overlayDashboard','overlayAdd','overlayNextWeek','overlayDel','overlayEdit','overlayConfig','overlaySenhaMetas','overlayMetas'].forEach(id=>{if(e.target===document.getElementById(id))closeOverlay(id);});
 });
 
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 // TRANSDELIVERY HELPERS
-// ═══════════════════════════════════════════
-function isTransDeliveryMb(mb){
-  return mb.transdelivery===true || (mb.nome||'').toUpperCase().startsWith('TRANSDELIVERY');
-}
+// ═══════════════════════════════════════════════════════════════
+function isTransDeliveryMb(mb){return mb.transdelivery===true||(mb.nome||'').toUpperCase().startsWith('TRANSDELIVERY');}
+function defaultTdConf(){const c={};DIAS_ORDEM.forEach(d=>{c[d]=(d==='SEX'||d==='SAB'||d==='DOM')?'CONFIRMADO':'';});return c;}
+function defaultTdDays(){const d={};DIAS_ORDEM.forEach(dia=>{d[dia]=(dia==='SEX'||dia==='SAB'||dia==='DOM')?'X':'FOLGA';});return d;}
+function createTdPlaceholder(loja,slot){return{nome:'TRANSDELIVERY',loja:loja||lojaAtual,telefone:'',ativo:'SIM',transdelivery:true,tdSlot:slot||0,dias:defaultTdDays(),conf:defaultTdConf(),obs:{},entregas:{}};}
+function sortMotoboys(arr){return arr.slice().sort((a,b)=>{const aT=isTransDeliveryMb(a),bT=isTransDeliveryMb(b);if(aT&&!bT)return 1;if(!aT&&bT)return -1;if(aT&&bT){const nA=(a.nome||'').toUpperCase(),nB=(b.nome||'').toUpperCase();if(nA!==nB)return nA.localeCompare(nB);return(a.tdSlot||0)-(b.tdSlot||0);}return(a.nome||'').localeCompare(b.nome||'');});}
+function syncTdSlots(arr){let s=0;arr.forEach(mb=>{if(isTransDeliveryMb(mb))mb.tdSlot=s++;});}
+function countTransTotal(arr){return(arr||[]).filter(mb=>isTransDeliveryMb(mb)).length;}
 
-function defaultTdConf(){
-  const c={};
-  DIAS_ORDEM.forEach(d=>{
-    c[d] = (d==='SEX'||d==='SAB'||d==='DOM') ? 'CONFIRMADO' : '';
-  });
-  return c;
-}
-
-function defaultTdDays(){
-  const d={};
-  DIAS_ORDEM.forEach(dia=>{
-    d[dia] = (dia==='SEX'||dia==='SAB'||dia==='DOM') ? 'X' : 'FOLGA';
-  });
-  return d;
-}
-
-function createTdPlaceholder(loja, slot){
-  return {
-    nome:'TRANSDELIVERY',
-    loja: loja||lojaAtual,
-    telefone:'',
-    ativo:'SIM',
-    transdelivery:true,
-    tdSlot: slot||0,
-    dias: defaultTdDays(),
-    conf: defaultTdConf(),
-    obs:{},
-    entregas:{}
-  };
-}
-
-function sortMotoboys(arr){
-  return arr.slice().sort((a,b)=>{
-    const aTd=isTransDeliveryMb(a), bTd=isTransDeliveryMb(b);
-    if(aTd&&!bTd) return 1;
-    if(!aTd&&bTd) return -1;
-    if(aTd&&bTd){
-      const nA=(a.nome||'').toUpperCase(), nB=(b.nome||'').toUpperCase();
-      if(nA!==nB) return nA.localeCompare(nB);
-      return (a.tdSlot||0)-(b.tdSlot||0);
-    }
-    return (a.nome||'').localeCompare(b.nome||'');
-  });
-}
-
-function syncTdSlots(arr){
-  let slot=0;
-  arr.forEach(mb=>{ if(isTransDeliveryMb(mb)){ mb.tdSlot=slot++; } });
-}
-
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 // PADRAO MANAGEMENT
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 function ensurePadrao(loja){
-  const l = loja||lojaAtual;
-  if(!PADROES[l]){
-    PADROES[l]={
-      salvoEm:null, origemInicio:null, datas:{},
-      motoboys:[], transdeliveryMax:0
-    };
-  }
-  const p = PADROES[l];
-  if(!p.motoboys) p.motoboys=[];
-  if(!p.transdeliveryMax) p.transdeliveryMax=0;
+  const l=loja||lojaAtual;
+  if(!PADROES[l])PADROES[l]={salvoEm:null,origemInicio:null,datas:{},motoboys:[],transdeliveryMax:0};
+  const p=PADROES[l];
+  if(!p.motoboys)p.motoboys=[];
+  if(!p.transdeliveryMax)p.transdeliveryMax=0;
   syncTdSlots(p.motoboys);
-  p.motoboys = sortMotoboys(p.motoboys);
+  p.motoboys=sortMotoboys(p.motoboys);
   return p;
 }
+function getPadraoViewSem(){const p=ensurePadrao();return{titulo:'Escala Padrão',inicio:null,datas:p.datas||{},motoboys:p.motoboys||[],tipo:''};}
+function getActiveSem(){if(viewMode==='padrao')return getPadraoViewSem();const si=getSI();if(si===null)return null;return(LOJAS[lojaAtual]||[])[si]||null;}
+function markPadraoDirty(){_padraoDirty=true;}
+function persistActive(si){if(viewMode==='padrao'){markPadraoDirty();renderTable();return;}saveWeekToFB(si);}
+function sanitizeTdForClone(mb){return{nome:'TRANSDELIVERY',loja:mb.loja||lojaAtual,telefone:'',ativo:'SIM',transdelivery:true,tdSlot:mb.tdSlot||0,dias:defaultTdDays(),conf:defaultTdConf(),obs:{},entregas:{}};}
 
-function getPadraoViewSem(){
-  const p = ensurePadrao();
-  return { titulo:'Escala Padrão', inicio:null, datas:p.datas||{}, motoboys:p.motoboys||[], tipo:'' };
-}
-
-function getActiveSem(){
-  if(viewMode==='padrao') return getPadraoViewSem();
-  const si=getSI();
-  if(si===null) return null;
-  return (LOJAS[lojaAtual]||[])[si]||null;
-}
-
-function markPadraoDirty(){ _padraoDirty=true; }
-
-function persistActive(si){
-  if(viewMode==='padrao'){ markPadraoDirty(); renderTable(); return; }
-  saveWeekToFB(si);
-}
-
-function sanitizeTdForClone(mb){
-  return {
-    nome:'TRANSDELIVERY',
-    loja: mb.loja||lojaAtual,
-    telefone:'',
-    ativo:'SIM',
-    transdelivery:true,
-    tdSlot: mb.tdSlot||0,
-    dias: defaultTdDays(),
-    conf: defaultTdConf(),
-    obs:{},
-    entregas:{}
-  };
-}
-
-function countTransTotal(arr){
-  return (arr||[]).filter(mb=>isTransDeliveryMb(mb)).length;
-}
-
-// ═══════════════════════════════════════════
-// PADRAO ACTIONS
-// ═══════════════════════════════════════════
 function clonePadrao(){
-  const si=getSI();
-  const semanas=LOJAS[lojaAtual]||[];
-  if(si===null||!semanas[si]){ toast('Nenhuma semana atual para clonar.'); return; }
-  const sem=semanas[si];
-  const padrao=ensurePadrao();
+  const si=getSI();const semanas=LOJAS[lojaAtual]||[];
+  if(si===null||!semanas[si]){toast('Nenhuma semana atual para clonar.');return;}
+  const sem=semanas[si];const padrao=ensurePadrao();
   const regularMbs=(sem.motoboys||[]).filter(mb=>!isTransDeliveryMb(mb)).map(mb=>JSON.parse(JSON.stringify(mb)));
-  const tdCount=countTransTotal(sem.motoboys);
-  const tdMbs=[];
-  for(let i=0;i<tdCount;i++) tdMbs.push(sanitizeTdForClone({tdSlot:i}));
-  padrao.motoboys=[...regularMbs,...tdMbs];
-  padrao.transdeliveryMax=tdCount;
-  padrao.datas=sem.datas||{};
-  padrao.origemInicio=sem.inicio;
-  syncTdSlots(padrao.motoboys);
-  padrao.motoboys=sortMotoboys(padrao.motoboys);
+  const tdCount=countTransTotal(sem.motoboys);const tdMbs=[];
+  for(let i=0;i<tdCount;i++)tdMbs.push(sanitizeTdForClone({tdSlot:i}));
+  padrao.motoboys=[...regularMbs,...tdMbs];padrao.transdeliveryMax=tdCount;
+  padrao.datas=sem.datas||{};padrao.origemInicio=sem.inicio;
+  syncTdSlots(padrao.motoboys);padrao.motoboys=sortMotoboys(padrao.motoboys);
   document.getElementById('inTdMax').value=tdCount;
-  markPadraoDirty();
-  renderTable();
-  toast('✅ Semana atual clonada para Escala Padrão!');
+  markPadraoDirty();renderTable();toast('✅ Semana atual clonada para Escala Padrão!');
 }
-
-function confirmarSalvarPadrao(){ openOverlay('overlaySalvarPadrao'); }
-
-function executarSalvarPadrao(){
-  closeOverlay('overlaySalvarPadrao');
-  salvarEscalaPadrao();
-}
-
+function confirmarSalvarPadrao(){openOverlay('overlaySalvarPadrao');}
+function executarSalvarPadrao(){closeOverlay('overlaySalvarPadrao');salvarEscalaPadrao();}
 function salvarEscalaPadrao(){
-  const padrao=ensurePadrao();
-  padrao.salvoEm=Date.now();
-  const payload={
-    salvoEm:padrao.salvoEm,
-    origemInicio:padrao.origemInicio||null,
-    datas:padrao.datas||{},
-    transdeliveryMax:padrao.transdeliveryMax||0,
-    motoboys:(padrao.motoboys||[]).map(mb=>{
-      if(isTransDeliveryMb(mb)) return {
-        nome:'TRANSDELIVERY',loja:mb.loja||lojaAtual,telefone:'',
-        ativo:'SIM',transdelivery:true,tdSlot:mb.tdSlot||0,
-        dias:defaultTdDays(),conf:defaultTdConf(),obs:{},entregas:{}
-      };
-      return JSON.parse(JSON.stringify(mb));
-    })
-  };
-  if(db){
-    db.ref('escalas/'+lojaAtual+'/padrao').set(payload)
-      .then(()=>{ _padraoDirty=false; toast('✅ Escala Padrão salva no Firebase!'); })
-      .catch(e=>{ toast('❌ Erro ao salvar: '+e.message); });
-  } else {
-    try{
-      localStorage.setItem('escala_padrao_'+lojaAtual, JSON.stringify(payload));
-      _padraoDirty=false;
-      toast('✅ Escala Padrão salva localmente!');
-    } catch(e){ toast('❌ Erro ao salvar localmente'); }
-  }
+  const padrao=ensurePadrao();padrao.salvoEm=Date.now();
+  const payload={salvoEm:padrao.salvoEm,origemInicio:padrao.origemInicio||null,datas:padrao.datas||{},transdeliveryMax:padrao.transdeliveryMax||0,
+    motoboys:(padrao.motoboys||[]).map(mb=>{if(isTransDeliveryMb(mb))return{nome:'TRANSDELIVERY',loja:mb.loja||lojaAtual,telefone:'',ativo:'SIM',transdelivery:true,tdSlot:mb.tdSlot||0,dias:defaultTdDays(),conf:defaultTdConf(),obs:{},entregas:{}};return JSON.parse(JSON.stringify(mb));})};
+  if(db){db.ref('escalas/'+lojaAtual+'/padrao').set(payload).then(()=>{_padraoDirty=false;toast('✅ Escala Padrão salva no Firebase!');}).catch(e=>{toast('❌ Erro ao salvar: '+e.message);});}
+  else{try{localStorage.setItem('escala_padrao_'+lojaAtual,JSON.stringify(payload));_padraoDirty=false;toast('✅ Escala Padrão salva localmente!');}catch(e){toast('❌ Erro ao salvar localmente');}}
 }
-
 function setPadraoTdMax(qtd){
-  const n=Math.max(0,parseInt(qtd)||0);
-  const padrao=ensurePadrao();
-  padrao.transdeliveryMax=n;
-  const regulares=(padrao.motoboys||[]).filter(mb=>!isTransDeliveryMb(mb));
-  const tdArr=[];
-  for(let i=0;i<n;i++) tdArr.push(createTdPlaceholder(lojaAtual,i));
-  padrao.motoboys=[...regulares,...tdArr];
-  syncTdSlots(padrao.motoboys);
-  padrao.motoboys=sortMotoboys(padrao.motoboys);
-  markPadraoDirty();
-  renderTable();
+  const n=Math.max(0,parseInt(qtd)||0);const padrao=ensurePadrao();padrao.transdeliveryMax=n;
+  const regulares=(padrao.motoboys||[]).filter(mb=>!isTransDeliveryMb(mb));const tdArr=[];
+  for(let i=0;i<n;i++)tdArr.push(createTdPlaceholder(lojaAtual,i));
+  padrao.motoboys=[...regulares,...tdArr];syncTdSlots(padrao.motoboys);padrao.motoboys=sortMotoboys(padrao.motoboys);
+  markPadraoDirty();renderTable();
 }
 
-// ═══════════════════════════════════════════
-// VIEW MODE
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// VIEW MODE / LOJA
+// ═══════════════════════════════════════════════════════════════
 function setViewMode(mode){
   viewMode=mode;
-  document.getElementById('btnViewSemana').classList.toggle('active', mode==='semana');
-  document.getElementById('btnViewPadrao').classList.toggle('active', mode==='padrao');
-  document.getElementById('toolbarNormalControls').style.display = mode==='semana'?'flex':'none';
-  document.getElementById('toolbarPadraoControls').style.display = mode==='padrao'?'flex':'none';
-  if(mode==='padrao'){
-    const p=ensurePadrao();
-    document.getElementById('inTdMax').value=p.transdeliveryMax||0;
-  }
+  document.getElementById('btnViewSemana').classList.toggle('active',mode==='semana');
+  document.getElementById('btnViewPadrao').classList.toggle('active',mode==='padrao');
+  document.getElementById('toolbarNormalControls').style.display=mode==='semana'?'flex':'none';
+  document.getElementById('toolbarPadraoControls').style.display=mode==='padrao'?'flex':'none';
+  if(mode==='padrao'){const p=ensurePadrao();document.getElementById('inTdMax').value=p.transdeliveryMax||0;}
   renderTable();
 }
-
-// ═══════════════════════════════════════════
-// LOJA
-// ═══════════════════════════════════════════
 function setLoja(loja){
   lojaAtual=loja;
-  ['burger','gourmet','aham'].forEach(l=>{
-    document.getElementById('tab'+l.charAt(0).toUpperCase()+l.slice(1)).classList.toggle('active', l===loja);
-  });
-  if(viewMode==='padrao'){
-    const p=ensurePadrao();
-    document.getElementById('inTdMax').value=p.transdeliveryMax||0;
-  }
-  rebuildSemSelect();
-  renderTable();
-  updateCalLabel();
+  ['burger','gourmet','aham'].forEach(l=>{document.getElementById('tab'+l.charAt(0).toUpperCase()+l.slice(1)).classList.toggle('active',l===loja);});
+  if(viewMode==='padrao'){const p=ensurePadrao();document.getElementById('inTdMax').value=p.transdeliveryMax||0;}
+  rebuildSemSelect();renderTable();updateCalLabel();
 }
 
-// ═══════════════════════════════════════════
-// SEMANA SELECT — ORDEM DECRESCENTE (última criada no topo)
-// A regra é: o array LOJAS[loja] é sempre mantido com o mais recente
-// no índice 0. O select reflete isso diretamente (índice 0 = primeira opção).
-// Exclusão NUNCA reordena — apenas remove o elemento no índice correto.
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// SEMANA SELECT
+// ═══════════════════════════════════════════════════════════════
 function rebuildSemSelect(){
-  const sel=document.getElementById('selSem');
-  const semanas=LOJAS[lojaAtual]||[];
-  const prevVal=sel.value;
-  sel.innerHTML='';
-  if(!semanas.length){
-    const opt=document.createElement('option');
-    opt.value=''; opt.textContent='Nenhuma semana';
-    sel.appendChild(opt);
-    return;
-  }
-  // O array já está em ordem decrescente (índice 0 = mais recente)
-  semanas.forEach((sem,i)=>{
-    const opt=document.createElement('option');
-    opt.value=String(i);
-    opt.textContent=sem.titulo||('Semana '+(i+1));
-    sel.appendChild(opt);
-  });
-  // Tenta manter a seleção anterior, senão seleciona a mais recente (índice 0)
-  if(prevVal!=='' && prevVal!==null && prevVal!==undefined){
-    const pv=parseInt(prevVal);
-    if(!isNaN(pv) && pv < semanas.length){
-      sel.value=String(pv);
-    } else {
-      sel.value='0';
-    }
-  } else {
-    sel.value='0';
-  }
+  const sel=document.getElementById('selSem');const semanas=LOJAS[lojaAtual]||[];const prevVal=sel.value;sel.innerHTML='';
+  if(!semanas.length){const opt=document.createElement('option');opt.value='';opt.textContent='Nenhuma semana';sel.appendChild(opt);return;}
+  semanas.forEach((sem,i)=>{const opt=document.createElement('option');opt.value=String(i);opt.textContent=sem.titulo||('Semana '+(i+1));sel.appendChild(opt);});
+  const pv=parseInt(prevVal);sel.value=(!isNaN(pv)&&pv<semanas.length)?String(pv):'0';
 }
+function getSI(){const v=parseInt(document.getElementById('selSem').value);if(isNaN(v))return null;const s=LOJAS[lojaAtual]||[];return(v>=0&&v<s.length)?v:null;}
+function onSelSemChange(){_filtDay=null;updateCalLabel();renderTable();}
 
-function getSI(){
-  const sel=document.getElementById('selSem');
-  const v=parseInt(sel.value);
-  if(isNaN(v)) return null;
-  const semanas=LOJAS[lojaAtual]||[];
-  if(v<0||v>=semanas.length) return null;
-  return v;
-}
-
-function onSelSemChange(){
-  _filtDay=null;
-  updateCalLabel();
-  renderTable();
-}
-
-// ═══════════════════════════════════════════
-// FIREBASE
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// FIREBASE INIT / LOAD
+// ═══════════════════════════════════════════════════════════════
 function initFirebase(){
   const cfg=getFirebaseConfig();
-  const cfgApiEl=document.getElementById('cfgApiKey');
-  const cfgDbEl=document.getElementById('cfgDbUrl');
-  const cfgPrjEl=document.getElementById('cfgProjectId');
-  if(cfgApiEl) cfgApiEl.value=cfg.apiKey||'';
-  if(cfgDbEl)  cfgDbEl.value=cfg.databaseURL||'';
-  if(cfgPrjEl) cfgPrjEl.value=cfg.projectId||'';
+  const ak=document.getElementById('cfgApiKey');const du=document.getElementById('cfgDbUrl');const pi=document.getElementById('cfgProjectId');
+  if(ak)ak.value=cfg.apiKey||'';if(du)du.value=cfg.databaseURL||'';if(pi)pi.value=cfg.projectId||'';
   try{
-    if(firebase.apps && firebase.apps.length){
-      firebase.apps.forEach(app=>{ try{app.delete();}catch(e){} });
-    }
-    firebase.initializeApp(cfg);
-    db=firebase.database();
-    // Testa conectividade antes de declarar online
-    db.ref('.info/connected').on('value', snap=>{
-      updateSyncStatus(snap.val()===true);
-    });
+    if(firebase.apps&&firebase.apps.length)firebase.apps.forEach(app=>{try{app.delete();}catch(e){}});
+    firebase.initializeApp(cfg);db=firebase.database();
+    db.ref('.info/connected').on('value',snap=>updateSyncStatus(snap.val()===true));
     loadAllData();
-  } catch(e){
-    console.error('Firebase init error:',e);
-    updateSyncStatus(false);
-    loadLocalData();
-  }
+  }catch(e){console.error('Firebase init error:',e);updateSyncStatus(false);loadLocalData();}
 }
-
 function updateSyncStatus(online){
-  const dot=document.getElementById('syncDot');
-  const lbl=document.getElementById('syncLabel');
-  if(dot) dot.className='sync-dot'+(online?'':' off');
-  if(lbl) lbl.innerHTML=(online?'<span class="sync-dot"></span>':'<span class="sync-dot off"></span>')+(online?'Online':'Offline');
+  const dot=document.getElementById('syncDot');const lbl=document.getElementById('syncLabel');
+  if(dot)dot.className='sync-dot'+(online?'':' off');
+  if(lbl)lbl.innerHTML=(online?'<span class="sync-dot"></span>':'<span class="sync-dot off"></span>')+(online?'Online':'Offline');
 }
-
 function salvarConfig(){
   const cfg=getFirebaseConfig();
-  const newCfg={
-    apiKey:document.getElementById('cfgApiKey').value.trim()||cfg.apiKey,
-    databaseURL:document.getElementById('cfgDbUrl').value.trim()||cfg.databaseURL,
-    projectId:document.getElementById('cfgProjectId').value.trim()||cfg.projectId,
-    authDomain:cfg.authDomain,
-    storageBucket:cfg.storageBucket,
-    messagingSenderId:cfg.messagingSenderId,
-    appId:cfg.appId
-  };
-  if(!newCfg.databaseURL){ toast('❌ Database URL é obrigatória'); return; }
-  localStorage.setItem(FIREBASE_CONFIG_KEY, JSON.stringify(newCfg));
-  closeOverlay('overlayConfig');
-  toast('🔄 Reconectando...');
-  setTimeout(()=>location.reload(), 1200);
+  const newCfg={apiKey:document.getElementById('cfgApiKey').value.trim()||cfg.apiKey,databaseURL:document.getElementById('cfgDbUrl').value.trim()||cfg.databaseURL,projectId:document.getElementById('cfgProjectId').value.trim()||cfg.projectId,authDomain:cfg.authDomain,storageBucket:cfg.storageBucket,messagingSenderId:cfg.messagingSenderId,appId:cfg.appId};
+  if(!newCfg.databaseURL){toast('❌ Database URL é obrigatória');return;}
+  localStorage.setItem(FIREBASE_CONFIG_KEY,JSON.stringify(newCfg));
+  closeOverlay('overlayConfig');toast('🔄 Reconectando...');setTimeout(()=>location.reload(),1200);
 }
-
-// ═══════════════════════════════════════════
-// LOAD DATA
-// ═══════════════════════════════════════════
-
-// Converte QUALQUER formato de semanas do Firebase em array limpo.
-// Suporta: array nativo, objeto {0:..,1:..}, objeto {chave:..,chave:..}
 function fbValToArray(val){
-  if(!val) return [];
-  // Array nativo (Firebase às vezes retorna arrays direto)
-  if(Array.isArray(val)) return val.filter(v=> v && typeof v==='object' && (v.titulo||v.inicio||v.motoboys));
-  // Objeto genérico — pega todos os valores que parecem semanas
-  if(typeof val === 'object'){
-    return Object.values(val).filter(v=> v && typeof v==='object' && (v.titulo||v.inicio||v.motoboys));
-  }
-  return [];
+  if(!val)return[];
+  if(Array.isArray(val))return val.filter(v=>v&&typeof v==='object'&&(v.titulo||v.inicio||v.motoboys));
+  if(typeof val==='object')return Object.values(val).filter(v=>v&&typeof v==='object'&&(v.titulo||v.inicio||v.motoboys));
+  return[];
 }
-
 function loadAllData(){
-  if(!db){ loadLocalData(); return; }
-
-  // Carrega cada loja separadamente para máxima compatibilidade
+  if(!db){loadLocalData();return;}
   ['burger','gourmet','aham'].forEach(loja=>{
-    db.ref('escalas/'+loja).on('value', snap=>{
-      const lojaData = snap.val() || {};
-
-      // — semanas —
-      // O Firebase pode guardar como array, objeto{0:..,1:..} ou objeto{chave_data:..}
-      let semanas = fbValToArray(lojaData.semanas);
-
-      // Ordena decrescente por data de início (mais recente = índice 0)
-      semanas.sort((a,b)=>{
-        const da = a.inicio || '0000-00-00';
-        const db_ = b.inicio || '0000-00-00';
-        return db_ > da ? 1 : da > db_ ? -1 : 0;
-      });
-
-      LOJAS[loja] = semanas;
-
-      // Persiste no localStorage para carregamento instantâneo na próxima abertura
-      try{ localStorage.setItem('escala_semanas_'+loja, JSON.stringify(semanas)); }catch(e){}
-
-      // — padrão —
-      if(lojaData.padrao){
-        PADROES[loja] = lojaData.padrao;
-        try{ localStorage.setItem('escala_padrao_'+loja, JSON.stringify(lojaData.padrao)); }catch(e){}
-      }
-
-      // — metas customizadas —
+    db.ref('escalas/'+loja).on('value',snap=>{
+      const lojaData=snap.val()||{};
+      let semanas=fbValToArray(lojaData.semanas);
+      semanas.sort((a,b)=>{const da=a.inicio||'0000-00-00',db_=b.inicio||'0000-00-00';return db_>da?1:da>db_?-1:0;});
+      LOJAS[loja]=semanas;
+      try{localStorage.setItem('escala_semanas_'+loja,JSON.stringify(semanas));}catch(e){}
+      if(lojaData.padrao){PADROES[loja]=lojaData.padrao;try{localStorage.setItem('escala_padrao_'+loja,JSON.stringify(lojaData.padrao));}catch(e){}}
       if(lojaData.metas){
-        if(!METAS_CUSTOM[loja]) METAS_CUSTOM[loja]={};
-        if(lojaData.metas.fraca) METAS_CUSTOM[loja].fraca = lojaData.metas.fraca;
-        if(lojaData.metas.forte) METAS_CUSTOM[loja].forte = lojaData.metas.forte;
-        try{ localStorage.setItem('escala_metas_'+loja, JSON.stringify(METAS_CUSTOM[loja])); }catch(e){}
-      } else {
-        // Tenta localStorage como fallback
-        try{
-          const lm = localStorage.getItem('escala_metas_'+loja);
-          if(lm){ const p=JSON.parse(lm); if(!METAS_CUSTOM[loja]) METAS_CUSTOM[loja]={}; Object.assign(METAS_CUSTOM[loja],p); }
-        }catch(e){}
-      }
-
-      // Atualiza UI conforme o modo atual
-      if(CHECKIN_MODE){
-        if(loja===CHECKIN_LOJA) renderCheckinPage();
-      } else if(loja === lojaAtual){
-        rebuildSemSelect();
-        renderTable();
-        updateCalLabel();
-      }
-    }, err=>{
-      console.error('FB load error ('+loja+'):',err);
-      updateSyncStatus(false);
-    });
+        if(!METAS_CUSTOM[loja])METAS_CUSTOM[loja]={};
+        if(lojaData.metas.fraca)METAS_CUSTOM[loja].fraca=lojaData.metas.fraca;
+        if(lojaData.metas.forte)METAS_CUSTOM[loja].forte=lojaData.metas.forte;
+        try{localStorage.setItem('escala_metas_'+loja,JSON.stringify(METAS_CUSTOM[loja]));}catch(e){}
+      }else{try{const lm=localStorage.getItem('escala_metas_'+loja);if(lm){const p=JSON.parse(lm);if(!METAS_CUSTOM[loja])METAS_CUSTOM[loja]={};Object.assign(METAS_CUSTOM[loja],p);}}catch(e){}}
+      if(CHECKIN_MODE){if(loja===CHECKIN_LOJA)renderCheckinPage();}
+      else if(loja===lojaAtual){rebuildSemSelect();renderTable();updateCalLabel();}
+    },err=>{console.error('FB load error ('+loja+'):',err);updateSyncStatus(false);});
   });
 }
-
 function loadLocalData(){
   ['burger','gourmet','aham'].forEach(loja=>{
-    try{
-      const s=localStorage.getItem('escala_semanas_'+loja);
-      if(s) LOJAS[loja]=JSON.parse(s)||[];
-      const p=localStorage.getItem('escala_padrao_'+loja);
-      if(p) PADROES[loja]=JSON.parse(p);
-    } catch(e){}
+    try{const s=localStorage.getItem('escala_semanas_'+loja);if(s)LOJAS[loja]=JSON.parse(s)||[];
+    const p=localStorage.getItem('escala_padrao_'+loja);if(p)PADROES[loja]=JSON.parse(p);}catch(e){}
   });
-  if(CHECKIN_MODE){
-    renderCheckinPage();
-    return;
-  }
-  rebuildSemSelect();
-  renderTable();
-  updateCalLabel();
+  if(CHECKIN_MODE){renderCheckinPage();return;}
+  rebuildSemSelect();renderTable();updateCalLabel();
 }
 
-// ═══════════════════════════════════════════
-// SAVE WEEK TO FIREBASE
-// Salva o array LOJAS[loja] como objeto indexado no Firebase.
-// Usa timestamp-based keys para evitar colisão e preservar histórico.
-// ═══════════════════════════════════════════
-function saveWeekToFB(si, callback){
-  const semanas = LOJAS[lojaAtual];
-  if(!db){
-    try{ localStorage.setItem('escala_semanas_'+lojaAtual, JSON.stringify(semanas)); } catch(e){}
-    if(callback) callback();
-    return;
-  }
-  // Salva como objeto com chaves baseadas em inicio (YYYY-MM-DD) para
-  // preservar ordem no Firebase e evitar sobrescrever dados existentes.
-  // Usa índice numérico como fallback se inicio estiver ausente.
-  const obj={};
-  semanas.forEach((s,i)=>{
-    // Chave: data de início no formato YYYYMMDD ou índice reverso
-    const key = s.inicio ? s.inicio.replace(/-/g,'') : ('idx_'+String(9999-i).padStart(4,'0'));
-    obj[key] = s;
-  });
-  db.ref('escalas/'+lojaAtual+'/semanas').set(obj)
-    .then(()=>{ if(callback) callback(); })
-    .catch(e=>{ toast('❌ Erro ao salvar: '+e.message); });
+// ═══════════════════════════════════════════════════════════════
+// SAVE WEEK
+// ═══════════════════════════════════════════════════════════════
+function saveWeekToFB(si,callback){
+  const semanas=LOJAS[lojaAtual];
+  if(!db){try{localStorage.setItem('escala_semanas_'+lojaAtual,JSON.stringify(semanas));}catch(e){}if(callback)callback();return;}
+  const obj={};semanas.forEach((s,i)=>{const key=s.inicio?s.inicio.replace(/-/g,''):('idx_'+String(9999-i).padStart(4,'0'));obj[key]=s;});
+  db.ref('escalas/'+lojaAtual+'/semanas').set(obj).then(()=>{if(callback)callback();}).catch(e=>{toast('❌ Erro ao salvar: '+e.message);});
 }
 
-// ═══════════════════════════════════════════
-// CREATE NEXT WEEK
-// Nova semana é inserida no INÍCIO do array (índice 0 = mais recente)
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// NOVA SEMANA / EXCLUIR
+// ═══════════════════════════════════════════════════════════════
 function openNextWeekModal(){
-  const today=new Date();
-  const dow=today.getDay();
-  const diff=dow===0?-6:1-dow;
-  const mon=new Date(today); mon.setDate(today.getDate()+diff);
+  const today=new Date();const dow=today.getDay();const diff=dow===0?-6:1-dow;
+  const mon=new Date(today);mon.setDate(today.getDate()+diff);
   document.getElementById('newWeekDate').value=mon.toISOString().slice(0,10);
   openOverlay('overlayNextWeek');
 }
-
 function createNextWeek(){
-  const dateVal=document.getElementById('newWeekDate').value;
-  const tipo=document.getElementById('newWeekTipo').value;
-  if(!dateVal){ toast('❌ Selecione a data de início'); return; }
-  const inicio=new Date(dateVal+'T12:00:00');
-  const fim=new Date(inicio); fim.setDate(fim.getDate()+6);
+  const dateVal=document.getElementById('newWeekDate').value;const tipo=document.getElementById('newWeekTipo').value;
+  if(!dateVal){toast('❌ Selecione a data de início');return;}
+  const inicio=new Date(dateVal+'T12:00:00');const fim=new Date(inicio);fim.setDate(fim.getDate()+6);
   const fmt=d=>`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
-  const ano=fim.getFullYear().toString().slice(-2);
-  const titulo=`${fmt(inicio)} a ${fmt(fim)}/${ano}`;
-  const datas={};
-  DIAS_ORDEM.forEach((d,i)=>{
-    const dt=new Date(inicio); dt.setDate(dt.getDate()+i);
-    datas[d]=`${String(dt.getDate()).padStart(2,'0')}/${String(dt.getMonth()+1).padStart(2,'0')}`;
-  });
-
-  let motoboys=[];
-  const padrao=PADROES[lojaAtual];
-  const semanasAtual=LOJAS[lojaAtual]||[];
-
-  if(padrao && padrao.motoboys && padrao.motoboys.length){
-    // Nova semana baseada 100% na Escala Padrão, mantendo dias e status
-    motoboys=(padrao.motoboys||[]).map(mb=>{
-      const c=JSON.parse(JSON.stringify(mb));
-      if(!c.dias) c.dias={};
-      if(!c.conf) c.conf={};
-      if(!c.obs) c.obs={};
-      if(!c.entregas) c.entregas={};
-      DIAS_ORDEM.forEach(d=>{
-        if(typeof c.dias[d]==='undefined') c.dias[d]='';
-        if(typeof c.conf[d]==='undefined') c.conf[d]='';
-        if(typeof c.obs[d]==='undefined') c.obs[d]='';
-        if(typeof c.entregas[d]==='undefined') c.entregas[d]=0;
-      });
-      return c;
-    });
-  } else if(semanasAtual.length){
-    // Sem padrão salvo: copia da semana mais recente sem levar status fechados
+  const titulo=`${fmt(inicio)} a ${fmt(fim)}/${fim.getFullYear().toString().slice(-2)}`;
+  const datas={};DIAS_ORDEM.forEach((d,i)=>{const dt=new Date(inicio);dt.setDate(dt.getDate()+i);datas[d]=`${String(dt.getDate()).padStart(2,'0')}/${String(dt.getMonth()+1).padStart(2,'0')}`;});
+  let motoboys=[];const padrao=PADROES[lojaAtual];const semanasAtual=LOJAS[lojaAtual]||[];
+  if(padrao&&padrao.motoboys&&padrao.motoboys.length){
+    motoboys=(padrao.motoboys||[]).map(mb=>{const c=JSON.parse(JSON.stringify(mb));if(!c.dias)c.dias={};if(!c.conf)c.conf={};if(!c.obs)c.obs={};if(!c.entregas)c.entregas={};DIAS_ORDEM.forEach(d=>{if(typeof c.dias[d]==='undefined')c.dias[d]='';if(typeof c.conf[d]==='undefined')c.conf[d]='';if(typeof c.obs[d]==='undefined')c.obs[d]='';if(typeof c.entregas[d]==='undefined')c.entregas[d]=0;});return c;});
+  }else if(semanasAtual.length){
     const last=semanasAtual[0];
-    motoboys=(last.motoboys||[]).map(mb=>{
-      if(isTransDeliveryMb(mb)) return {
-        nome:'TRANSDELIVERY',loja:mb.loja||lojaAtual,telefone:'',
-        ativo:'SIM',transdelivery:true,tdSlot:mb.tdSlot||0,
-        dias:defaultTdDays(),conf:defaultTdConf(),obs:{},entregas:{}
-      };
-      const c=JSON.parse(JSON.stringify(mb));
-      c.conf={}; c.obs={}; c.entregas={};
-      if(!c.dias) c.dias={};
-      DIAS_ORDEM.forEach(d=>{
-        c.conf[d]='';
-        if(typeof c.dias[d]==='undefined') c.dias[d]='';
-      });
-      return c;
-    });
+    motoboys=(last.motoboys||[]).map(mb=>{if(isTransDeliveryMb(mb))return{nome:'TRANSDELIVERY',loja:mb.loja||lojaAtual,telefone:'',ativo:'SIM',transdelivery:true,tdSlot:mb.tdSlot||0,dias:defaultTdDays(),conf:defaultTdConf(),obs:{},entregas:{}};const c=JSON.parse(JSON.stringify(mb));c.conf={};c.obs={};c.entregas={};if(!c.dias)c.dias={};DIAS_ORDEM.forEach(d=>{c.conf[d]='';if(typeof c.dias[d]==='undefined')c.dias[d]='';});return c;});
   }
-
-  const newSem={ titulo, inicio:dateVal, datas, tipo:tipo||'', motoboys };
-  LOJAS[lojaAtual].unshift(newSem);
-  closeOverlay('overlayNextWeek');
-  rebuildSemSelect();
-  document.getElementById('selSem').value='0';
-  renderTable();
-  updateCalLabel();
-  saveWeekToFB(0, ()=>toast('✅ Nova semana criada: '+titulo));
+  const newSem={titulo,inicio:dateVal,datas,tipo:tipo||'',motoboys};
+  LOJAS[lojaAtual].unshift(newSem);closeOverlay('overlayNextWeek');
+  rebuildSemSelect();document.getElementById('selSem').value='0';renderTable();updateCalLabel();
+  saveWeekToFB(0,()=>toast('✅ Nova semana criada: '+titulo));
 }
-
-// ═══════════════════════════════════════════
-// EXCLUIR SEMANA — blindado para não reordenar
-// ═══════════════════════════════════════════
 function openDelModal(){
-  const si=getSI();
-  if(si===null){ toast('Selecione uma semana para excluir.'); return; }
-  const sem=LOJAS[lojaAtual][si];
-  document.getElementById('delSemTitle').textContent=sem?.titulo||'selecionada';
+  const si=getSI();if(si===null){toast('Selecione uma semana para excluir.');return;}
+  document.getElementById('delSemTitle').textContent=LOJAS[lojaAtual][si]?.titulo||'selecionada';
   openOverlay('overlayDel');
 }
-
 function executarExcluir(){
-  const si=getSI();
-  if(si===null){ closeOverlay('overlayDel'); return; }
-  // Remove apenas o elemento no índice si sem reordenar o resto
-  LOJAS[lojaAtual].splice(si, 1);
-  closeOverlay('overlayDel');
-  // Rebuild select: tenta manter seleção similar
-  const semanas=LOJAS[lojaAtual];
-  const novoSi=si>0?si-1:0;
-  rebuildSemSelect();
-  if(semanas.length>0){
-    document.getElementById('selSem').value=String(Math.min(novoSi, semanas.length-1));
-  }
-  renderTable();
-  // Salvar array com splice — reindexado mas sem reordenar
-  saveWeekToFB(null, ()=>toast('✅ Semana excluída'));
+  const si=getSI();if(si===null){closeOverlay('overlayDel');return;}
+  LOJAS[lojaAtual].splice(si,1);closeOverlay('overlayDel');
+  const semanas=LOJAS[lojaAtual];const novoSi=si>0?si-1:0;
+  rebuildSemSelect();if(semanas.length>0)document.getElementById('selSem').value=String(Math.min(novoSi,semanas.length-1));
+  renderTable();saveWeekToFB(null,()=>toast('✅ Semana excluída'));
 }
 
-// ═══════════════════════════════════════════
-// ADD MOTOBOY
-// ═══════════════════════════════════════════
-function openAddModal(){
-  document.getElementById('addNome').value='';
-  document.getElementById('addTel').value='';
-  document.getElementById('addLoja').value=lojaAtual;
-  openOverlay('overlayAdd');
-}
-
+// ═══════════════════════════════════════════════════════════════
+// ADD / EDIT MOTOBOY
+// ═══════════════════════════════════════════════════════════════
+function openAddModal(){document.getElementById('addNome').value='';document.getElementById('addTel').value='';document.getElementById('addLoja').value=lojaAtual;openOverlay('overlayAdd');}
 function executarAdd(){
-  const nome=document.getElementById('addNome').value.trim();
-  const tel=document.getElementById('addTel').value.trim();
-  const loja=document.getElementById('addLoja').value;
-  if(!nome){ toast('❌ Nome obrigatório'); return; }
-  const mb={
-    nome, loja, telefone:tel, ativo:'SIM',
-    transdelivery:false,
-    dias:{}, conf:{}, obs:{}, entregas:{}
-  };
-  DIAS_ORDEM.forEach(d=>{ mb.dias[d]=''; mb.conf[d]=''; });
-  closeOverlay('overlayAdd');
-  if(viewMode==='padrao'){
-    const p=ensurePadrao();
-    p.motoboys.push(mb);
-    p.motoboys=sortMotoboys(p.motoboys);
-    markPadraoDirty();
-    renderTable();
-    toast('✅ Motoboy adicionado à Escala Padrão');
-    return;
-  }
-  const si=getSI();
-  if(si===null){ toast('Selecione uma semana primeiro.'); return; }
-  LOJAS[lojaAtual][si].motoboys=sortMotoboys([...(LOJAS[lojaAtual][si].motoboys||[]),mb]);
-  persistActive(si);
-  renderTable();
-  toast('✅ Motoboy adicionado: '+nome);
+  const nome=document.getElementById('addNome').value.trim();const tel=document.getElementById('addTel').value.trim();const loja=document.getElementById('addLoja').value;
+  if(!nome){toast('❌ Nome obrigatório');return;}
+  const mb={nome,loja,telefone:tel,ativo:'SIM',transdelivery:false,dias:{},conf:{},obs:{},entregas:{}};
+  DIAS_ORDEM.forEach(d=>{mb.dias[d]='';mb.conf[d]='';});closeOverlay('overlayAdd');
+  if(viewMode==='padrao'){const p=ensurePadrao();p.motoboys.push(mb);p.motoboys=sortMotoboys(p.motoboys);markPadraoDirty();renderTable();toast('✅ Motoboy adicionado à Escala Padrão');return;}
+  const si=getSI();if(si===null){toast('Selecione uma semana primeiro.');return;}
+  LOJAS[lojaAtual][si].motoboys=sortMotoboys([...(LOJAS[lojaAtual][si].motoboys||[]),mb]);persistActive(si);renderTable();toast('✅ Motoboy adicionado: '+nome);
 }
-
-// ═══════════════════════════════════════════
-// INLINE EDIT
-// ═══════════════════════════════════════════
-function salvarNome(si, mi, el){
-  const val=el.textContent.trim();
-  if(!val){ el.textContent=getActiveSem()?.motoboys?.[mi]?.nome||''; return; }
-  const sem=getActiveSem();
-  if(!sem||!sem.motoboys[mi]) return;
-  sem.motoboys[mi].nome=val;
-  // Reordenar
-  if(viewMode==='padrao'){
-    const p=ensurePadrao();
-    p.motoboys=sortMotoboys(p.motoboys);
-    markPadraoDirty(); renderTable();
-  } else {
-    LOJAS[lojaAtual][si].motoboys=sortMotoboys(LOJAS[lojaAtual][si].motoboys);
-    persistActive(si); renderTable();
-  }
+function salvarNome(si,mi,el){
+  const val=el.textContent.trim();if(!val){el.textContent=getActiveSem()?.motoboys?.[mi]?.nome||'';return;}
+  const sem=getActiveSem();if(!sem||!sem.motoboys[mi])return;sem.motoboys[mi].nome=val;
+  if(viewMode==='padrao'){const p=ensurePadrao();p.motoboys=sortMotoboys(p.motoboys);markPadraoDirty();renderTable();}
+  else{LOJAS[lojaAtual][si].motoboys=sortMotoboys(LOJAS[lojaAtual][si].motoboys);persistActive(si);renderTable();}
 }
-
-function salvarTel(si, mi, el){
-  const val=el.textContent.trim();
-  const sem=getActiveSem();
-  if(!sem||!sem.motoboys[mi]) return;
-  if(isTransDeliveryMb(sem.motoboys[mi])){ el.textContent=''; return; }
-  sem.motoboys[mi].telefone=val;
-  if(viewMode==='padrao'){ markPadraoDirty(); }
-  else { persistActive(si); }
+function salvarTel(si,mi,el){
+  const val=el.textContent.trim();const sem=getActiveSem();if(!sem||!sem.motoboys[mi])return;
+  if(isTransDeliveryMb(sem.motoboys[mi])){el.textContent='';return;}sem.motoboys[mi].telefone=val;
+  if(viewMode==='padrao')markPadraoDirty();else persistActive(si);
 }
+function salvarObs(si,mi,d,val){const sem=getActiveSem();if(!sem||!sem.motoboys[mi])return;if(!sem.motoboys[mi].obs)sem.motoboys[mi].obs={};sem.motoboys[mi].obs[d]=val;if(viewMode==='padrao')markPadraoDirty();else persistActive(si);}
+function salvarEntregas(si,mi,d,val){const sem=getActiveSem();if(!sem||!sem.motoboys[mi])return;if(!sem.motoboys[mi].entregas)sem.motoboys[mi].entregas={};sem.motoboys[mi].entregas[d]=parseInt(val)||0;if(viewMode==='padrao')markPadraoDirty();else persistActive(si);}
 
-function salvarObs(si, mi, d, val){
-  const sem=getActiveSem();
-  if(!sem||!sem.motoboys[mi]) return;
-  if(!sem.motoboys[mi].obs) sem.motoboys[mi].obs={};
-  sem.motoboys[mi].obs[d]=val;
-  if(viewMode==='padrao'){ markPadraoDirty(); }
-  else { persistActive(si); }
-}
-
-function salvarEntregas(si, mi, d, val){
-  const sem=getActiveSem();
-  if(!sem||!sem.motoboys[mi]) return;
-  if(!sem.motoboys[mi].entregas) sem.motoboys[mi].entregas={};
-  sem.motoboys[mi].entregas[d]=parseInt(val)||0;
-  if(viewMode==='padrao'){ markPadraoDirty(); }
-  else { persistActive(si); }
-}
-
-// ═══════════════════════════════════════════
-// STATUS BADGE CLICK
-// ═══════════════════════════════════════════
-function openModalCompleto(si, mi, d){
-  const sem=getActiveSem();
-  if(!sem||!sem.motoboys[mi]) return;
-  const mb=sem.motoboys[mi];
-  const statusList=[
-    {tipo:'dia',  val:'X',         lbl:'✅ Escalado'},
-    {tipo:'dia',  val:'FOLGA',     lbl:'🌴 Folga'},
-    {tipo:'conf', val:'CONFIRMADO',lbl:'☑️ Confirmado'},
-    {tipo:'conf', val:'PRESENTE',  lbl:'🟢 Presente'},
-    {tipo:'conf', val:'FALTOU',    lbl:'❌ Faltou'},
-    {tipo:'conf', val:'AFASTADO',  lbl:'🚫 Afastado'},
-  ];
-  const curDia=mb.dias?.[d]||'';
-  const curConf=mb.conf?.[d]||'';
+// ═══════════════════════════════════════════════════════════════
+// STATUS MODAL
+// ═══════════════════════════════════════════════════════════════
+function openModalCompleto(si,mi,d){
+  const sem=getActiveSem();if(!sem||!sem.motoboys[mi])return;const mb=sem.motoboys[mi];
+  const statusList=[{tipo:'dia',val:'X',lbl:'✅ Escalado'},{tipo:'dia',val:'FOLGA',lbl:'🌴 Folga'},{tipo:'conf',val:'CONFIRMADO',lbl:'☑️ Confirmado'},{tipo:'conf',val:'PRESENTE',lbl:'🟢 Presente'},{tipo:'conf',val:'FALTOU',lbl:'❌ Faltou'},{tipo:'conf',val:'AFASTADO',lbl:'🚫 Afastado'}];
+  const curDia=mb.dias?.[d]||'';const curConf=mb.conf?.[d]||'';
   document.getElementById('editTitle').textContent='⚙️ '+mb.nome+' — '+d;
-  document.getElementById('btnDelMb').setAttribute('data-si',si);
-  document.getElementById('btnDelMb').setAttribute('data-mi',mi);
-  const btns=statusList.map(s=>{
-    const isSel=(s.tipo==='dia'&&curDia===s.val)||(s.tipo==='conf'&&curConf===s.val);
-    return `<button class="op-btn${isSel?' selected':''}" onclick="setStatus(${si},${mi},'${d}','${s.tipo}','${s.val}')">${s.lbl}</button>`;
-  }).join('');
+  document.getElementById('btnDelMb').setAttribute('data-si',si);document.getElementById('btnDelMb').setAttribute('data-mi',mi);
+  const btns=statusList.map(s=>{const isSel=(s.tipo==='dia'&&curDia===s.val)||(s.tipo==='conf'&&curConf===s.val);return`<button class="op-btn${isSel?' selected':''}" onclick="setStatus(${si},${mi},'${d}','${s.tipo}','${s.val}')">${s.lbl}</button>`;}).join('');
   document.getElementById('editBody').innerHTML=`<div class="od">${d} — escolha o status:</div>${btns}`;
   openOverlay('overlayEdit');
 }
-
-function setStatus(si, mi, d, tipo, val){
-  const sem=getActiveSem();
-  if(!sem||!sem.motoboys[mi]) return;
-  const mb=sem.motoboys[mi];
-  if(!mb.dias) mb.dias={};
-  if(!mb.conf) mb.conf={};
-
-  if(tipo==='dia'){
-    mb.dias[d]=val;
-    if(val==='FOLGA'){
-      mb.conf[d]='';
-    } else if(val==='X'){
-      if(typeof mb.conf[d]==='undefined') mb.conf[d]='';
-    }
-  } else {
-    // Qualquer status confirmado/presente/faltou/afastado força o dia para escalado
-    mb.conf[d]=val;
-    mb.dias[d]='X';
-  }
-
-  closeOverlay('overlayEdit');
-  if(viewMode==='padrao'){ markPadraoDirty(); renderTable(); }
-  else { persistActive(si); renderTable(); }
+function setStatus(si,mi,d,tipo,val){
+  const sem=getActiveSem();if(!sem||!sem.motoboys[mi])return;const mb=sem.motoboys[mi];
+  if(!mb.dias)mb.dias={};if(!mb.conf)mb.conf={};
+  if(tipo==='dia'){mb.dias[d]=val;if(val==='FOLGA')mb.conf[d]='';else if(val==='X'&&typeof mb.conf[d]==='undefined')mb.conf[d]='';}
+  else{mb.conf[d]=val;mb.dias[d]='X';}
+  closeOverlay('overlayEdit');if(viewMode==='padrao'){markPadraoDirty();renderTable();}else{persistActive(si);renderTable();}
 }
-
 function delMbFromEdit(){
-  const btn=document.getElementById('btnDelMb');
-  const si=parseInt(btn.getAttribute('data-si'));
-  const mi=parseInt(btn.getAttribute('data-mi'));
+  const btn=document.getElementById('btnDelMb');const si=parseInt(btn.getAttribute('data-si'));const mi=parseInt(btn.getAttribute('data-mi'));
   closeOverlay('overlayEdit');
-  if(viewMode==='padrao'){
-    const p=ensurePadrao();
-    p.motoboys.splice(mi,1);
-    syncTdSlots(p.motoboys);
-    p.motoboys=sortMotoboys(p.motoboys);
-    markPadraoDirty(); renderTable(); toast('Motoboy removido da Escala Padrão');
-    return;
-  }
-  LOJAS[lojaAtual][si].motoboys.splice(mi,1);
-  persistActive(si); renderTable(); toast('Motoboy removido');
+  if(viewMode==='padrao'){const p=ensurePadrao();p.motoboys.splice(mi,1);syncTdSlots(p.motoboys);p.motoboys=sortMotoboys(p.motoboys);markPadraoDirty();renderTable();toast('Motoboy removido da Escala Padrão');return;}
+  LOJAS[lojaAtual][si].motoboys.splice(mi,1);persistActive(si);renderTable();toast('Motoboy removido');
 }
 
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 // FILTROS / CARDS
-// ═══════════════════════════════════════════
-function applyCardFilter(status){
-  const s1=document.getElementById('selStatus1');
-  if(!s1) return;
-  if(!status){ s1.value=''; renderTable(); return; }
-  if(s1.value===status){ s1.value=''; renderTable(); return; }
-  s1.value=status; renderTable();
-}
-
-function lojaMatch(mb){
-  const lj=(mb.loja||'').toLowerCase().trim();
-  if(!lj) return true;
-  if(lojaAtual==='aham')    return lj==='aham'||lj==='outro';
-  if(lojaAtual==='gourmet') return lj==='gourmet'||lj.includes('gourmet');
-  if(lojaAtual==='burger')  return lj==='burger'||lj.includes('burger');
-  return lj===lojaAtual;
-}
-
-function matchFilt(mb, filt, dia){
-  if(!filt) return true;
-  if(filt==='FOLGA') return (mb.dias?.[dia]||'')==='FOLGA';
-  if(filt==='ESCALADO') return (mb.dias?.[dia]||'')==='X';
-  if(filt==='CONFIRMADO') return (mb.conf?.[dia]||'')==='CONFIRMADO';
-  if(filt==='PRESENTE') return (mb.conf?.[dia]||'')==='PRESENTE';
-  if(filt==='FALTOU') return (mb.conf?.[dia]||'')==='FALTOU';
-  if(filt==='AFASTADO') return (mb.conf?.[dia]||'')==='AFASTADO';
-  return true;
-}
-
-function card(lbl,ic,val,cls,status=''){
-  const s1val=document.getElementById('selStatus1')?.value||'';
-  const active=status&&s1val===status?' active-filter':'';
-  const clickable=status?` clickable${active}`:'';
-  const onclk=status?` onclick="applyCardFilter('${status}')" title="Filtrar por ${lbl}"`:'';
-  return `<div class="card ${cls}${clickable}"${onclk}><div class="cv">${ic} ${val}</div><div class="cl">${lbl}</div></div>`;
-}
-
-// ═══════════════════════════════════════════
-// META CARD
-// ═══════════════════════════════════════════
-// Metas padrão por loja (editáveis pelo botão Metas com senha)
-const METAS_DEFAULT = {
-  burger:{
-    fraca:{SEG:12,TER:17,QUA:18,QUI:18,SEX:33,SAB:33,DOM:30},
-    forte:{SEG:15,TER:19,QUA:20,QUI:20,SEX:38,SAB:38,DOM:30}
-  },
-  gourmet:{
-    fraca:{SEG:10,TER:18,QUA:20,QUI:18,SEX:22,SAB:22,DOM:10},
-    forte:{SEG:15,TER:22,QUA:25,QUI:22,SEX:25,SAB:25,DOM:20}
-  },
-  aham:{
-    fraca:{SEG:7,TER:10,QUA:10,QUI:12,SEX:25,SAB:25,DOM:20},
-    forte:{SEG:8,TER:12,QUA:12,QUI:12,SEX:25,SAB:25,DOM:18}
-  }
-};
-let METAS_CUSTOM = {}; // sobrescreve por loja quando salvo
-
-function getMetasLoja(loja, tipo){
-  const custom = METAS_CUSTOM[loja];
-  if(custom && custom[tipo]) return custom[tipo];
-  return METAS_DEFAULT[loja]?.[tipo] || {SEG:0,TER:0,QUA:0,QUI:0,SEX:0,SAB:0,DOM:0};
-}
-// Compat: mantém META_FRACA/META_FORTE apontando para loja atual
-let META_FRACA=METAS_DEFAULT.burger.fraca;
-let META_FORTE=METAS_DEFAULT.burger.forte;
+// ═══════════════════════════════════════════════════════════════
+function applyCardFilter(status){const s1=document.getElementById('selStatus1');if(!s1)return;if(!status){s1.value='';renderTable();return;}if(s1.value===status){s1.value='';renderTable();return;}s1.value=status;renderTable();}
+function lojaMatch(mb){const lj=(mb.loja||'').toLowerCase().trim();if(!lj)return true;if(lojaAtual==='aham')return lj==='aham'||lj==='outro';if(lojaAtual==='gourmet')return lj==='gourmet'||lj.includes('gourmet');if(lojaAtual==='burger')return lj==='burger'||lj.includes('burger');return lj===lojaAtual;}
+function matchFilt(mb,filt,dia){if(!filt)return true;if(filt==='FOLGA')return(mb.dias?.[dia]||'')==='FOLGA';if(filt==='ESCALADO')return(mb.dias?.[dia]||'')==='X';if(filt==='CONFIRMADO')return(mb.conf?.[dia]||'')==='CONFIRMADO';if(filt==='PRESENTE')return(mb.conf?.[dia]||'')==='PRESENTE';if(filt==='FALTOU')return(mb.conf?.[dia]||'')==='FALTOU';if(filt==='AFASTADO')return(mb.conf?.[dia]||'')==='AFASTADO';return true;}
+function card(lbl,ic,val,cls,status=''){const s1val=document.getElementById('selStatus1')?.value||'';const active=status&&s1val===status?' active-filter':'';const clickable=status?` clickable${active}`:'';const onclk=status?` onclick="applyCardFilter('${status}')" title="Filtrar por ${lbl}"`:'';return`<div class="card ${cls}${clickable}"${onclk}><div class="cv">${ic} ${val}</div><div class="cl">${lbl}</div></div>`;}
 function renderCardMeta(diaAbrev){
-  // Usa o valor do seletor de tipo da toolbar (funciona independente dos dados do Firebase)
-  const tipo = document.getElementById('selTipoSem')?.value;
-  if(!tipo) return '';
-  const meta = getMetasLoja(lojaAtual, tipo);
-  if(diaAbrev){
-    const v = meta[diaAbrev]||0;
-    if(!v) return '';
-    return card('Meta '+diaAbrev,'🎯',v,'c-meta','');
-  }
-  // Sem dia filtrado: mostra card com tipo da semana
-  const icTipo = tipo==='forte'?'🔴':'🟡';
-  const lblTipo = tipo==='forte'?'Forte':'Fraca';
-  return card('Tipo Semana',icTipo,lblTipo,'c-meta','');
+  const tipo=document.getElementById('selTipoSem')?.value;if(!tipo)return'';
+  const meta=getMetasLoja(lojaAtual,tipo);
+  if(diaAbrev){const v=meta[diaAbrev]||0;if(!v)return'';return card('Meta '+diaAbrev,'🎯',v,'c-meta','');}
+  return card('Tipo Semana',tipo==='forte'?'🔴':'🟡',tipo==='forte'?'Forte':'Fraca','c-meta','');
 }
 
-// ═══════════════════════════════════════════
-// FALTAS MÊS
-// ═══════════════════════════════════════════
-function computeFaltasMes(siAtual){
-  const counts={};
-  const semanas=LOJAS[lojaAtual]||[];
-  const mesAtual=semanas[siAtual]?.inicio?.slice(0,7);
-  if(!mesAtual) return counts;
-  semanas.forEach((sem,si)=>{
-    if(!sem.inicio?.startsWith(mesAtual)) return;
-    (sem.motoboys||[]).forEach(mb=>{
-      DIAS_ORDEM.forEach(d=>{
-        if((mb.conf?.[d]||'').toUpperCase()==='FALTOU'){
-          counts[mb.nome]=(counts[mb.nome]||0)+1;
-        }
-      });
-    });
+// ═══════════════════════════════════════════════════════════════
+// ★ INDICADORES DE META NO CABEÇALHO
+// ═══════════════════════════════════════════════════════════════
+
+/** Conta motoboys com status CONFIRMADO ou PRESENTE num dia */
+function contaConfirmadosDia(sem, dia){
+  if(!sem) return 0;
+  let count=0;
+  (sem.motoboys||[]).forEach(mb=>{
+    if(!lojaMatch(mb)) return;
+    const cf=(mb.conf?.[dia]||'').toUpperCase();
+    if(cf==='CONFIRMADO'||cf==='PRESENTE') count++;
   });
+  return count;
+}
+
+/**
+ * Gera o HTML interno da <th> para cada dia da semana.
+ * - Sem tipo selecionado: comportamento original (texto puro)
+ * - Com tipo (fraca/forte): mostra [🎯meta] [NOME_DIA] [confirmados✓]
+ *   colorido conforme: verde = bateu, vermelho = faltando, amarelo = passou
+ */
+function buildDiaHeader(d, dataStr, sem, tipoSem){
+  if(!tipoSem){
+    // Sem tipo: dia + data na mesma linha
+    return `<div class="th-dia-inner" style="gap:1px"><div style="display:flex;align-items:baseline;justify-content:center;gap:4px"><span style="font-size:.8rem;font-weight:800">${d}</span><span style="font-size:.65rem;font-weight:400;opacity:.75">${dataStr}</span></div></div>`;
+  }
+
+  const meta   = getMetasLoja(lojaAtual, tipoSem);
+  const metaV  = meta[d] || 0;
+  const confV  = contaConfirmadosDia(sem, d);
+
+  // Determina classe de cor
+  let cls = '';
+  if(metaV > 0){
+    if(confV === metaV)     cls = 'meta-ok';
+    else if(confV > metaV)  cls = 'meta-over';
+    else                    cls = 'meta-low';
+  }
+
+  return `<div class="th-dia-inner">
+    <div style="display:flex;align-items:baseline;justify-content:center;gap:4px">
+      <span class="th-dia-name${cls?' '+cls:''}">${d}</span>
+      <span class="th-dia-date">${dataStr}</span>
+    </div>
+    <div class="th-meta-bar">
+      <span class="th-meta-left" title="Meta ${d}: ${metaV}">🎯${metaV}</span>
+      <span class="th-meta-right${cls?' '+cls:''}" title="${confV} confirmados em ${d}">${confV}✓</span>
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// FALTAS MÊS / ORDENAÇÃO
+// ═══════════════════════════════════════════════════════════════
+function computeFaltasMes(siAtual){
+  const counts={};const semanas=LOJAS[lojaAtual]||[];const mesAtual=semanas[siAtual]?.inicio?.slice(0,7);if(!mesAtual)return counts;
+  semanas.forEach(sem=>{if(!sem.inicio?.startsWith(mesAtual))return;(sem.motoboys||[]).forEach(mb=>{DIAS_ORDEM.forEach(d=>{if((mb.conf?.[d]||'').toUpperCase()==='FALTOU')counts[mb.nome]=(counts[mb.nome]||0)+1;});});});
   return counts;
 }
+function toggleOrdem(){_ordemAtiva=!_ordemAtiva;const btn=document.getElementById('btnOrdenarTab');btn.style.background=_ordemAtiva?'#7c3aed':'';btn.style.color=_ordemAtiva?'#fff':'';btn.style.border=_ordemAtiva?'none':'';renderTable();}
+function getPrioridade(mb,dia){if(!dia)return 7;const cf=(mb.conf?.[dia]||'').toUpperCase();const di=(mb.dias?.[dia]||'').toUpperCase();if(cf==='PRESENTE')return 1;if(cf==='CONFIRMADO')return 2;if(di==='X')return 3;if(cf==='FALTOU')return 4;if(cf==='AFASTADO')return 5;if(di==='FOLGA')return 6;return 7;}
 
-// ═══════════════════════════════════════════
-// ORDENAÇÃO
-// ═══════════════════════════════════════════
-function toggleOrdem(){
-  _ordemAtiva=!_ordemAtiva;
-  const btn=document.getElementById('btnOrdenarTab');
-  btn.style.background=_ordemAtiva?'#7c3aed':'';
-  btn.style.color=_ordemAtiva?'#fff':'';
-  btn.style.border=_ordemAtiva?'none':'';
-  renderTable();
-}
-
-function getPrioridade(mb, dia){
-  const ORDEM={PRESENTE:1,CONFIRMADO:2,ESCALADO:3,FALTOU:4,AFASTADO:5,FOLGA:6,'':7};
-  if(!dia) return 7;
-  const cf=(mb.conf?.[dia]||'').toUpperCase();
-  const di=(mb.dias?.[dia]||'').toUpperCase();
-  if(cf==='PRESENTE') return 1;
-  if(cf==='CONFIRMADO') return 2;
-  if(di==='X') return 3;
-  if(cf==='FALTOU') return 4;
-  if(cf==='AFASTADO') return 5;
-  if(di==='FOLGA') return 6;
-  return 7;
-}
-
-// ═══════════════════════════════════════════
-// RENDER TABLE
-// ═══════════════════════════════════════════
-function showNoSemMsg(msg){
-  document.getElementById('thead').innerHTML='';
-  document.getElementById('tbody').innerHTML=`<tr><td colspan="20"><div class="no-sem"><div class="ns-icon">📅</div><p>${msg}</p></div></td></tr>`;
-  document.getElementById('cardsRow').innerHTML='';
-}
+// ═══════════════════════════════════════════════════════════════
+// RENDER TABLE  ← única alteração: THEAD usa buildDiaHeader
+// ═══════════════════════════════════════════════════════════════
+function showNoSemMsg(msg){document.getElementById('thead').innerHTML='';document.getElementById('tbody').innerHTML=`<tr><td colspan="20"><div class="no-sem"><div class="ns-icon">📅</div><p>${msg}</p></div></td></tr>`;document.getElementById('cardsRow').innerHTML='';}
 
 function renderTable(){
-  const si=getSI();
-  const semanas=LOJAS[lojaAtual];
-  let sem=null;
-  if(viewMode==='padrao'){
-    sem=getPadraoViewSem();
-    if(!(sem?.motoboys?.length)){ showNoSemMsg('Abra a Escala Padrão e clique em "Clonar semana atual" para montar o modelo.'); return; }
-  } else {
-    if(si===null){ showNoSemMsg('Selecione uma semana acima para ver os dados'); return; }
-    if(!semanas||!semanas.length){ showNoSemMsg('Nenhuma semana disponível'); return; }
-    sem=semanas[si];
-    if(!sem){ showNoSemMsg('Semana não encontrada'); return; }
-  }
+  const si=getSI();const semanas=LOJAS[lojaAtual];let sem=null;
+  if(viewMode==='padrao'){sem=getPadraoViewSem();if(!(sem?.motoboys?.length)){showNoSemMsg('Abra a Escala Padrão e clique em "Clonar semana atual" para montar o modelo.');return;}}
+  else{if(si===null){showNoSemMsg('Selecione uma semana acima para ver os dados');return;}if(!semanas||!semanas.length){showNoSemMsg('Nenhuma semana disponível');return;}sem=semanas[si];if(!sem){showNoSemMsg('Semana não encontrada');return;}}
 
   const filt1=document.getElementById('selStatus1').value;
   const nome=document.getElementById('inNome').value.trim().toLowerCase();
-  let diasVis=DIAS_ORDEM;
-  let diaAbrev=null;
-  if(_filtDay){
-    const match=DIAS_ORDEM.filter(d=>sem.datas&&sem.datas[d]===_filtDay);
-    if(match.length>0){ diasVis=match; diaAbrev=match[0]; }
-  }
+  let diasVis=DIAS_ORDEM;let diaAbrev=null;
+  if(_filtDay){const match=DIAS_ORDEM.filter(d=>sem.datas&&sem.datas[d]===_filtDay);if(match.length>0){diasVis=match;diaAbrev=match[0];}}
 
-  // THEAD
+  // ★ Tipo selecionado — usado tanto no THEAD quanto no indicador de meta
+  const tipoSem = document.getElementById('selTipoSem')?.value || '';
+
+  // ★ THEAD — usa buildDiaHeader que inclui indicadores de meta quando tipo estiver selecionado
   document.getElementById('thead').innerHTML=`<tr>
     <th class="th-nome">Motoboy <small style="font-weight:400;opacity:.7">(clique para editar)</small></th>
-    ${diasVis.map(d=>`<th class="th-dia">${d}<br><span style="font-weight:400;font-size:.7rem">${sem.datas?.[d]||''}</span></th>${diaAbrev?`<th style="background:#1e3a5f;min-width:80px;font-size:.72rem;font-weight:600;opacity:.85">Entregas</th><th style="background:#1e3a5f;min-width:180px;font-size:.72rem;font-weight:600;opacity:.85">Observação</th>`:''}`).join('')}
+    ${diasVis.map(d=>`<th class="th-dia">${buildDiaHeader(d, sem.datas?.[d]||'', sem, tipoSem)}</th>${diaAbrev?`<th style="background:#1e3a5f;min-width:80px;font-size:.72rem;font-weight:600;opacity:.85">Entregas</th><th style="background:#1e3a5f;min-width:180px;font-size:.72rem;font-weight:600;opacity:.85">Observação</th>`:''}`).join('')}
     <th class="th-flt">Faltas<br>Mês</th>
     <th class="th-del">⚙️</th>
   </tr>`;
 
-  // Filtro
-  let mbs=(sem.motoboys||[]).filter(mb=>{
-    if(!lojaMatch(mb)) return false;
-    if(nome&&!mb.nome.toLowerCase().includes(nome)) return false;
-    if(!filt1) return true;
-    const check=diaAbrev?[diaAbrev]:DIAS_ORDEM;
-    return check.some(d=>matchFilt(mb,filt1,d));
-  });
+  let mbs=(sem.motoboys||[]).filter(mb=>{if(!lojaMatch(mb))return false;if(nome&&!mb.nome.toLowerCase().includes(nome))return false;if(!filt1)return true;const check=diaAbrev?[diaAbrev]:DIAS_ORDEM;return check.some(d=>matchFilt(mb,filt1,d));});
 
   // Cards
-  let conf=0,pres=0,folga=0,falta=0,afastado=0;
-  const diasParaContar=diaAbrev?[diaAbrev]:DIAS_ORDEM;
-  (sem.motoboys||[]).filter(mb=>lojaMatch(mb)).forEach(mb=>{
-    diasParaContar.forEach(d=>{
-      const di=mb.dias?.[d]||'', cf=mb.conf?.[d]||'';
-      if(cf==='CONFIRMADO') conf++;
-      if(cf==='PRESENTE') pres++;
-      if(di==='FOLGA') folga++;
-      if(cf==='FALTOU') falta++;
-      if(cf==='AFASTADO') afastado++;
-    });
-  });
+  let conf=0,pres=0,folga=0,falta=0,afastado=0;const diasParaContar=diaAbrev?[diaAbrev]:DIAS_ORDEM;
+  (sem.motoboys||[]).filter(mb=>lojaMatch(mb)).forEach(mb=>{diasParaContar.forEach(d=>{const di=mb.dias?.[d]||'',cf=mb.conf?.[d]||'';if(cf==='CONFIRMADO')conf++;if(cf==='PRESENTE')pres++;if(di==='FOLGA')folga++;if(cf==='FALTOU')falta++;if(cf==='AFASTADO')afastado++;});});
   const disponiveis=conf+pres+folga+falta+afastado;
-  document.getElementById('cardsRow').innerHTML=
-    card('Disponíveis','📦',disponiveis,'c-esc','')+
-    card('Confirmados','☑️',conf,'c-conf','CONFIRMADO')+
-    card('Presentes','🟢',pres,'c-pres','PRESENTE')+
-    card('Folga','🌴',folga,'c-folga','FOLGA')+
-    card('Faltou','❌',falta,'c-falta','FALTOU')+
-    card('Afastado','🚫',afastado,'c-afas','AFASTADO')+
-    renderCardMeta(diaAbrev);
+  document.getElementById('cardsRow').innerHTML=card('Disponíveis','📦',disponiveis,'c-esc','')+card('Confirmados','☑️',conf,'c-conf','CONFIRMADO')+card('Presentes','🟢',pres,'c-pres','PRESENTE')+card('Folga','🌴',folga,'c-folga','FOLGA')+card('Faltou','❌',falta,'c-falta','FALTOU')+card('Afastado','🚫',afastado,'c-afas','AFASTADO')+renderCardMeta(diaAbrev);
 
   const faltasMes=computeFaltasMes(si);
-
-  if(_ordemAtiva){
-    // Ordena pelo dia filtrado; se não houver dia, usa SEX como referência principal
-    const diaRef = diaAbrev || 'SEX';
-    let mbsIdx=mbs.map(mb=>({mb,mi:sem.motoboys.indexOf(mb)}));
-    mbsIdx.sort((a,b)=>getPrioridade(a.mb,diaRef)-getPrioridade(b.mb,diaRef));
-    document.getElementById('tbody').innerHTML=mbsIdx.map(({mb,mi})=>buildRow(mb,mi,si,sem,diasVis,diaAbrev,faltasMes)).join('');
-    return;
-  }
-  if(!mbs.length){
-    document.getElementById('tbody').innerHTML=`<tr><td colspan="${diasVis.length+4}" style="text-align:center;padding:28px;color:#94a3b8">Nenhum motoboy encontrado</td></tr>`;
-    return;
-  }
-  document.getElementById('tbody').innerHTML=mbs.map(mb=>{
-    const mi=sem.motoboys.indexOf(mb);
-    return buildRow(mb,mi,si,sem,diasVis,diaAbrev,faltasMes);
-  }).join('');
+  if(_ordemAtiva){const diaRef=diaAbrev||'SEX';let mbsIdx=mbs.map(mb=>({mb,mi:sem.motoboys.indexOf(mb)}));mbsIdx.sort((a,b)=>getPrioridade(a.mb,diaRef)-getPrioridade(b.mb,diaRef));document.getElementById('tbody').innerHTML=mbsIdx.map(({mb,mi})=>buildRow(mb,mi,si,sem,diasVis,diaAbrev,faltasMes)).join('');return;}
+  if(!mbs.length){document.getElementById('tbody').innerHTML=`<tr><td colspan="${diasVis.length+4}" style="text-align:center;padding:28px;color:#94a3b8">Nenhum motoboy encontrado</td></tr>`;return;}
+  document.getElementById('tbody').innerHTML=mbs.map(mb=>{const mi=sem.motoboys.indexOf(mb);return buildRow(mb,mi,si,sem,diasVis,diaAbrev,faltasMes);}).join('');
 }
 
-function buildRow(mb, mi, si, sem, diasVis, diaAbrev, faltasMes){
-  const fltCount=faltasMes?.[mb.nome]||0;
-  const fltCls=fltCount===0?'flt-0':fltCount===1?'flt-1':fltCount===2?'flt-2':'flt-hi';
+function buildRow(mb,mi,si,sem,diasVis,diaAbrev,faltasMes){
+  const fltCount=faltasMes?.[mb.nome]||0;const fltCls=fltCount===0?'flt-0':fltCount===1?'flt-1':fltCount===2?'flt-2':'flt-hi';
   const diasTd=diasVis.map(d=>`<td style="text-align:center">${badgeHTML(si,mi,d,mb.dias?.[d]||'',mb.conf?.[d]||'')}</td>${diaAbrev?`<td class="ent-cell"><input type="number" min="0" class="ent-inp" placeholder="0" value="${mb.entregas?.[d]||''}" onchange="salvarEntregas(${si},${mi},'${d}',this.value)"></td><td class="obs-cell"><textarea class="obs-inp" placeholder="Observação..." onchange="salvarObs(${si},${mi},'${d}',this.value)">${esc_(mb.obs?.[d]||'')}</textarea></td>`:''}`).join('');
   const tdChips=isTransDeliveryMb(mb)?`<span class="td-chip">TD</span><span class="td-day-chip">${mb.tdDia||'TD'}</span>`:'';
-  return `<tr class="${isTransDeliveryMb(mb)?'td-row':''}">
+  return`<tr class="${isTransDeliveryMb(mb)?'td-row':''}">
     <td class="td-nome">
-      <span class="mb-nome" contenteditable="true"
-        onblur="salvarNome(${si},${mi},this)"
-        onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}"
-      >${esc_(mb.nome)}</span>${tdChips}
-      <span class="mb-tel" contenteditable="true"
-        onblur="salvarTel(${si},${mi},this)"
-        onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}"
-      >${esc_(mb.telefone||'')}</span>
+      <span class="mb-nome" contenteditable="true" onblur="salvarNome(${si},${mi},this)" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}">${esc_(mb.nome)}</span>${tdChips}
+      <span class="mb-tel" contenteditable="true" onblur="salvarTel(${si},${mi},this)" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}">${esc_(mb.telefone||'')}</span>
     </td>
     ${diasTd}
     <td style="text-align:center"><span class="flt-badge ${fltCls}">${fltCount}</span></td>
@@ -1527,480 +895,194 @@ function buildRow(mb, mi, si, sem, diasVis, diaAbrev, faltasMes){
   </tr>`;
 }
 
-function badgeHTML(si, mi, d, stRaw, cfRaw){
-  const st=stRaw.toUpperCase(), cf=cfRaw.toUpperCase();
-  const click=`onclick="openModalCompleto(${si},${mi},'${d}')"`;
-  if(st==='FOLGA') return `<span class="badge b-folga" ${click}>🌴 Folga</span>`;
-  if(st==='X'){
-    if(!cf) return `<span class="badge b-esc" ${click}>✅ Escalado</span>`;
-    if(cf==='CONFIRMADO') return `<span class="badge b-conf" ${click}>☑️ Confirmado</span>`;
-    if(cf==='PRESENTE')   return `<span class="badge b-pres" ${click}>🟢 Presente</span>`;
-    if(cf==='FALTOU')     return `<span class="badge b-falta" ${click}>❌ Faltou</span>`;
-    if(cf==='AFASTADO')   return `<span class="badge b-afas" ${click}>🚫 Afastado</span>`;
-  }
-  return `<span class="badge b-empty" ${click}>— Sem escala</span>`;
+function badgeHTML(si,mi,d,stRaw,cfRaw){
+  const st=stRaw.toUpperCase(),cf=cfRaw.toUpperCase();const click=`onclick="openModalCompleto(${si},${mi},'${d}')"`;
+  if(st==='FOLGA')return`<span class="badge b-folga" ${click}>🌴 Folga</span>`;
+  if(st==='X'){if(!cf)return`<span class="badge b-esc" ${click}>✅ Escalado</span>`;if(cf==='CONFIRMADO')return`<span class="badge b-conf" ${click}>☑️ Confirmado</span>`;if(cf==='PRESENTE')return`<span class="badge b-pres" ${click}>🟢 Presente</span>`;if(cf==='FALTOU')return`<span class="badge b-falta" ${click}>❌ Faltou</span>`;if(cf==='AFASTADO')return`<span class="badge b-afas" ${click}>🚫 Afastado</span>`;}
+  return`<span class="badge b-empty" ${click}>— Sem escala</span>`;
 }
 
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 // CALENDAR
-// ═══════════════════════════════════════════
-let _calYear=new Date().getFullYear(), _calMonth=new Date().getMonth();
-function toggleCal(){ document.getElementById('calDrop').classList.toggle('open'); renderCal(); }
-function closeCal(){ document.getElementById('calDrop').classList.remove('open'); }
-function calMove(delta){ _calMonth+=delta; if(_calMonth>11){_calMonth=0;_calYear++;}else if(_calMonth<0){_calMonth=11;_calYear--;} renderCal(); }
-function updateCalLabel(){
-  const si=getSI();
-  const sem=si!==null?(LOJAS[lojaAtual]||[])[si]:null;
-  const btn=document.getElementById('btnCal');
-  if(_filtDay){
-    btn.textContent='📅 '+_filtDay;
-  } else {
-    btn.textContent='📅 Filtrar data';
-  }
-}
-function clearDayFilter(){ _filtDay=null; updateCalLabel(); closeCal(); renderTable(); }
+// ═══════════════════════════════════════════════════════════════
+let _calYear=new Date().getFullYear(),_calMonth=new Date().getMonth();
+function toggleCal(){document.getElementById('calDrop').classList.toggle('open');renderCal();}
+function closeCal(){document.getElementById('calDrop').classList.remove('open');}
+function calMove(delta){_calMonth+=delta;if(_calMonth>11){_calMonth=0;_calYear++;}else if(_calMonth<0){_calMonth=11;_calYear--;}renderCal();}
+function updateCalLabel(){const btn=document.getElementById('btnCal');if(_filtDay)btn.textContent='📅 '+_filtDay;else btn.textContent='📅 Filtrar data';}
+function clearDayFilter(){_filtDay=null;updateCalLabel();closeCal();renderTable();}
 function renderCal(){
   document.getElementById('calLabel').textContent=new Date(_calYear,_calMonth,1).toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
-  const grid=document.getElementById('calGrid');
-  const dias=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const grid=document.getElementById('calGrid');const dias=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
   let html=dias.map(d=>`<div class="wd">${d}</div>`).join('');
-  const first=new Date(_calYear,_calMonth,1).getDay();
-  for(let i=0;i<first;i++) html+=`<div class="day other-month"></div>`;
-  const days=new Date(_calYear,_calMonth+1,0).getDate();
-  // Coletar datas da semana atual
-  const si=getSI();
-  const sem=si!==null?(LOJAS[lojaAtual]||[])[si]:null;
-  const semDates=new Set();
-  if(sem?.datas) Object.values(sem.datas).forEach(v=>semDates.add(v));
-  for(let d=1;d<=days;d++){
-    const label=`${String(d).padStart(2,'0')}/${String(_calMonth+1).padStart(2,'0')}`;
-    const inSem=semDates.has(label);
-    const isSel=_filtDay===label;
-    const cls=inSem?'day'+(isSel?' selected':''):('day other-month');
-    const clk=inSem?`onclick="selectDay('${label}')"`:' ';
-    html+=`<div class="${cls}" ${clk}>${d}</div>`;
-  }
+  const first=new Date(_calYear,_calMonth,1).getDay();for(let i=0;i<first;i++)html+=`<div class="day other-month"></div>`;
+  const days=new Date(_calYear,_calMonth+1,0).getDate();const si=getSI();const sem=si!==null?(LOJAS[lojaAtual]||[])[si]:null;
+  const semDates=new Set();if(sem?.datas)Object.values(sem.datas).forEach(v=>semDates.add(v));
+  for(let d=1;d<=days;d++){const label=`${String(d).padStart(2,'0')}/${String(_calMonth+1).padStart(2,'0')}`;const inSem=semDates.has(label);const isSel=_filtDay===label;const cls=inSem?'day'+(isSel?' selected':''):('day other-month');const clk=inSem?`onclick="selectDay('${label}')"`:' ';html+=`<div class="${cls}" ${clk}>${d}</div>`;}
   grid.innerHTML=html;
 }
-function selectDay(label){ _filtDay=label; updateCalLabel(); closeCal(); renderTable(); }
+function selectDay(label){_filtDay=label;updateCalLabel();closeCal();renderTable();}
 
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 // EXPORT CSV
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 function exportCSV(){
-  const si=getSI();
-  if(si===null){ toast('Selecione uma semana.'); return; }
-  const sem=LOJAS[lojaAtual][si];
-  if(!sem){ toast('Semana não encontrada.'); return; }
+  const si=getSI();if(si===null){toast('Selecione uma semana.');return;}const sem=LOJAS[lojaAtual][si];if(!sem){toast('Semana não encontrada.');return;}
   let csv='Nome,Telefone,Loja,'+DIAS_ORDEM.map(d=>d+' Status,'+d+' Conf').join(',')+'\n';
-  (sem.motoboys||[]).forEach(mb=>{
-    const row=[mb.nome,mb.telefone||'',mb.loja||lojaAtual,...DIAS_ORDEM.flatMap(d=>[mb.dias?.[d]||'',mb.conf?.[d]||''])];
-    csv+=row.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')+'\n';
-  });
-  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a'); a.href=url;
-  a.download=`escala_${lojaAtual}_${sem.titulo||'semana'}.csv`;
-  a.click(); URL.revokeObjectURL(url);
+  (sem.motoboys||[]).forEach(mb=>{const row=[mb.nome,mb.telefone||'',mb.loja||lojaAtual,...DIAS_ORDEM.flatMap(d=>[mb.dias?.[d]||'',mb.conf?.[d]||''])];csv+=row.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')+'\n';});
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`escala_${lojaAtual}_${sem.titulo||'semana'}.csv`;a.click();URL.revokeObjectURL(url);
 }
 
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 // DASHBOARD
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 let _dashSearchVal='';
-function setDashPeriod(period){
-  _dashPeriod=period;
-  document.getElementById('btnMesAtual').classList.toggle('active', period==='atual');
-  document.getElementById('btnMesAnterior').classList.toggle('active', period==='anterior');
-  // Limpa datas manuais ao escolher período
-  document.getElementById('dashDe').value='';
-  document.getElementById('dashAte').value='';
-  renderDashboard();
-}
-
+function setDashPeriod(period){_dashPeriod=period;document.getElementById('btnMesAtual').classList.toggle('active',period==='atual');document.getElementById('btnMesAnterior').classList.toggle('active',period==='anterior');document.getElementById('dashDe').value='';document.getElementById('dashAte').value='';renderDashboard();}
 function openDashboard(){
-  // Só inicializa filtros na primeira abertura; nas demais mantém o estado
-  const wasOpen = document.getElementById('overlayDashboard').classList.contains('open');
-  openOverlay('overlayDashboard');
-  // Setup search sem perder cursor (apenas uma vez)
+  const wasOpen=document.getElementById('overlayDashboard').classList.contains('open');openOverlay('overlayDashboard');
   const searchEl=document.getElementById('dashSearch');
-  if(!searchEl._listenerOk){
-    searchEl._listenerOk=true;
-    searchEl.addEventListener('input', function(){ _dashSearchVal=this.value; renderDashboard(); });
-  }
-  if(!wasOpen){
-    // Só reseta filtros quando abre do zero
-    _dashPeriod='atual';
-    _dashSearchVal='';
-    searchEl.value='';
-    document.getElementById('dashDe').value='';
-    document.getElementById('dashAte').value='';
-    document.getElementById('btnMesAtual').classList.add('active');
-    document.getElementById('btnMesAnterior').classList.remove('active');
-  }
+  if(!searchEl._listenerOk){searchEl._listenerOk=true;searchEl.addEventListener('input',function(){_dashSearchVal=this.value;renderDashboard();});}
+  if(!wasOpen){_dashPeriod='atual';_dashSearchVal='';searchEl.value='';document.getElementById('dashDe').value='';document.getElementById('dashAte').value='';document.getElementById('btnMesAtual').classList.add('active');document.getElementById('btnMesAnterior').classList.remove('active');}
   renderDashboard();
 }
-
 function getDashDateRange(){
-  const de=document.getElementById('dashDe').value;
-  const ate=document.getElementById('dashAte').value;
-  if(de||ate) return {de:de||'0000-01-01', ate:ate||'9999-12-31'};
+  const de=document.getElementById('dashDe').value;const ate=document.getElementById('dashAte').value;
+  if(de||ate)return{de:de||'0000-01-01',ate:ate||'9999-12-31'};
   const now=new Date();
-  if(_dashPeriod==='atual'){
-    return {
-      de:new Date(now.getFullYear(),now.getMonth(),1).toISOString().slice(0,10),
-      ate:new Date(now.getFullYear(),now.getMonth()+1,0).toISOString().slice(0,10)
-    };
-  } else {
-    const prev=new Date(now.getFullYear(),now.getMonth()-1,1);
-    return {
-      de:prev.toISOString().slice(0,10),
-      ate:new Date(now.getFullYear(),now.getMonth(),0).toISOString().slice(0,10)
-    };
-  }
+  if(_dashPeriod==='atual')return{de:new Date(now.getFullYear(),now.getMonth(),1).toISOString().slice(0,10),ate:new Date(now.getFullYear(),now.getMonth()+1,0).toISOString().slice(0,10)};
+  const prev=new Date(now.getFullYear(),now.getMonth()-1,1);return{de:prev.toISOString().slice(0,10),ate:new Date(now.getFullYear(),now.getMonth(),0).toISOString().slice(0,10)};
 }
-
 function renderDashboard(){
-  const {de,ate}=getDashDateRange();
-  const search=(_dashSearchVal||'').toLowerCase().trim();
-  const semanas=LOJAS[lojaAtual]||[];
-  const filtradas=semanas.filter(sem=>{
-    if(!sem.inicio) return false;
-    return sem.inicio>=de && sem.inicio<=ate;
+  const{de,ate}=getDashDateRange();const search=(_dashSearchVal||'').toLowerCase().trim();
+  // Inclui semana se qualquer dia dela estiver dentro do período (não só o início)
+  const semanas=LOJAS[lojaAtual]||[];const filtradas=semanas.filter(sem=>{
+    if(!sem.inicio)return false;
+    // fim da semana = início + 6 dias
+    const fimDate=new Date(sem.inicio+'T12:00:00');fimDate.setDate(fimDate.getDate()+6);
+    const fim=fimDate.toISOString().slice(0,10);
+    return sem.inicio<=ate&&fim>=de;
   });
   const ranking={};
   filtradas.forEach(sem=>{
     (sem.motoboys||[]).forEach(mb=>{
-      if(isTransDeliveryMb(mb)) return;
-      if(!lojaMatch(mb)) return;
+      if(isTransDeliveryMb(mb))return;if(!lojaMatch(mb))return;
       const nome=mb.nome||'?';
-      if(!ranking[nome]) ranking[nome]={nome,pres:0,falt:0,conf:0,afas:0,folga:0,faltDays:[]};
+      if(!ranking[nome])ranking[nome]={nome,pres:0,falt:0,conf:0,afas:0,folga:0,faltDays:[]};
       DIAS_ORDEM.forEach(d=>{
-        const cf=(mb.conf?.[d]||'').toUpperCase();
-        const di=(mb.dias?.[d]||'').toUpperCase();
-        const motivo=(mb.obs?.[d]||'').trim();
-        if(cf==='PRESENTE') ranking[nome].pres++;
-        else if(cf==='FALTOU'){
-          ranking[nome].falt++;
-          ranking[nome].faltDays.push({sem:sem.titulo, dia:d, data:sem.datas?.[d]||'', motivo});
+        // Converte a data do dia (dd/mm) para ISO e verifica se está no período
+        const dataStr=sem.datas?.[d]||'';
+        if(dataStr){
+          const parts=dataStr.split('/');
+          if(parts.length===2){
+            const ano=sem.inicio?sem.inicio.slice(0,4):'';
+            const isoData=ano+'-'+parts[1].padStart(2,'0')+'-'+parts[0].padStart(2,'0');
+            if(isoData<de||isoData>ate)return; // dia fora do período, pula
+          }
         }
-        else if(cf==='CONFIRMADO') ranking[nome].conf++;
-        else if(cf==='AFASTADO') ranking[nome].afas++;
-        else if(di==='FOLGA') ranking[nome].folga++;
+        const cf=(mb.conf?.[d]||'').toUpperCase();const di=(mb.dias?.[d]||'').toUpperCase();const motivo=(mb.obs?.[d]||'').trim();
+        if(cf==='PRESENTE')ranking[nome].pres++;
+        else if(cf==='FALTOU'){ranking[nome].falt++;ranking[nome].faltDays.push({sem:sem.titulo,dia:d,data:dataStr,motivo});}
+        else if(cf==='CONFIRMADO')ranking[nome].conf++;
+        else if(cf==='AFASTADO')ranking[nome].afas++;
+        else if(di==='FOLGA')ranking[nome].folga++;
       });
     });
   });
-  let rows=Object.values(ranking);
-  if(search) rows=rows.filter(r=>r.nome.toLowerCase().includes(search));
-  // Totais
-  let totPres=0,totFalt=0,totConf=0,totAfas=0;
-  rows.forEach(r=>{totPres+=r.pres;totFalt+=r.falt;totConf+=r.conf;totAfas+=r.afas;});
-  // Cards
-  document.getElementById('dashCards').innerHTML=`
-    <div class="dash-card pres"><div class="k">✅ Presentes</div><div class="v">${totPres}</div></div>
-    <div class="dash-card falt"><div class="k">❌ Faltas</div><div class="v">${totFalt}</div></div>
-    <div class="dash-card conf"><div class="k">☑️ Confirmados</div><div class="v">${totConf}</div></div>
-    <div class="dash-card afas"><div class="k">🚫 Afastados</div><div class="v">${totAfas}</div></div>
-    <div class="dash-card total"><div class="k">👤 Motoboys</div><div class="v">${rows.length}</div></div>
-  `;
-  // Sort
-  rows.sort((a,b)=>{
-    const va = a[_dashSortCol] != null ? a[_dashSortCol] : '';
-    const vb = b[_dashSortCol] != null ? b[_dashSortCol] : '';
-    if(typeof va==='string') return _dashSortDir==='asc'?va.localeCompare(vb):vb.localeCompare(va);
-    return _dashSortDir==='asc'?va-vb:vb-va;
-  });
-  const cols=[
-    {key:'nome',lbl:'Motoboy'},
-    {key:'pres',lbl:'Presentes'},
-    {key:'falt',lbl:'Faltas'},
-    {key:'conf',lbl:'Confirmados'},
-    {key:'afas',lbl:'Afastados'},
-    {key:'folga',lbl:'Folgas'}
-  ];
-  const ths=cols.map(c=>{
-    const cls=_dashSortCol===c.key?(' sort-'+_dashSortDir):'';
-    return `<th class="${cls}" onclick="dashSort('${c.key}')">${c.lbl}</th>`;
-  }).join('');
+  let rows=Object.values(ranking);if(search)rows=rows.filter(r=>r.nome.toLowerCase().includes(search));
+  let totPres=0,totFalt=0,totConf=0,totAfas=0;rows.forEach(r=>{totPres+=r.pres;totFalt+=r.falt;totConf+=r.conf;totAfas+=r.afas;});
+  document.getElementById('dashCards').innerHTML=`<div class="dash-card pres"><div class="k">✅ Presentes</div><div class="v">${totPres}</div></div><div class="dash-card falt"><div class="k">❌ Faltas</div><div class="v">${totFalt}</div></div><div class="dash-card conf"><div class="k">☑️ Confirmados</div><div class="v">${totConf}</div></div><div class="dash-card afas"><div class="k">🚫 Afastados</div><div class="v">${totAfas}</div></div><div class="dash-card total"><div class="k">👤 Motoboys</div><div class="v">${rows.length}</div></div>`;
+  rows.sort((a,b)=>{const va=a[_dashSortCol]!=null?a[_dashSortCol]:'';const vb=b[_dashSortCol]!=null?b[_dashSortCol]:'';if(typeof va==='string')return _dashSortDir==='asc'?va.localeCompare(vb):vb.localeCompare(va);return _dashSortDir==='asc'?va-vb:vb-va;});
+  const cols=[{key:'nome',lbl:'Motoboy'},{key:'pres',lbl:'Presentes'},{key:'falt',lbl:'Faltas'},{key:'conf',lbl:'Confirmados'},{key:'afas',lbl:'Afastados'},{key:'folga',lbl:'Folgas'}];
+  const ths=cols.map(c=>{const cls=_dashSortCol===c.key?(' sort-'+_dashSortDir):'';return`<th class="${cls}" onclick="dashSort('${c.key}')">${c.lbl}</th>`;}).join('');
   document.getElementById('dashThead').innerHTML=`<tr>${ths}</tr>`;
-  document.getElementById('dashTbody').innerHTML=rows.map(r=>`<tr>
-    <td>${esc_(r.nome)}</td>
-    <td>${r.pres}</td>
-    <td><button class="falt-link" onclick="showDashFaltas('${esc_(r.nome)}')">${r.falt}</button></td>
-    <td>${r.conf}</td>
-    <td>${r.afas}</td>
-    <td>${r.folga}</td>
-  </tr>`).join('');
-  document.getElementById('dashFaltDetail').style.display='none';
-  // Guarda dados para detalhe
-  window._dashRankingData=ranking;
+  document.getElementById('dashTbody').innerHTML=rows.map(r=>`<tr><td>${esc_(r.nome)}</td><td>${r.pres}</td><td><button class="falt-link" onclick="showDashFaltas('${esc_(r.nome)}')">${r.falt}</button></td><td>${r.conf}</td><td>${r.afas}</td><td>${r.folga}</td></tr>`).join('');
+  document.getElementById('dashFaltDetail').style.display='none';window._dashRankingData=ranking;
 }
-
-function dashSort(col){
-  if(_dashSortCol===col){ _dashSortDir=_dashSortDir==='asc'?'desc':'asc'; }
-  else { _dashSortCol=col; _dashSortDir=col==='nome'?'asc':'desc'; }
-  renderDashboard();
-}
-
+function dashSort(col){if(_dashSortCol===col)_dashSortDir=_dashSortDir==='asc'?'desc':'asc';else{_dashSortCol=col;_dashSortDir=col==='nome'?'asc':'desc';}renderDashboard();}
 function showDashFaltas(nome){
-  const data=window._dashRankingData?.[nome];
-  const detail=document.getElementById('dashFaltDetail');
-  if(!data||!data.faltDays.length){ detail.style.display='none'; return; }
-  // Agrupar por semana
-  const bySem={};
-  data.faltDays.forEach(f=>{
-    if(!bySem[f.sem]) bySem[f.sem]=[];
-    bySem[f.sem].push(f);
-  });
-  const blocks=Object.entries(bySem).map(([sem,days])=>`
-    <div class="falt-week-block">
-      <div class="falt-week-label">📅 ${sem}</div>
-      <div class="falt-day-chips">${days.map(f=>`<div class="falt-day-item"><div class="falt-day-chip">❌ ${f.dia} ${f.data}</div>${f.motivo?`<div class="falt-day-motivo">${esc_(f.motivo)}</div>`:''}</div>`).join('')}</div>
-    </div>
-  `).join('');
-  detail.innerHTML=`<div class="falt-detail"><h4>❌ Faltas de ${esc_(nome)} — ${data.falt} falta(s)</h4>${blocks}</div>`;
-  detail.style.display='block';
-  detail.scrollIntoView({behavior:'smooth',block:'nearest'});
+  const data=window._dashRankingData?.[nome];const detail=document.getElementById('dashFaltDetail');if(!data||!data.faltDays.length){detail.style.display='none';return;}
+  const bySem={};data.faltDays.forEach(f=>{if(!bySem[f.sem])bySem[f.sem]=[];bySem[f.sem].push(f);});
+  const blocks=Object.entries(bySem).map(([sem,days])=>`<div class="falt-week-block"><div class="falt-week-label">📅 ${sem}</div><div class="falt-day-chips">${days.map(f=>`<div class="falt-day-item"><div class="falt-day-chip">❌ ${f.dia} ${f.data}</div>${f.motivo?`<div class="falt-day-motivo">${esc_(f.motivo)}</div>`:''}</div>`).join('')}</div></div>`).join('');
+  detail.innerHTML=`<div class="falt-detail"><h4>❌ Faltas de ${esc_(nome)} — ${data.falt} falta(s)</h4>${blocks}</div>`;detail.style.display='block';detail.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
-// ═══════════════════════════════════════════
-// CHECK-IN VIA QR + ÚLTIMOS 4 DO TELEFONE
-// ═══════════════════════════════════════════
-function checkinLojaOk(loja){ return ['burger','gourmet','aham'].includes(loja); }
-function checkinLojaNome(loja){ return loja==='burger'?'Burger':loja==='gourmet'?'Gourmet':loja==='aham'?'AHAM':'Loja'; }
-function normalizePhone(v){ return String(v||'').replace(/\D/g,''); }
-function getHojeCheckin(){
-  const now=new Date();
-  const ab=['DOM','SEG','TER','QUA','QUI','SEX','SAB'][now.getDay()];
-  const iso=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
-  const dm=`${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}`;
-  return {abrev:ab, iso, dm};
-}
-function checkinStoreMatch(mb, loja){
-  const lj=(mb.loja||'').toLowerCase().trim();
-  if(!lj) return true;
-  if(loja==='aham') return lj==='aham'||lj==='outro';
-  if(loja==='gourmet') return lj==='gourmet'||lj.includes('gourmet');
-  if(loja==='burger') return lj==='burger'||lj.includes('burger');
-  return lj===loja;
-}
-function getSemanaAtualCheckin(loja){
-  const semanas=LOJAS[loja]||[];
-  const hoje=new Date(getHojeCheckin().iso+'T12:00:00');
-  for(const sem of semanas){
-    if(!sem?.inicio) continue;
-    const ini=new Date(sem.inicio+'T12:00:00');
-    if(isNaN(ini)) continue;
-    const fim=new Date(ini); fim.setDate(fim.getDate()+6);
-    if(hoje>=ini && hoje<=fim) return sem;
-  }
-  return semanas[0]||null;
-}
-function saveWeeksForLoja(loja, callback){
-  const semanas=LOJAS[loja]||[];
-  try{ localStorage.setItem('escala_semanas_'+loja, JSON.stringify(semanas)); }catch(e){}
-  if(!db){ if(callback) callback(); return; }
-  const obj={};
-  semanas.forEach((s,i)=>{
-    const key=s.inicio?s.inicio.replace(/-/g,''):('idx_'+String(9999-i).padStart(4,'0'));
-    obj[key]=s;
-  });
-  db.ref('escalas/'+loja+'/semanas').set(obj)
-    .then(()=>{ if(callback) callback(); })
-    .catch(e=>setCheckinStatus('Erro ao registrar presença: '+e.message,'err'));
-}
-function setCheckinStatus(msg, type='info'){
-  const box=document.getElementById('checkinStatus');
-  if(!box) return;
-  box.className='checkin-status '+type;
-  box.innerHTML=msg;
-}
+// ═══════════════════════════════════════════════════════════════
+// CHECK-IN VIA QR
+// ═══════════════════════════════════════════════════════════════
+function checkinLojaOk(loja){return['burger','gourmet','aham'].includes(loja);}
+function checkinLojaNome(loja){return loja==='burger'?'Burger':loja==='gourmet'?'Gourmet':loja==='aham'?'AHAM':'Loja';}
+function normalizePhone(v){return String(v||'').replace(/\D/g,'');}
+function getHojeCheckin(){const now=new Date();const ab=['DOM','SEG','TER','QUA','QUI','SEX','SAB'][now.getDay()];const iso=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;const dm=`${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}`;return{abrev:ab,iso,dm};}
+function checkinStoreMatch(mb,loja){const lj=(mb.loja||'').toLowerCase().trim();if(!lj)return true;if(loja==='aham')return lj==='aham'||lj==='outro';if(loja==='gourmet')return lj==='gourmet'||lj.includes('gourmet');if(loja==='burger')return lj==='burger'||lj.includes('burger');return lj===loja;}
+function getSemanaAtualCheckin(loja){const semanas=LOJAS[loja]||[];const hoje=new Date(getHojeCheckin().iso+'T12:00:00');for(const sem of semanas){if(!sem?.inicio)continue;const ini=new Date(sem.inicio+'T12:00:00');if(isNaN(ini))continue;const fim=new Date(ini);fim.setDate(fim.getDate()+6);if(hoje>=ini&&hoje<=fim)return sem;}return semanas[0]||null;}
+function saveWeeksForLoja(loja,callback){const semanas=LOJAS[loja]||[];try{localStorage.setItem('escala_semanas_'+loja,JSON.stringify(semanas));}catch(e){}if(!db){if(callback)callback();return;}const obj={};semanas.forEach((s,i)=>{const key=s.inicio?s.inicio.replace(/-/g,''):('idx_'+String(9999-i).padStart(4,'0'));obj[key]=s;});db.ref('escalas/'+loja+'/semanas').set(obj).then(()=>{if(callback)callback();}).catch(e=>setCheckinStatus('Erro ao registrar presença: '+e.message,'err'));}
+function setCheckinStatus(msg,type='info'){const box=document.getElementById('checkinStatus');if(!box)return;box.className='checkin-status '+type;box.innerHTML=msg;}
 function renderCheckinShell(){
-  document.body.innerHTML=`<div class="checkin-shell"><div class="checkin-card">
-    <div class="checkin-field">
-      <input id="checkinLast4" class="checkin-input" inputmode="numeric" maxlength="4" placeholder="Digite os 4 últimos números do telefone">
-    </div>
-    <div id="checkinStatus" class="checkin-status"></div>
-    <div id="checkinCandidates" class="checkin-candidates"></div>
-  </div></div><div id="toast"></div>`;
-  const inp=document.getElementById('checkinLast4');
-  inp.focus();
-  inp.addEventListener('input',()=>{
-    inp.value=inp.value.replace(/\D/g,'').slice(0,4);
-    document.getElementById('checkinCandidates').innerHTML='';
-    document.getElementById('checkinStatus').className='checkin-status';
-    document.getElementById('checkinStatus').innerHTML='';
-    if(inp.value.length===4) submitCheckinByPhone();
-  });
-  inp.addEventListener('keydown',e=>{ if(e.key==='Enter') submitCheckinByPhone(); });
+  document.body.innerHTML=`<div class="checkin-shell"><div class="checkin-card"><div><input id="checkinLast4" class="checkin-input" inputmode="numeric" maxlength="4" placeholder="Digite os 4 últimos números do telefone"></div><div id="checkinStatus" class="checkin-status"></div><div id="checkinCandidates" class="checkin-candidates"></div></div></div><div id="toast"></div>`;
+  const inp=document.getElementById('checkinLast4');inp.focus();
+  inp.addEventListener('input',()=>{inp.value=inp.value.replace(/\D/g,'').slice(0,4);document.getElementById('checkinCandidates').innerHTML='';document.getElementById('checkinStatus').className='checkin-status';document.getElementById('checkinStatus').innerHTML='';if(inp.value.length===4)submitCheckinByPhone();});
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')submitCheckinByPhone();});
 }
-function renderCheckinPage(){
-  if(!CHECKIN_MODE) return;
-  const lojaNome=checkinLojaNome(CHECKIN_LOJA);
-  if(!checkinLojaOk(CHECKIN_LOJA)){
-    setCheckinStatus('Esse QR não tem uma loja válida configurada.','err');
-    return;
-  }
-  const sem=getSemanaAtualCheckin(CHECKIN_LOJA);
-  if(!sem){
-    setCheckinStatus('Não encontrei semana ativa para '+lojaNome+'.','err');
-    return;
-  }
-}
+function renderCheckinPage(){if(!CHECKIN_MODE)return;}
 function submitCheckinByPhone(){
-  const inp=document.getElementById('checkinLast4');
-  const last4=(inp?.value||'').replace(/\D/g,'');
-  const box=document.getElementById('checkinCandidates');
-  if(box) box.innerHTML='';
-  if(last4.length!==4){ setCheckinStatus('Digite exatamente os 4 últimos números do telefone.','err'); return; }
-  const sem=getSemanaAtualCheckin(CHECKIN_LOJA);
-  if(!sem){ setCheckinStatus('Semana atual não encontrada para esta loja.','err'); return; }
+  const inp=document.getElementById('checkinLast4');const last4=(inp?.value||'').replace(/\D/g,'');const box=document.getElementById('checkinCandidates');if(box)box.innerHTML='';
+  if(last4.length!==4){setCheckinStatus('Digite exatamente os 4 últimos números do telefone.','err');return;}
+  const sem=getSemanaAtualCheckin(CHECKIN_LOJA);if(!sem){setCheckinStatus('Semana atual não encontrada para esta loja.','err');return;}
   const hoje=getHojeCheckin();
-  const candidatos=(sem.motoboys||[]).filter(mb=>{
-    if(isTransDeliveryMb(mb)) return false;
-    if(!checkinStoreMatch(mb, CHECKIN_LOJA)) return false;
-    const digits=normalizePhone(mb.telefone);
-    return digits && digits.slice(-4)===last4;
-  });
-  if(!candidatos.length){ setCheckinStatus('Nenhum telefone final '+last4+' foi encontrado na escala atual.','err'); return; }
-  if(candidatos.length===1){ confirmCheckinCandidate(0, candidatos); return; }
-  _checkinMatches=candidatos;
-  setCheckinStatus('Encontrei mais de um motoboy com esse final. Toque no seu nome abaixo:','info');
-  if(box){
-    box.innerHTML=candidatos.map((mb,idx)=>`<button class="checkin-cand-btn" onclick="confirmCheckinCandidate(${idx})"><strong>${esc_(mb.nome||'Motoboy')}</strong><span>Final ${last4} • ${hoje.abrev} ${hoje.dm}</span></button>`).join('');
-  }
+  const candidatos=(sem.motoboys||[]).filter(mb=>{if(isTransDeliveryMb(mb))return false;if(!checkinStoreMatch(mb,CHECKIN_LOJA))return false;const digits=normalizePhone(mb.telefone);return digits&&digits.slice(-4)===last4;});
+  if(!candidatos.length){setCheckinStatus('Nenhum telefone final '+last4+' foi encontrado na escala atual.','err');return;}
+  if(candidatos.length===1){confirmCheckinCandidate(0,candidatos);return;}
+  _checkinMatches=candidatos;setCheckinStatus('Encontrei mais de um motoboy com esse final. Toque no seu nome abaixo:','info');
+  if(box)box.innerHTML=candidatos.map((mb,idx)=>`<button class="checkin-cand-btn" onclick="confirmCheckinCandidate(${idx})"><strong>${esc_(mb.nome||'Motoboy')}</strong><span>Final ${last4} • ${hoje.abrev} ${hoje.dm}</span></button>`).join('');
 }
-function confirmCheckinCandidate(idx, candidatos){
-  const list=candidatos||_checkinMatches||[];
-  const mb=list[idx];
-  const box=document.getElementById('checkinCandidates');
-  if(!mb){ setCheckinStatus('Motoboy não encontrado para confirmar presença.','err'); return; }
-  const hoje=getHojeCheckin();
-  if(!mb.dias) mb.dias={};
-  if(!mb.conf) mb.conf={};
-  if(mb.conf[hoje.abrev]==='PRESENTE'){
-    setCheckinStatus(`Presença de <strong>${esc_(mb.nome)}</strong> já estava registrada hoje.`, 'ok');
-    if(box) box.innerHTML='';
-    return;
-  }
-  mb.dias[hoje.abrev]='X';
-  mb.conf[hoje.abrev]='PRESENTE';
-  saveWeeksForLoja(CHECKIN_LOJA, ()=>{
-    setCheckinStatus(`✅ Presença registrada: <strong>${esc_(mb.nome)}</strong> em ${hoje.abrev} ${hoje.dm}.`, 'ok');
-    if(box) box.innerHTML='';
-    const el=document.getElementById('checkinLast4');
-    if(el){ el.value=''; el.focus(); }
-  });
+function confirmCheckinCandidate(idx,candidatos){
+  const list=candidatos||_checkinMatches||[];const mb=list[idx];const box=document.getElementById('checkinCandidates');
+  if(!mb){setCheckinStatus('Motoboy não encontrado.','err');return;}
+  const hoje=getHojeCheckin();if(!mb.dias)mb.dias={};if(!mb.conf)mb.conf={};
+  if(mb.conf[hoje.abrev]==='PRESENTE'){setCheckinStatus(`Presença de <strong>${esc_(mb.nome)}</strong> já estava registrada hoje.`,'ok');if(box)box.innerHTML='';return;}
+  mb.dias[hoje.abrev]='X';mb.conf[hoje.abrev]='PRESENTE';
+  saveWeeksForLoja(CHECKIN_LOJA,()=>{setCheckinStatus(`✅ Presença registrada: <strong>${esc_(mb.nome)}</strong> em ${hoje.abrev} ${hoje.dm}.`,'ok');if(box)box.innerHTML='';const el=document.getElementById('checkinLast4');if(el){el.value='';el.focus();}});
 }
 
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 // METAS — SENHA + EDIÇÃO
-// ═══════════════════════════════════════════
-const SENHA_METAS = 'lider12345*';
-
-function openMetasSenha(){
-  document.getElementById('inputSenhaMetas').value='';
-  document.getElementById('senhaMetasErro').style.display='none';
-  openOverlay('overlaySenhaMetas');
-  setTimeout(()=>document.getElementById('inputSenhaMetas').focus(),150);
-}
-
-function confirmarSenhaMetas(){
-  const val = document.getElementById('inputSenhaMetas').value;
-  if(val !== SENHA_METAS){
-    document.getElementById('senhaMetasErro').style.display='block';
-    return;
-  }
-  closeOverlay('overlaySenhaMetas');
-  abrirEdicaoMetas();
-}
-
+// ═══════════════════════════════════════════════════════════════
+const SENHA_METAS='lider12345*';
+function openMetasSenha(){document.getElementById('inputSenhaMetas').value='';document.getElementById('senhaMetasErro').style.display='none';openOverlay('overlaySenhaMetas');setTimeout(()=>document.getElementById('inputSenhaMetas').focus(),150);}
+function confirmarSenhaMetas(){const val=document.getElementById('inputSenhaMetas').value;if(val!==SENHA_METAS){document.getElementById('senhaMetasErro').style.display='block';return;}closeOverlay('overlaySenhaMetas');abrirEdicaoMetas();}
 function abrirEdicaoMetas(){
-  document.getElementById('metasLojaTitle').textContent = lojaAtual.charAt(0).toUpperCase()+lojaAtual.slice(1);
-  const fraca = getMetasLoja(lojaAtual,'fraca');
-  const forte = getMetasLoja(lojaAtual,'forte');
-  const diasLabels = {SEG:'Segunda',TER:'Terça',QUA:'Quarta',QUI:'Quinta',SEX:'Sexta',SAB:'Sábado',DOM:'Domingo'};
-  const buildInputs = (tipo, vals) => DIAS_ORDEM.map(d=>`
-    <div class="form-row" style="flex-direction:row;align-items:center;gap:8px;margin-bottom:8px">
-      <label style="min-width:70px;font-size:.8rem;font-weight:700;color:#374151">${diasLabels[d]}</label>
-      <input type="number" min="0" id="meta_${tipo}_${d}" value="${vals[d]||0}"
-        style="width:80px;height:32px;padding:0 8px;border:1.5px solid #e2e8f0;border-radius:999px;font-size:.9rem;text-align:center">
-    </div>`).join('');
-  document.getElementById('metasFracaInputs').innerHTML = buildInputs('fraca', fraca);
-  document.getElementById('metasForteInputs').innerHTML = buildInputs('forte', forte);
-  openOverlay('overlayMetas');
+  document.getElementById('metasLojaTitle').textContent=lojaAtual.charAt(0).toUpperCase()+lojaAtual.slice(1);
+  const fraca=getMetasLoja(lojaAtual,'fraca');const forte=getMetasLoja(lojaAtual,'forte');
+  const diasLabels={SEG:'Segunda',TER:'Terça',QUA:'Quarta',QUI:'Quinta',SEX:'Sexta',SAB:'Sábado',DOM:'Domingo'};
+  const buildInputs=(tipo,vals)=>DIAS_ORDEM.map(d=>`<div class="form-row" style="flex-direction:row;align-items:center;gap:8px;margin-bottom:8px"><label style="min-width:70px;font-size:.8rem;font-weight:700;color:#374151">${diasLabels[d]}</label><input type="number" min="0" id="meta_${tipo}_${d}" value="${vals[d]||0}" style="width:80px;height:32px;padding:0 8px;border:1.5px solid #e2e8f0;border-radius:999px;font-size:.9rem;text-align:center"></div>`).join('');
+  document.getElementById('metasFracaInputs').innerHTML=buildInputs('fraca',fraca);document.getElementById('metasForteInputs').innerHTML=buildInputs('forte',forte);openOverlay('overlayMetas');
 }
-
 function salvarMetas(){
-  if(!METAS_CUSTOM[lojaAtual]) METAS_CUSTOM[lojaAtual]={};
-  const novaFraca={}, novaForte={};
-  DIAS_ORDEM.forEach(d=>{
-    novaFraca[d] = parseInt(document.getElementById('meta_fraca_'+d)?.value)||0;
-    novaForte[d] = parseInt(document.getElementById('meta_forte_'+d)?.value)||0;
-  });
-  METAS_CUSTOM[lojaAtual].fraca = novaFraca;
-  METAS_CUSTOM[lojaAtual].forte = novaForte;
-  // Persiste no Firebase ou localStorage
-  const payload = { fraca: novaFraca, forte: novaForte };
-  if(db){
-    db.ref('escalas/'+lojaAtual+'/metas').set(payload)
-      .then(()=>toast('✅ Metas salvas no Firebase!'))
-      .catch(e=>toast('❌ Erro ao salvar: '+e.message));
-  } else {
-    try{ localStorage.setItem('escala_metas_'+lojaAtual, JSON.stringify(payload)); }catch(e){}
-    toast('✅ Metas salvas!');
-  }
-  closeOverlay('overlayMetas');
-  renderTable();
+  if(!METAS_CUSTOM[lojaAtual])METAS_CUSTOM[lojaAtual]={};const novaFraca={},novaForte={};
+  DIAS_ORDEM.forEach(d=>{novaFraca[d]=parseInt(document.getElementById('meta_fraca_'+d)?.value)||0;novaForte[d]=parseInt(document.getElementById('meta_forte_'+d)?.value)||0;});
+  METAS_CUSTOM[lojaAtual].fraca=novaFraca;METAS_CUSTOM[lojaAtual].forte=novaForte;
+  const payload={fraca:novaFraca,forte:novaForte};
+  if(db){db.ref('escalas/'+lojaAtual+'/metas').set(payload).then(()=>toast('✅ Metas salvas no Firebase!')).catch(e=>toast('❌ Erro ao salvar: '+e.message));}
+  else{try{localStorage.setItem('escala_metas_'+lojaAtual,JSON.stringify(payload));}catch(e){}toast('✅ Metas salvas!');}
+  closeOverlay('overlayMetas');renderTable();
 }
 
-// ═══════════════════════════════════════════
-// LOAD PADRAO FROM FIREBASE
-// ═══════════════════════════════════════════
-function loadPadrao(loja){
-  if(!db) return;
-  db.ref('escalas/'+loja+'/padrao').on('value', snap=>{
-    const data=snap.val();
-    if(data){ PADROES[loja]=data; if(loja===lojaAtual&&viewMode==='padrao') renderTable(); }
-  });
-}
-
-// ═══════════════════════════════════════════
-// INIT — carrega localStorage IMEDIATAMENTE, Firebase em background
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded',()=>{
-  if(CHECKIN_MODE){
-    renderCheckinShell();
-    initFirebase();
-    return;
-  }
-  // 1) Carrega dados do localStorage imediatamente para a tela não ficar vazia
+  if(CHECKIN_MODE){renderCheckinShell();initFirebase();return;}
   ['burger','gourmet','aham'].forEach(loja=>{
     try{
       const s=localStorage.getItem('escala_semanas_'+loja);
-      if(s){
-        let arr=JSON.parse(s)||[];
-        // Garante ordem decrescente mesmo vindo do cache
-        arr.sort((a,b)=>{
-          const da=a.inicio||'0000-00-00', db_=b.inicio||'0000-00-00';
-          return db_>da?1:da>db_?-1:0;
-        });
-        LOJAS[loja]=arr;
-      }
-      const p=localStorage.getItem('escala_padrao_'+loja);
-      if(p) PADROES[loja]=JSON.parse(p);
-      const m=localStorage.getItem('escala_metas_'+loja);
-      if(m){ if(!METAS_CUSTOM[loja]) METAS_CUSTOM[loja]={}; Object.assign(METAS_CUSTOM[loja],JSON.parse(m)); }
+      if(s){let arr=JSON.parse(s)||[];arr.sort((a,b)=>{const da=a.inicio||'0000-00-00',db_=b.inicio||'0000-00-00';return db_>da?1:da>db_?-1:0;});LOJAS[loja]=arr;}
+      const p=localStorage.getItem('escala_padrao_'+loja);if(p)PADROES[loja]=JSON.parse(p);
+      const m=localStorage.getItem('escala_metas_'+loja);if(m){if(!METAS_CUSTOM[loja])METAS_CUSTOM[loja]={};Object.assign(METAS_CUSTOM[loja],JSON.parse(m));}
     }catch(e){}
   });
-  // 2) Renderiza imediatamente com os dados do cache
-  setViewMode('semana');
-  rebuildSemSelect();
-  renderTable();
-  updateCalLabel();
-  // 3) Inicia Firebase em background; quando chegar, atualiza automaticamente
-  initFirebase();
+  setViewMode('semana');rebuildSemSelect();renderTable();updateCalLabel();initFirebase();
 });
 </script>
+<script src="https://www.genspark.ai/sandbox_inspect.js"></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
